@@ -1,0 +1,645 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FA1B67BA139DA456008F1884 /* AIMTempBuddyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1B67B9139DA456008F1884 /* AIMTempBuddyHandler.m */; };
+		FA232A1C1399FA0000852CC1 /* AIMFeedbagHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA232A1B1399FA0000852CC1 /* AIMFeedbagHandler.m */; };
+		FA38A51F139860F1000237DF /* AIMRateParams.m in Sources */ = {isa = PBXBuildFile; fileRef = FA38A51E139860F1000237DF /* AIMRateParams.m */; };
+		FA38A5221398667A000237DF /* AIMRateMembers.m in Sources */ = {isa = PBXBuildFile; fileRef = FA38A5211398667A000237DF /* AIMRateMembers.m */; };
+		FA38A52513987487000237DF /* AIMRateParamsReply.m in Sources */ = {isa = PBXBuildFile; fileRef = FA38A52413987487000237DF /* AIMRateParamsReply.m */; };
+		FA4CE772139A9F8A00487172 /* AIMFeedbag.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4CE771139A9F8A00487172 /* AIMFeedbag.m */; };
+		FA4CE775139A9F9100487172 /* AIMFeedbagItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4CE774139A9F9100487172 /* AIMFeedbagItem.m */; };
+		FA4CE77A139AA71700487172 /* AIMBlist.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4CE779139AA71700487172 /* AIMBlist.m */; };
+		FA4CE77D139AA72000487172 /* AIMBlistBuddy.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4CE77C139AA72000487172 /* AIMBlistBuddy.m */; };
+		FA4CE781139AA72D00487172 /* AIMBlistGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4CE780139AA72D00487172 /* AIMBlistGroup.m */; };
+		FA4CE784139AA82E00487172 /* AIMFeedbagItem+Order.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4CE783139AA82D00487172 /* AIMFeedbagItem+Order.m */; };
+		FA4CE788139AB51200487172 /* AIMICBMHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4CE787139AB51200487172 /* AIMICBMHandler.m */; };
+		FA4CE795139AB55500487172 /* AIMNickWInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4CE794139AB55500487172 /* AIMNickWInfo.m */; };
+		FA4CE79E139AB81900487172 /* AIMMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4CE79D139AB81900487172 /* AIMMessage.m */; };
+		FA4CE7A1139AE51E00487172 /* AIMICBMMessageToClient.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4CE7A0139AE51D00487172 /* AIMICBMMessageToClient.m */; };
+		FA4CE7A4139AE5BF00487172 /* AIMICBMCookie.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4CE7A3139AE5BF00487172 /* AIMICBMCookie.m */; };
+		FA8CE5AA139BCE3C00096743 /* AIMICBMMissedCall.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8CE5A9139BCE3C00096743 /* AIMICBMMissedCall.m */; };
+		FA8CE5AD139BD0D400096743 /* AIMMissedCall.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8CE5AC139BD0D400096743 /* AIMMissedCall.m */; };
+		FA963ECE139EB49E009F3157 /* AIMStatusHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA963ECD139EB49E009F3157 /* AIMStatusHandler.m */; };
+		FA963ED1139EB6AB009F3157 /* AIMBuddyStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = FA963ED0139EB6AB009F3157 /* AIMBuddyStatus.m */; };
+		FAA6E8B7139C4F6C004AA5B8 /* AIMFeedbagRights.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA6E8B6139C4F6C004AA5B8 /* AIMFeedbagRights.m */; };
+		FABC0E811396CD7F0050D130 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FABC0E801396CD7F0050D130 /* Foundation.framework */; };
+		FABC0E841396CD7F0050D130 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0E831396CD7F0050D130 /* main.m */; };
+		FABC0E961396CDA80050D130 /* AIMSession.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0E951396CDA80050D130 /* AIMSession.m */; };
+		FABC0E991396CDB00050D130 /* AIMLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0E981396CDB00050D130 /* AIMLogin.m */; };
+		FABC0EA21396D0990050D130 /* hmac-sha256.c in Sources */ = {isa = PBXBuildFile; fileRef = FABC0E9B1396D0990050D130 /* hmac-sha256.c */; };
+		FABC0EA31396D0990050D130 /* ANStringEscaper.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0E9D1396D0990050D130 /* ANStringEscaper.m */; };
+		FABC0EA41396D0990050D130 /* ANCGIHTTPParameterReader.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0E9F1396D0990050D130 /* ANCGIHTTPParameterReader.m */; };
+		FABC0EA51396D0990050D130 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0EA11396D0990050D130 /* NSData+Base64.m */; };
+		FABC0EBC1397029D0050D130 /* NSObject+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0EAB1397029D0050D130 /* NSObject+JSON.m */; };
+		FABC0EBD1397029D0050D130 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0EAD1397029D0050D130 /* SBJsonWriter.m */; };
+		FABC0EBE1397029D0050D130 /* SBJsonStreamWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0EAF1397029D0050D130 /* SBJsonStreamWriter.m */; };
+		FABC0EBF1397029D0050D130 /* SBJsonStreamWriterState.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0EB11397029D0050D130 /* SBJsonStreamWriterState.m */; };
+		FABC0EC01397029D0050D130 /* SBJsonTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0EB31397029D0050D130 /* SBJsonTokeniser.m */; };
+		FABC0EC11397029D0050D130 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0EB51397029D0050D130 /* SBJsonParser.m */; };
+		FABC0EC21397029D0050D130 /* SBJsonStreamParser.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0EB71397029D0050D130 /* SBJsonStreamParser.m */; };
+		FABC0EC31397029D0050D130 /* SBJsonStreamParserState.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0EB91397029D0050D130 /* SBJsonStreamParserState.m */; };
+		FABC0EC41397029D0050D130 /* SBJsonStreamParserAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0EBB1397029D0050D130 /* SBJsonStreamParserAdapter.m */; };
+		FABC0EC7139703090050D130 /* AIMLoginHostInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0EC6139703090050D130 /* AIMLoginHostInfo.m */; };
+		FABC0ECD1397062A0050D130 /* FLAPFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0ECA1397062A0050D130 /* FLAPFrame.m */; };
+		FABC0ECE1397062A0050D130 /* SNAC.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0ECC1397062A0050D130 /* SNAC.m */; };
+		FABC0ED1139706350050D130 /* OSCARConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0ED0139706350050D130 /* OSCARConnection.m */; };
+		FABC0ED5139706440050D130 /* TLV.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0ED4139706440050D130 /* TLV.m */; };
+		FABC0EDA139708570050D130 /* AIMSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0ED9139708570050D130 /* AIMSessionManager.m */; };
+		FABC0EE013970D430050D130 /* MyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0EDF13970D410050D130 /* MyTest.m */; };
+		FABC0EE813970EB30050D130 /* flipbit.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0EE313970EB30050D130 /* flipbit.m */; };
+		FABC0EE913970EB30050D130 /* BasicStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0EE513970EB30050D130 /* BasicStrings.m */; };
+		FAECD3AA139C1D5D0028BEEE /* AIMICBMMessageToServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FAECD3A9139C1D5D0028BEEE /* AIMICBMMessageToServer.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FABC0E7A1396CD7F0050D130 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		FA1B67B8139DA456008F1884 /* AIMTempBuddyHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMTempBuddyHandler.h; sourceTree = "<group>"; };
+		FA1B67B9139DA456008F1884 /* AIMTempBuddyHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMTempBuddyHandler.m; sourceTree = "<group>"; };
+		FA232A1A1399FA0000852CC1 /* AIMFeedbagHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMFeedbagHandler.h; sourceTree = "<group>"; };
+		FA232A1B1399FA0000852CC1 /* AIMFeedbagHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMFeedbagHandler.m; sourceTree = "<group>"; };
+		FA38A51D139860F1000237DF /* AIMRateParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMRateParams.h; sourceTree = "<group>"; };
+		FA38A51E139860F1000237DF /* AIMRateParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMRateParams.m; sourceTree = "<group>"; };
+		FA38A5201398667A000237DF /* AIMRateMembers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMRateMembers.h; sourceTree = "<group>"; };
+		FA38A5211398667A000237DF /* AIMRateMembers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMRateMembers.m; sourceTree = "<group>"; };
+		FA38A52313987487000237DF /* AIMRateParamsReply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMRateParamsReply.h; sourceTree = "<group>"; };
+		FA38A52413987487000237DF /* AIMRateParamsReply.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMRateParamsReply.m; sourceTree = "<group>"; };
+		FA4CE770139A9F8A00487172 /* AIMFeedbag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMFeedbag.h; sourceTree = "<group>"; };
+		FA4CE771139A9F8A00487172 /* AIMFeedbag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMFeedbag.m; sourceTree = "<group>"; };
+		FA4CE773139A9F9100487172 /* AIMFeedbagItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMFeedbagItem.h; sourceTree = "<group>"; };
+		FA4CE774139A9F9100487172 /* AIMFeedbagItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMFeedbagItem.m; sourceTree = "<group>"; };
+		FA4CE778139AA71700487172 /* AIMBlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMBlist.h; sourceTree = "<group>"; };
+		FA4CE779139AA71700487172 /* AIMBlist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMBlist.m; sourceTree = "<group>"; };
+		FA4CE77B139AA72000487172 /* AIMBlistBuddy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMBlistBuddy.h; sourceTree = "<group>"; };
+		FA4CE77C139AA72000487172 /* AIMBlistBuddy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMBlistBuddy.m; sourceTree = "<group>"; };
+		FA4CE77F139AA72D00487172 /* AIMBlistGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMBlistGroup.h; sourceTree = "<group>"; };
+		FA4CE780139AA72D00487172 /* AIMBlistGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMBlistGroup.m; sourceTree = "<group>"; };
+		FA4CE782139AA82D00487172 /* AIMFeedbagItem+Order.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AIMFeedbagItem+Order.h"; sourceTree = "<group>"; };
+		FA4CE783139AA82D00487172 /* AIMFeedbagItem+Order.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AIMFeedbagItem+Order.m"; sourceTree = "<group>"; };
+		FA4CE786139AB51200487172 /* AIMICBMHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMICBMHandler.h; sourceTree = "<group>"; };
+		FA4CE787139AB51200487172 /* AIMICBMHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMICBMHandler.m; sourceTree = "<group>"; };
+		FA4CE793139AB55500487172 /* AIMNickWInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMNickWInfo.h; sourceTree = "<group>"; };
+		FA4CE794139AB55500487172 /* AIMNickWInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMNickWInfo.m; sourceTree = "<group>"; };
+		FA4CE79C139AB81900487172 /* AIMMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMMessage.h; sourceTree = "<group>"; };
+		FA4CE79D139AB81900487172 /* AIMMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMMessage.m; sourceTree = "<group>"; };
+		FA4CE79F139AE51D00487172 /* AIMICBMMessageToClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMICBMMessageToClient.h; sourceTree = "<group>"; };
+		FA4CE7A0139AE51D00487172 /* AIMICBMMessageToClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMICBMMessageToClient.m; sourceTree = "<group>"; };
+		FA4CE7A2139AE5BE00487172 /* AIMICBMCookie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMICBMCookie.h; sourceTree = "<group>"; };
+		FA4CE7A3139AE5BF00487172 /* AIMICBMCookie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMICBMCookie.m; sourceTree = "<group>"; };
+		FA8CE5A8139BCE3C00096743 /* AIMICBMMissedCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMICBMMissedCall.h; sourceTree = "<group>"; };
+		FA8CE5A9139BCE3C00096743 /* AIMICBMMissedCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMICBMMissedCall.m; sourceTree = "<group>"; };
+		FA8CE5AB139BD0D400096743 /* AIMMissedCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMMissedCall.h; sourceTree = "<group>"; };
+		FA8CE5AC139BD0D400096743 /* AIMMissedCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMMissedCall.m; sourceTree = "<group>"; };
+		FA963ECC139EB49E009F3157 /* AIMStatusHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMStatusHandler.h; sourceTree = "<group>"; };
+		FA963ECD139EB49E009F3157 /* AIMStatusHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMStatusHandler.m; sourceTree = "<group>"; };
+		FA963ECF139EB6AB009F3157 /* AIMBuddyStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMBuddyStatus.h; sourceTree = "<group>"; };
+		FA963ED0139EB6AB009F3157 /* AIMBuddyStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMBuddyStatus.m; sourceTree = "<group>"; };
+		FAA6E8B5139C4F6C004AA5B8 /* AIMFeedbagRights.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMFeedbagRights.h; sourceTree = "<group>"; };
+		FAA6E8B6139C4F6C004AA5B8 /* AIMFeedbagRights.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMFeedbagRights.m; sourceTree = "<group>"; };
+		FABC0E7C1396CD7F0050D130 /* LibOrange */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = LibOrange; sourceTree = BUILT_PRODUCTS_DIR; };
+		FABC0E801396CD7F0050D130 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		FABC0E831396CD7F0050D130 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		FABC0E861396CD7F0050D130 /* LibOrange-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LibOrange-Prefix.pch"; sourceTree = "<group>"; };
+		FABC0E871396CD7F0050D130 /* LibOrange.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = LibOrange.1; sourceTree = "<group>"; };
+		FABC0E941396CDA80050D130 /* AIMSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMSession.h; sourceTree = "<group>"; };
+		FABC0E951396CDA80050D130 /* AIMSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMSession.m; sourceTree = "<group>"; };
+		FABC0E971396CDB00050D130 /* AIMLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMLogin.h; sourceTree = "<group>"; };
+		FABC0E981396CDB00050D130 /* AIMLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMLogin.m; sourceTree = "<group>"; };
+		FABC0E9A1396D0990050D130 /* hmac-sha256.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "hmac-sha256.h"; sourceTree = "<group>"; };
+		FABC0E9B1396D0990050D130 /* hmac-sha256.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "hmac-sha256.c"; sourceTree = "<group>"; };
+		FABC0E9C1396D0990050D130 /* ANStringEscaper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANStringEscaper.h; sourceTree = "<group>"; };
+		FABC0E9D1396D0990050D130 /* ANStringEscaper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANStringEscaper.m; sourceTree = "<group>"; };
+		FABC0E9E1396D0990050D130 /* ANCGIHTTPParameterReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANCGIHTTPParameterReader.h; sourceTree = "<group>"; };
+		FABC0E9F1396D0990050D130 /* ANCGIHTTPParameterReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANCGIHTTPParameterReader.m; sourceTree = "<group>"; };
+		FABC0EA01396D0990050D130 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		FABC0EA11396D0990050D130 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		FABC0EA91397029D0050D130 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
+		FABC0EAA1397029D0050D130 /* NSObject+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+JSON.h"; sourceTree = "<group>"; };
+		FABC0EAB1397029D0050D130 /* NSObject+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+JSON.m"; sourceTree = "<group>"; };
+		FABC0EAC1397029D0050D130 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
+		FABC0EAD1397029D0050D130 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		FABC0EAE1397029D0050D130 /* SBJsonStreamWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamWriter.h; sourceTree = "<group>"; };
+		FABC0EAF1397029D0050D130 /* SBJsonStreamWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamWriter.m; sourceTree = "<group>"; };
+		FABC0EB01397029D0050D130 /* SBJsonStreamWriterState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamWriterState.h; sourceTree = "<group>"; };
+		FABC0EB11397029D0050D130 /* SBJsonStreamWriterState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamWriterState.m; sourceTree = "<group>"; };
+		FABC0EB21397029D0050D130 /* SBJsonTokeniser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonTokeniser.h; sourceTree = "<group>"; };
+		FABC0EB31397029D0050D130 /* SBJsonTokeniser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonTokeniser.m; sourceTree = "<group>"; };
+		FABC0EB41397029D0050D130 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
+		FABC0EB51397029D0050D130 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
+		FABC0EB61397029D0050D130 /* SBJsonStreamParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamParser.h; sourceTree = "<group>"; };
+		FABC0EB71397029D0050D130 /* SBJsonStreamParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamParser.m; sourceTree = "<group>"; };
+		FABC0EB81397029D0050D130 /* SBJsonStreamParserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamParserState.h; sourceTree = "<group>"; };
+		FABC0EB91397029D0050D130 /* SBJsonStreamParserState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamParserState.m; sourceTree = "<group>"; };
+		FABC0EBA1397029D0050D130 /* SBJsonStreamParserAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamParserAdapter.h; sourceTree = "<group>"; };
+		FABC0EBB1397029D0050D130 /* SBJsonStreamParserAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamParserAdapter.m; sourceTree = "<group>"; };
+		FABC0EC5139703090050D130 /* AIMLoginHostInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMLoginHostInfo.h; sourceTree = "<group>"; };
+		FABC0EC6139703090050D130 /* AIMLoginHostInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMLoginHostInfo.m; sourceTree = "<group>"; };
+		FABC0EC91397062A0050D130 /* FLAPFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLAPFrame.h; sourceTree = "<group>"; };
+		FABC0ECA1397062A0050D130 /* FLAPFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLAPFrame.m; sourceTree = "<group>"; };
+		FABC0ECB1397062A0050D130 /* SNAC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNAC.h; sourceTree = "<group>"; };
+		FABC0ECC1397062A0050D130 /* SNAC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNAC.m; sourceTree = "<group>"; };
+		FABC0ECF139706350050D130 /* OSCARConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSCARConnection.h; sourceTree = "<group>"; };
+		FABC0ED0139706350050D130 /* OSCARConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSCARConnection.m; sourceTree = "<group>"; };
+		FABC0ED3139706440050D130 /* TLV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLV.h; sourceTree = "<group>"; };
+		FABC0ED4139706440050D130 /* TLV.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLV.m; sourceTree = "<group>"; };
+		FABC0ED61397064C0050D130 /* OSCARPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSCARPacket.h; sourceTree = "<group>"; };
+		FABC0ED8139708570050D130 /* AIMSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMSessionManager.h; sourceTree = "<group>"; };
+		FABC0ED9139708570050D130 /* AIMSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMSessionManager.m; sourceTree = "<group>"; };
+		FABC0EDE13970D400050D130 /* MyTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyTest.h; sourceTree = "<group>"; };
+		FABC0EDF13970D410050D130 /* MyTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyTest.m; sourceTree = "<group>"; };
+		FABC0EE213970EB30050D130 /* flipbit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = flipbit.h; sourceTree = "<group>"; };
+		FABC0EE313970EB30050D130 /* flipbit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = flipbit.m; sourceTree = "<group>"; };
+		FABC0EE413970EB30050D130 /* BasicStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicStrings.h; sourceTree = "<group>"; };
+		FABC0EE513970EB30050D130 /* BasicStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicStrings.m; sourceTree = "<group>"; };
+		FABC0EE613970EB30050D130 /* TLV_Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLV_Types.h; sourceTree = "<group>"; };
+		FABC0EE713970EB30050D130 /* SNAC_Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNAC_Types.h; sourceTree = "<group>"; };
+		FAECD3A8139C1D5D0028BEEE /* AIMICBMMessageToServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMICBMMessageToServer.h; sourceTree = "<group>"; };
+		FAECD3A9139C1D5D0028BEEE /* AIMICBMMessageToServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMICBMMessageToServer.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FABC0E791396CD7F0050D130 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FABC0E811396CD7F0050D130 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FA1B67B7139DA414008F1884 /* Temp Buddies */ = {
+			isa = PBXGroup;
+			children = (
+				FA1B67B8139DA456008F1884 /* AIMTempBuddyHandler.h */,
+				FA1B67B9139DA456008F1884 /* AIMTempBuddyHandler.m */,
+			);
+			name = "Temp Buddies";
+			sourceTree = "<group>";
+		};
+		FA232A181399F9E100852CC1 /* Handlers */ = {
+			isa = PBXGroup;
+			children = (
+				FA1B67B7139DA414008F1884 /* Temp Buddies */,
+				FA4CE792139AB53D00487172 /* Status */,
+				FA4CE785139AB4FF00487172 /* Messages */,
+				FA4CE776139AA43E00487172 /* Feedbag */,
+			);
+			name = Handlers;
+			sourceTree = "<group>";
+		};
+		FA38A51B13985E39000237DF /* Rate Limits */ = {
+			isa = PBXGroup;
+			children = (
+				FA38A51D139860F1000237DF /* AIMRateParams.h */,
+				FA38A51E139860F1000237DF /* AIMRateParams.m */,
+				FA38A5201398667A000237DF /* AIMRateMembers.h */,
+				FA38A5211398667A000237DF /* AIMRateMembers.m */,
+				FA38A52313987487000237DF /* AIMRateParamsReply.h */,
+				FA38A52413987487000237DF /* AIMRateParamsReply.m */,
+			);
+			name = "Rate Limits";
+			sourceTree = "<group>";
+		};
+		FA4CE776139AA43E00487172 /* Feedbag */ = {
+			isa = PBXGroup;
+			children = (
+				FA232A1A1399FA0000852CC1 /* AIMFeedbagHandler.h */,
+				FA232A1B1399FA0000852CC1 /* AIMFeedbagHandler.m */,
+				FA4CE770139A9F8A00487172 /* AIMFeedbag.h */,
+				FA4CE771139A9F8A00487172 /* AIMFeedbag.m */,
+				FA4CE773139A9F9100487172 /* AIMFeedbagItem.h */,
+				FA4CE774139A9F9100487172 /* AIMFeedbagItem.m */,
+				FA4CE782139AA82D00487172 /* AIMFeedbagItem+Order.h */,
+				FA4CE783139AA82D00487172 /* AIMFeedbagItem+Order.m */,
+				FAA6E8B5139C4F6C004AA5B8 /* AIMFeedbagRights.h */,
+				FAA6E8B6139C4F6C004AA5B8 /* AIMFeedbagRights.m */,
+			);
+			name = Feedbag;
+			sourceTree = "<group>";
+		};
+		FA4CE777139AA70900487172 /* Blist */ = {
+			isa = PBXGroup;
+			children = (
+				FA4CE778139AA71700487172 /* AIMBlist.h */,
+				FA4CE779139AA71700487172 /* AIMBlist.m */,
+				FA4CE77F139AA72D00487172 /* AIMBlistGroup.h */,
+				FA4CE780139AA72D00487172 /* AIMBlistGroup.m */,
+				FA4CE77B139AA72000487172 /* AIMBlistBuddy.h */,
+				FA4CE77C139AA72000487172 /* AIMBlistBuddy.m */,
+			);
+			name = Blist;
+			sourceTree = "<group>";
+		};
+		FA4CE785139AB4FF00487172 /* Messages */ = {
+			isa = PBXGroup;
+			children = (
+				FA4CE7A5139AE5C500487172 /* ICBM Messages */,
+				FA4CE786139AB51200487172 /* AIMICBMHandler.h */,
+				FA4CE787139AB51200487172 /* AIMICBMHandler.m */,
+			);
+			name = Messages;
+			sourceTree = "<group>";
+		};
+		FA4CE792139AB53D00487172 /* Status */ = {
+			isa = PBXGroup;
+			children = (
+				FA4CE793139AB55500487172 /* AIMNickWInfo.h */,
+				FA4CE794139AB55500487172 /* AIMNickWInfo.m */,
+				FA963ECC139EB49E009F3157 /* AIMStatusHandler.h */,
+				FA963ECD139EB49E009F3157 /* AIMStatusHandler.m */,
+				FA963ECF139EB6AB009F3157 /* AIMBuddyStatus.h */,
+				FA963ED0139EB6AB009F3157 /* AIMBuddyStatus.m */,
+			);
+			name = Status;
+			sourceTree = "<group>";
+		};
+		FA4CE7A5139AE5C500487172 /* ICBM Messages */ = {
+			isa = PBXGroup;
+			children = (
+				FA4CE7A6139AEAC400487172 /* ICBM */,
+				FA4CE79C139AB81900487172 /* AIMMessage.h */,
+				FA4CE79D139AB81900487172 /* AIMMessage.m */,
+				FA8CE5AB139BD0D400096743 /* AIMMissedCall.h */,
+				FA8CE5AC139BD0D400096743 /* AIMMissedCall.m */,
+			);
+			name = "ICBM Messages";
+			sourceTree = "<group>";
+		};
+		FA4CE7A6139AEAC400487172 /* ICBM */ = {
+			isa = PBXGroup;
+			children = (
+				FA4CE7A2139AE5BE00487172 /* AIMICBMCookie.h */,
+				FA4CE7A3139AE5BF00487172 /* AIMICBMCookie.m */,
+				FA4CE79F139AE51D00487172 /* AIMICBMMessageToClient.h */,
+				FA4CE7A0139AE51D00487172 /* AIMICBMMessageToClient.m */,
+				FAECD3A8139C1D5D0028BEEE /* AIMICBMMessageToServer.h */,
+				FAECD3A9139C1D5D0028BEEE /* AIMICBMMessageToServer.m */,
+				FA8CE5A8139BCE3C00096743 /* AIMICBMMissedCall.h */,
+				FA8CE5A9139BCE3C00096743 /* AIMICBMMissedCall.m */,
+			);
+			name = ICBM;
+			sourceTree = "<group>";
+		};
+		FABC0E711396CD7E0050D130 = {
+			isa = PBXGroup;
+			children = (
+				FABC0E821396CD7F0050D130 /* LibOrange */,
+				FABC0E7F1396CD7F0050D130 /* Frameworks */,
+				FABC0E7D1396CD7F0050D130 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FABC0E7D1396CD7F0050D130 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FABC0E7C1396CD7F0050D130 /* LibOrange */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FABC0E7F1396CD7F0050D130 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FABC0E801396CD7F0050D130 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FABC0E821396CD7F0050D130 /* LibOrange */ = {
+			isa = PBXGroup;
+			children = (
+				FABC0E931396CD9E0050D130 /* AIM */,
+				FABC0E831396CD7F0050D130 /* main.m */,
+				FABC0EDE13970D400050D130 /* MyTest.h */,
+				FABC0EDF13970D410050D130 /* MyTest.m */,
+				FABC0E871396CD7F0050D130 /* LibOrange.1 */,
+				FABC0E851396CD7F0050D130 /* Supporting Files */,
+			);
+			path = LibOrange;
+			sourceTree = "<group>";
+		};
+		FABC0E851396CD7F0050D130 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FABC0E861396CD7F0050D130 /* LibOrange-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FABC0E931396CD9E0050D130 /* AIM */ = {
+			isa = PBXGroup;
+			children = (
+				FABC0EC8139705E80050D130 /* OSCAR */,
+				FABC0ED71397082C0050D130 /* Session */,
+				FABC0EA61396D09B0050D130 /* AIMLogin */,
+			);
+			name = AIM;
+			sourceTree = "<group>";
+		};
+		FABC0EA61396D09B0050D130 /* AIMLogin */ = {
+			isa = PBXGroup;
+			children = (
+				FABC0EA71396D0A80050D130 /* Data Processing */,
+				FABC0E971396CDB00050D130 /* AIMLogin.h */,
+				FABC0E981396CDB00050D130 /* AIMLogin.m */,
+				FABC0EC5139703090050D130 /* AIMLoginHostInfo.h */,
+				FABC0EC6139703090050D130 /* AIMLoginHostInfo.m */,
+			);
+			name = AIMLogin;
+			sourceTree = "<group>";
+		};
+		FABC0EA71396D0A80050D130 /* Data Processing */ = {
+			isa = PBXGroup;
+			children = (
+				FABC0EA81397028D0050D130 /* JSON */,
+				FABC0E9A1396D0990050D130 /* hmac-sha256.h */,
+				FABC0E9B1396D0990050D130 /* hmac-sha256.c */,
+				FABC0E9C1396D0990050D130 /* ANStringEscaper.h */,
+				FABC0E9D1396D0990050D130 /* ANStringEscaper.m */,
+				FABC0E9E1396D0990050D130 /* ANCGIHTTPParameterReader.h */,
+				FABC0E9F1396D0990050D130 /* ANCGIHTTPParameterReader.m */,
+				FABC0EA01396D0990050D130 /* NSData+Base64.h */,
+				FABC0EA11396D0990050D130 /* NSData+Base64.m */,
+			);
+			name = "Data Processing";
+			sourceTree = "<group>";
+		};
+		FABC0EA81397028D0050D130 /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				FABC0EA91397029D0050D130 /* JSON.h */,
+				FABC0EAA1397029D0050D130 /* NSObject+JSON.h */,
+				FABC0EAB1397029D0050D130 /* NSObject+JSON.m */,
+				FABC0EAC1397029D0050D130 /* SBJsonWriter.h */,
+				FABC0EAD1397029D0050D130 /* SBJsonWriter.m */,
+				FABC0EAE1397029D0050D130 /* SBJsonStreamWriter.h */,
+				FABC0EAF1397029D0050D130 /* SBJsonStreamWriter.m */,
+				FABC0EB01397029D0050D130 /* SBJsonStreamWriterState.h */,
+				FABC0EB11397029D0050D130 /* SBJsonStreamWriterState.m */,
+				FABC0EB21397029D0050D130 /* SBJsonTokeniser.h */,
+				FABC0EB31397029D0050D130 /* SBJsonTokeniser.m */,
+				FABC0EB41397029D0050D130 /* SBJsonParser.h */,
+				FABC0EB51397029D0050D130 /* SBJsonParser.m */,
+				FABC0EB61397029D0050D130 /* SBJsonStreamParser.h */,
+				FABC0EB71397029D0050D130 /* SBJsonStreamParser.m */,
+				FABC0EB81397029D0050D130 /* SBJsonStreamParserState.h */,
+				FABC0EB91397029D0050D130 /* SBJsonStreamParserState.m */,
+				FABC0EBA1397029D0050D130 /* SBJsonStreamParserAdapter.h */,
+				FABC0EBB1397029D0050D130 /* SBJsonStreamParserAdapter.m */,
+			);
+			name = JSON;
+			sourceTree = "<group>";
+		};
+		FABC0EC8139705E80050D130 /* OSCAR */ = {
+			isa = PBXGroup;
+			children = (
+				FABC0EE113970EA80050D130 /* Primatives */,
+				FABC0ED2139706370050D130 /* Basic Three */,
+				FABC0ECF139706350050D130 /* OSCARConnection.h */,
+				FABC0ED0139706350050D130 /* OSCARConnection.m */,
+			);
+			name = OSCAR;
+			sourceTree = "<group>";
+		};
+		FABC0ED2139706370050D130 /* Basic Three */ = {
+			isa = PBXGroup;
+			children = (
+				FABC0ED61397064C0050D130 /* OSCARPacket.h */,
+				FABC0ED3139706440050D130 /* TLV.h */,
+				FABC0ED4139706440050D130 /* TLV.m */,
+				FABC0EC91397062A0050D130 /* FLAPFrame.h */,
+				FABC0ECA1397062A0050D130 /* FLAPFrame.m */,
+				FABC0ECB1397062A0050D130 /* SNAC.h */,
+				FABC0ECC1397062A0050D130 /* SNAC.m */,
+			);
+			name = "Basic Three";
+			sourceTree = "<group>";
+		};
+		FABC0ED71397082C0050D130 /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				FA232A181399F9E100852CC1 /* Handlers */,
+				FA4CE777139AA70900487172 /* Blist */,
+				FA38A51B13985E39000237DF /* Rate Limits */,
+				FABC0E941396CDA80050D130 /* AIMSession.h */,
+				FABC0E951396CDA80050D130 /* AIMSession.m */,
+				FABC0ED8139708570050D130 /* AIMSessionManager.h */,
+				FABC0ED9139708570050D130 /* AIMSessionManager.m */,
+			);
+			name = Session;
+			sourceTree = "<group>";
+		};
+		FABC0EE113970EA80050D130 /* Primatives */ = {
+			isa = PBXGroup;
+			children = (
+				FABC0EE213970EB30050D130 /* flipbit.h */,
+				FABC0EE313970EB30050D130 /* flipbit.m */,
+				FABC0EE413970EB30050D130 /* BasicStrings.h */,
+				FABC0EE513970EB30050D130 /* BasicStrings.m */,
+				FABC0EE613970EB30050D130 /* TLV_Types.h */,
+				FABC0EE713970EB30050D130 /* SNAC_Types.h */,
+			);
+			name = Primatives;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FABC0E7B1396CD7F0050D130 /* LibOrange */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FABC0E8A1396CD7F0050D130 /* Build configuration list for PBXNativeTarget "LibOrange" */;
+			buildPhases = (
+				FABC0E781396CD7F0050D130 /* Sources */,
+				FABC0E791396CD7F0050D130 /* Frameworks */,
+				FABC0E7A1396CD7F0050D130 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LibOrange;
+			productName = LibOrange;
+			productReference = FABC0E7C1396CD7F0050D130 /* LibOrange */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FABC0E731396CD7E0050D130 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = FABC0E761396CD7F0050D130 /* Build configuration list for PBXProject "LibOrange" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = FABC0E711396CD7E0050D130;
+			productRefGroup = FABC0E7D1396CD7F0050D130 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FABC0E7B1396CD7F0050D130 /* LibOrange */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FABC0E781396CD7F0050D130 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FABC0E841396CD7F0050D130 /* main.m in Sources */,
+				FABC0E961396CDA80050D130 /* AIMSession.m in Sources */,
+				FABC0E991396CDB00050D130 /* AIMLogin.m in Sources */,
+				FABC0EA21396D0990050D130 /* hmac-sha256.c in Sources */,
+				FABC0EA31396D0990050D130 /* ANStringEscaper.m in Sources */,
+				FABC0EA41396D0990050D130 /* ANCGIHTTPParameterReader.m in Sources */,
+				FABC0EA51396D0990050D130 /* NSData+Base64.m in Sources */,
+				FABC0EBC1397029D0050D130 /* NSObject+JSON.m in Sources */,
+				FABC0EBD1397029D0050D130 /* SBJsonWriter.m in Sources */,
+				FABC0EBE1397029D0050D130 /* SBJsonStreamWriter.m in Sources */,
+				FABC0EBF1397029D0050D130 /* SBJsonStreamWriterState.m in Sources */,
+				FABC0EC01397029D0050D130 /* SBJsonTokeniser.m in Sources */,
+				FABC0EC11397029D0050D130 /* SBJsonParser.m in Sources */,
+				FABC0EC21397029D0050D130 /* SBJsonStreamParser.m in Sources */,
+				FABC0EC31397029D0050D130 /* SBJsonStreamParserState.m in Sources */,
+				FABC0EC41397029D0050D130 /* SBJsonStreamParserAdapter.m in Sources */,
+				FABC0EC7139703090050D130 /* AIMLoginHostInfo.m in Sources */,
+				FABC0ECD1397062A0050D130 /* FLAPFrame.m in Sources */,
+				FABC0ECE1397062A0050D130 /* SNAC.m in Sources */,
+				FABC0ED1139706350050D130 /* OSCARConnection.m in Sources */,
+				FABC0ED5139706440050D130 /* TLV.m in Sources */,
+				FABC0EDA139708570050D130 /* AIMSessionManager.m in Sources */,
+				FABC0EE013970D430050D130 /* MyTest.m in Sources */,
+				FABC0EE813970EB30050D130 /* flipbit.m in Sources */,
+				FABC0EE913970EB30050D130 /* BasicStrings.m in Sources */,
+				FA38A51F139860F1000237DF /* AIMRateParams.m in Sources */,
+				FA38A5221398667A000237DF /* AIMRateMembers.m in Sources */,
+				FA38A52513987487000237DF /* AIMRateParamsReply.m in Sources */,
+				FA232A1C1399FA0000852CC1 /* AIMFeedbagHandler.m in Sources */,
+				FA4CE772139A9F8A00487172 /* AIMFeedbag.m in Sources */,
+				FA4CE775139A9F9100487172 /* AIMFeedbagItem.m in Sources */,
+				FA4CE77A139AA71700487172 /* AIMBlist.m in Sources */,
+				FA4CE77D139AA72000487172 /* AIMBlistBuddy.m in Sources */,
+				FA4CE781139AA72D00487172 /* AIMBlistGroup.m in Sources */,
+				FA4CE784139AA82E00487172 /* AIMFeedbagItem+Order.m in Sources */,
+				FA4CE788139AB51200487172 /* AIMICBMHandler.m in Sources */,
+				FA4CE795139AB55500487172 /* AIMNickWInfo.m in Sources */,
+				FA4CE79E139AB81900487172 /* AIMMessage.m in Sources */,
+				FA4CE7A1139AE51E00487172 /* AIMICBMMessageToClient.m in Sources */,
+				FA4CE7A4139AE5BF00487172 /* AIMICBMCookie.m in Sources */,
+				FA8CE5AA139BCE3C00096743 /* AIMICBMMissedCall.m in Sources */,
+				FA8CE5AD139BD0D400096743 /* AIMMissedCall.m in Sources */,
+				FAECD3AA139C1D5D0028BEEE /* AIMICBMMessageToServer.m in Sources */,
+				FAA6E8B7139C4F6C004AA5B8 /* AIMFeedbagRights.m in Sources */,
+				FA1B67BA139DA456008F1884 /* AIMTempBuddyHandler.m in Sources */,
+				FA963ECE139EB49E009F3157 /* AIMStatusHandler.m in Sources */,
+				FA963ED1139EB6AB009F3157 /* AIMBuddyStatus.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		FABC0E881396CD7F0050D130 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		FABC0E891396CD7F0050D130 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		FABC0E8B1396CD7F0050D130 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LibOrange/LibOrange-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		FABC0E8C1396CD7F0050D130 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LibOrange/LibOrange-Prefix.pch";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FABC0E761396CD7F0050D130 /* Build configuration list for PBXProject "LibOrange" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FABC0E881396CD7F0050D130 /* Debug */,
+				FABC0E891396CD7F0050D130 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FABC0E8A1396CD7F0050D130 /* Build configuration list for PBXNativeTarget "LibOrange" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FABC0E8B1396CD7F0050D130 /* Debug */,
+				FABC0E8C1396CD7F0050D130 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FABC0E731396CD7E0050D130 /* Project object */;
+}
