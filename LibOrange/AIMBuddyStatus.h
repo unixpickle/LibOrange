@@ -28,5 +28,6 @@ typedef enum {
 - (id)initWithMessage:(NSString *)message type:(AIMBuddyStatusType)type timeIdle:(UInt32)timeIdle;
 + (AIMBuddyStatus *)offlineStatus;
 + (AIMBuddyStatus *)rejectedStatus;
+- (BOOL)isEqualToStatus:(AIMBuddyStatus *)status;
 
 @end

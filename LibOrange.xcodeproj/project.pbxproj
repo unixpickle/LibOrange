@@ -23,6 +23,9 @@
 		FA4CE79E139AB81900487172 /* AIMMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4CE79D139AB81900487172 /* AIMMessage.m */; };
 		FA4CE7A1139AE51E00487172 /* AIMICBMMessageToClient.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4CE7A0139AE51D00487172 /* AIMICBMMessageToClient.m */; };
 		FA4CE7A4139AE5BF00487172 /* AIMICBMCookie.m in Sources */ = {isa = PBXBuildFile; fileRef = FA4CE7A3139AE5BF00487172 /* AIMICBMCookie.m */; };
+		FA616C51139EEACA00780097 /* AIMBArtID.m in Sources */ = {isa = PBXBuildFile; fileRef = FA616C50139EEACA00780097 /* AIMBArtID.m */; };
+		FA616C54139EEF5900780097 /* AIMNickWInfo+BArt.m in Sources */ = {isa = PBXBuildFile; fileRef = FA616C53139EEF5900780097 /* AIMNickWInfo+BArt.m */; };
+		FA616C5713A00C8400780097 /* AIMNickWInfo+Update.m in Sources */ = {isa = PBXBuildFile; fileRef = FA616C5613A00C8300780097 /* AIMNickWInfo+Update.m */; };
 		FA8CE5AA139BCE3C00096743 /* AIMICBMMissedCall.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8CE5A9139BCE3C00096743 /* AIMICBMMissedCall.m */; };
 		FA8CE5AD139BD0D400096743 /* AIMMissedCall.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8CE5AC139BD0D400096743 /* AIMMissedCall.m */; };
 		FA963ECE139EB49E009F3157 /* AIMStatusHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA963ECD139EB49E009F3157 /* AIMStatusHandler.m */; };
@@ -102,6 +105,12 @@
 		FA4CE7A0139AE51D00487172 /* AIMICBMMessageToClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMICBMMessageToClient.m; sourceTree = "<group>"; };
 		FA4CE7A2139AE5BE00487172 /* AIMICBMCookie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMICBMCookie.h; sourceTree = "<group>"; };
 		FA4CE7A3139AE5BF00487172 /* AIMICBMCookie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMICBMCookie.m; sourceTree = "<group>"; };
+		FA616C4F139EEACA00780097 /* AIMBArtID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMBArtID.h; sourceTree = "<group>"; };
+		FA616C50139EEACA00780097 /* AIMBArtID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMBArtID.m; sourceTree = "<group>"; };
+		FA616C52139EEF5900780097 /* AIMNickWInfo+BArt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AIMNickWInfo+BArt.h"; sourceTree = "<group>"; };
+		FA616C53139EEF5900780097 /* AIMNickWInfo+BArt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AIMNickWInfo+BArt.m"; sourceTree = "<group>"; };
+		FA616C5513A00C8300780097 /* AIMNickWInfo+Update.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AIMNickWInfo+Update.h"; sourceTree = "<group>"; };
+		FA616C5613A00C8300780097 /* AIMNickWInfo+Update.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AIMNickWInfo+Update.m"; sourceTree = "<group>"; };
 		FA8CE5A8139BCE3C00096743 /* AIMICBMMissedCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMICBMMissedCall.h; sourceTree = "<group>"; };
 		FA8CE5A9139BCE3C00096743 /* AIMICBMMissedCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMICBMMissedCall.m; sourceTree = "<group>"; };
 		FA8CE5AB139BD0D400096743 /* AIMMissedCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMMissedCall.h; sourceTree = "<group>"; };
@@ -197,6 +206,7 @@
 		FA232A181399F9E100852CC1 /* Handlers */ = {
 			isa = PBXGroup;
 			children = (
+				FA616C4E139EEABD00780097 /* Buddy Art */,
 				FA1B67B7139DA414008F1884 /* Temp Buddies */,
 				FA4CE792139AB53D00487172 /* Status */,
 				FA4CE785139AB4FF00487172 /* Messages */,
@@ -261,8 +271,7 @@
 		FA4CE792139AB53D00487172 /* Status */ = {
 			isa = PBXGroup;
 			children = (
-				FA4CE793139AB55500487172 /* AIMNickWInfo.h */,
-				FA4CE794139AB55500487172 /* AIMNickWInfo.m */,
+				FA616C5813A00D6700780097 /* NickWInfo */,
 				FA963ECC139EB49E009F3157 /* AIMStatusHandler.h */,
 				FA963ECD139EB49E009F3157 /* AIMStatusHandler.m */,
 				FA963ECF139EB6AB009F3157 /* AIMBuddyStatus.h */,
@@ -296,6 +305,28 @@
 				FA8CE5A9139BCE3C00096743 /* AIMICBMMissedCall.m */,
 			);
 			name = ICBM;
+			sourceTree = "<group>";
+		};
+		FA616C4E139EEABD00780097 /* Buddy Art */ = {
+			isa = PBXGroup;
+			children = (
+				FA616C4F139EEACA00780097 /* AIMBArtID.h */,
+				FA616C50139EEACA00780097 /* AIMBArtID.m */,
+			);
+			name = "Buddy Art";
+			sourceTree = "<group>";
+		};
+		FA616C5813A00D6700780097 /* NickWInfo */ = {
+			isa = PBXGroup;
+			children = (
+				FA4CE793139AB55500487172 /* AIMNickWInfo.h */,
+				FA4CE794139AB55500487172 /* AIMNickWInfo.m */,
+				FA616C52139EEF5900780097 /* AIMNickWInfo+BArt.h */,
+				FA616C53139EEF5900780097 /* AIMNickWInfo+BArt.m */,
+				FA616C5513A00C8300780097 /* AIMNickWInfo+Update.h */,
+				FA616C5613A00C8300780097 /* AIMNickWInfo+Update.m */,
+			);
+			name = NickWInfo;
 			sourceTree = "<group>";
 		};
 		FABC0E711396CD7E0050D130 = {
@@ -554,6 +585,9 @@
 				FA1B67BA139DA456008F1884 /* AIMTempBuddyHandler.m in Sources */,
 				FA963ECE139EB49E009F3157 /* AIMStatusHandler.m in Sources */,
 				FA963ED1139EB6AB009F3157 /* AIMBuddyStatus.m in Sources */,
+				FA616C51139EEACA00780097 /* AIMBArtID.m in Sources */,
+				FA616C54139EEF5900780097 /* AIMNickWInfo+BArt.m in Sources */,
+				FA616C5713A00C8400780097 /* AIMNickWInfo+Update.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

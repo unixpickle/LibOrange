@@ -85,6 +85,7 @@ static void stripNL (char * buff) {
 	session.statusHandler.delegate = self;
 	
 	NSLog(@"Got session: %@", session);
+	NSLog(@"Our status: %@", session.statusHandler.userStatus);
 	NSLog(@"Disconnecting in %d seconds ...", kSignoffTime);
 	[[session session] performSelector:@selector(closeConnection) withObject:nil afterDelay:kSignoffTime];
 }
@@ -136,9 +137,10 @@ static void stripNL (char * buff) {
 
 - (void)aimICBMHandler:(AIMICBMHandler *)sender gotMessage:(AIMMessage *)message {
 	[self checkThreading];
+	
 	NSString * autoresp = [message isAutoresponse] ? @" (Auto-Response)" : @"";
 	NSLog(@"%@%@: %@", [[message buddy] username], autoresp, [message message]);
-	// reply
+	
 	AIMMessage * reply = [AIMMessage autoresponseMessageWithBuddy:[message buddy] message:@"I am not here right now."];
 	[sender sendMessage:reply];
 }
@@ -151,7 +153,13 @@ static void stripNL (char * buff) {
 #pragma mark Status Handler
 
 - (void)aimStatusHandler:(AIMStatusHandler *)handler buddy:(AIMBlistBuddy *)theBuddy statusChanged:(AIMBuddyStatus *)status {
+	[self checkThreading];
 	NSLog(@"%@ status = %@", theBuddy, status);
+}
+
+- (void)aimStatusHandlerUserStatusUpdated:(AIMStatusHandler *)handler {
+	[self checkThreading];
+	NSLog(@"our user status = %@", [handler userStatus]);
 }
 
 @end

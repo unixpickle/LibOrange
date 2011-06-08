@@ -252,8 +252,13 @@
 	feedbagHandler = [[AIMFeedbagHandler alloc] initWithSession:session];
 	messageHandler = [[AIMICBMHandler alloc] initWithSession:session];
 	tempBuddyHandler = [[AIMTempBuddyHandler alloc] initWithSession:session];
-	statusHandler = [[AIMStatusHandler alloc] initWithSession:session];
+	statusHandler = [[AIMStatusHandler alloc] initWithSession:session initialInfo:initialInfo];
 	
+	[initialInfo release];
+	initialInfo = nil;
+	
+	// query our online user info.
+	[statusHandler queryUserInfo];
 	[feedbagHandler setTempBuddyHandler:tempBuddyHandler];
 	[feedbagHandler setFeedbagRights:feedbagRights];
 	[feedbagHandler sendFeedbagRequest];
@@ -430,6 +435,10 @@
 	}
 	[infoRequest release];
 	
+	SNAC * infoResponse = [self waitOnConnectionForSnacID:SNAC_ID_NEW(SNAC_OSERVICE, OSERVICE__NICK_INFO_UPDATE)];
+	if (!infoResponse) return NO;
+	initialInfo = [[AIMNickWInfo alloc] initWithData:[infoResponse innerContents]];
+	
 	SNAC * paramQuery = [[SNAC alloc] initWithID:SNAC_ID_NEW(SNAC_ICBM, ICBM__PARAMETER_QUERY) 
 										   flags:0 requestID:[self generateSNACRequestID] data:nil];
 	if (![self sendSnac:paramQuery]) {
@@ -480,6 +489,8 @@
 		if ([initConn isOpen]) [initConn disconnect];
 		[initConn release];
 	}
+	[feedbagRights release];
+	[initialInfo release];
 	NSAssert(self.backgroundThread == nil, @"Background thread should retain AIMSessionManager but doesn't.");
 	self.mainThread = nil;
 	self.backgroundThread = nil;

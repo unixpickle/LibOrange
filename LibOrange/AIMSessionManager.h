@@ -45,6 +45,7 @@
 	
 	/* Temp Store */
 	AIMFeedbagRights * feedbagRights;
+	AIMNickWInfo * initialInfo;
 	
 	/* Handlers */
 	AIMFeedbagHandler * feedbagHandler;

@@ -34,6 +34,11 @@
 	return [stat autorelease];
 }
 
+- (BOOL)isEqualToStatus:(AIMBuddyStatus *)status {
+	if ([status statusType] == [self statusType] && [[status statusMessage] isEqual:[self statusMessage]] && [status idleTime] == [self idleTime]) return YES;
+	return NO;
+}
+
 - (NSString *)description {
 	NSString * statusTypeStr = @"Offline";
 	if (statusType == AIMBuddyStatusAway) statusTypeStr = @"Away";
