@@ -10,6 +10,7 @@
 #import "AIMLogin.h"
 #import "AIMSessionManager.h"
 #import "FTAddBuddy.h"
+#import "FTRemoveBuddy.h"
 
 @interface MyTest : NSObject <AIMLoginDelegate, AIMSessionManagerDelegate, AIMFeedbagHandlerDelegate, AIMICBMHandlerDelegate, AIMStatusHandlerDelegate> {
     AIMLogin * login;
@@ -22,5 +23,6 @@
 - (void)checkThreading;
 
 - (void)handleAddBuddyMsg:(AIMMessage *)message msgSender:(AIMICBMHandler *)sender;
+- (void)handleDelBuddyMsg:(AIMMessage *)message msgSender:(AIMICBMHandler *)sender;
 
 @end

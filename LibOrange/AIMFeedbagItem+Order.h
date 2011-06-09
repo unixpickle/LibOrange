@@ -34,10 +34,24 @@
 - (TLV *)orderByAddingID:(UInt16)theID;
 
 /**
+ * Returns a new ORDER TLV which doesn't have a specified item ID.
+ * @param theID The item ID to remove.
+ * @return A generated ORDER attribute.
+ */
+- (TLV *)orderByRemovingID:(UInt16)theID;
+
+/**
  * Creates a duplicate item, containing an updated order item.
  * @param newItem The item to add to the ORDER attribute.
  * @return An autorelease'd item that should be used in a FEEDBAG__UPDATE.
  */
 - (AIMFeedbagItem *)itemByAddingOrderItem:(UInt16)newItem;
+
+/**
+ * Creates a duplicate item, containing an updated order item.
+ * @param newItem The item to remove from the ORDER attribute.
+ * @return An autorelease'd item that should be used in a FEEDBAG__UPDATE.
+ */
+- (AIMFeedbagItem *)itemByRemovingOrderItem:(UInt16)newItem;
 
 @end

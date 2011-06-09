@@ -149,6 +149,8 @@ static void stripNL (char * buff) {
 	
 	if ([msgTxt hasPrefix:@"add "]) {
 		[self handleAddBuddyMsg:message msgSender:sender];
+	} else if ([msgTxt hasPrefix:@"remove "]) {
+		[self handleDelBuddyMsg:message msgSender:sender];
 	} else if ([msgTxt isEqual:@"blist"]) {
 		NSString * desc = [[theSession.session buddyList] description];
 		AIMMessage * blistMsg = [AIMMessage messageWithBuddy:[message buddy] message:[desc stringByAddingAOLRTFTags]];
@@ -168,7 +170,7 @@ static void stripNL (char * buff) {
 	NSString * msgTxt = [message plainTextMessage];
 	NSString * buddyName = [msgTxt substringFromIndex:4];
 	if (!buddyName || [buddyName length] == 0) {
-		AIMMessage * reply = [AIMMessage messageWithBuddy:[message buddy] message:@"Invalid buddy name."];
+		AIMMessage * reply = [AIMMessage messageWithBuddy:[message buddy] message:@"Err: Invalid buddy name."];
 		[sender sendMessage:reply];
 	} else {
 		AIMBlistGroup * group = [theSession.session.buddyList groupWithName:@"Buddies"];
@@ -180,6 +182,27 @@ static void stripNL (char * buff) {
 			[theSession.feedbagHandler pushTransaction:addBudd];
 			[addBudd release];
 			AIMMessage * reply = [AIMMessage messageWithBuddy:[message buddy] message:@"Buddy insert requested."];
+			[sender sendMessage:reply];
+		}
+	}
+}
+
+- (void)handleDelBuddyMsg:(AIMMessage *)message msgSender:(AIMICBMHandler *)sender {
+	NSString * msgTxt = [message plainTextMessage];
+	NSString * buddyName = [msgTxt substringFromIndex:7];
+	if (!buddyName || [buddyName length] == 0) {
+		AIMMessage * reply = [AIMMessage messageWithBuddy:[message buddy] message:@"Err: Invalid buddy name."];
+		[sender sendMessage:reply];
+	} else {
+		AIMBlistBuddy * buddy = [theSession.session.buddyList buddyWithUsername:buddyName];
+		if (!buddy) {
+			AIMMessage * reply = [AIMMessage messageWithBuddy:[message buddy] message:@"Err: Buddy not found!"];
+			[sender sendMessage:reply];
+		} else {
+			FTRemoveBuddy * remove = [[FTRemoveBuddy alloc] initWithBuddy:buddy];
+			[theSession.feedbagHandler pushTransaction:remove];
+			[remove release];
+			AIMMessage * reply = [AIMMessage messageWithBuddy:[message buddy] message:@"Buddy delete requested."];
 			[sender sendMessage:reply];
 		}
 	}

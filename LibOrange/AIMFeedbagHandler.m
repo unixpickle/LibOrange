@@ -299,9 +299,11 @@
 	}
 	// should never be asserted...
 	NSAssert([NSThread currentThread] == [session backgroundThread], @"Running on incorrect thread");
-	[transactions addObject:transaction];
-	if ([transactions count] == 1) {
-		[self execNextOperation];
+	@synchronized (transactions) {
+		[transactions addObject:transaction];
+		if ([transactions count] == 1) {
+			[self execNextOperation];
+		}
 	}
 }
 
@@ -312,24 +314,28 @@
 	}
 	// should never be asserted...
 	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
-	if ([transactions count] == 0) return;
-	id<FeedbagTransaction> trans = [transactions objectAtIndex:0];
-	if (![trans hasCreatedOperations]) [trans createOperationsWithFeedbag:feedbag session:session];
-	SNAC * nextTrans = [trans nextTransactionSNAC];
-	if (!nextTrans) {
-		[transactions removeObjectAtIndex:0];
-		[self execNextOperation];
-	} else {
-		[session performSelector:@selector(writeSnac:) onThread:session.backgroundThread withObject:nextTrans waitUntilDone:NO];
+	@synchronized (transactions) {
+		if ([transactions count] == 0) return;
+		id<FeedbagTransaction> trans = [transactions objectAtIndex:0];
+		if (![trans hasCreatedOperations]) [trans createOperationsWithFeedbag:feedbag session:session];
+		SNAC * nextTrans = [trans nextTransactionSNAC];
+		if (!nextTrans) {
+			[transactions removeObjectAtIndex:0];
+			[self execNextOperation];
+		} else {
+			[session performSelector:@selector(writeSnac:) onThread:session.backgroundThread withObject:nextTrans waitUntilDone:NO];
+		}
 	}
 }
 
 - (SNAC *)prevOperation {
 	NSAssert([NSThread currentThread] == [session backgroundThread], @"Running on incorrect thread");
-	if ([transactions count] == 0) return nil;
-	id<FeedbagTransaction> trans = [transactions objectAtIndex:0];
-	SNAC * prevTrans = [trans currentTransactionSNAC];
-	return prevTrans;
+	@synchronized (transactions) {
+		if ([transactions count] == 0) return nil;
+		id<FeedbagTransaction> trans = [transactions objectAtIndex:0];
+		SNAC * prevTrans = [trans currentTransactionSNAC];
+		return prevTrans;
+	}
 }
 
 - (void)handleTransactionStatus:(SNAC *)statusCodes {
@@ -340,7 +346,9 @@
 		if (type != FBS_SUCCESS) {
 			// failure.
 			NSLog(@"Feedbag operation failed with code %d", type);
-			[transactions removeObjectAtIndex:0];
+			@synchronized (transactions) {
+				[transactions removeObjectAtIndex:0];
+			}
 			[self execNextOperation];
 		} else {
 			SNAC * prev = [self prevOperation];

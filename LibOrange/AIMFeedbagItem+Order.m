@@ -58,13 +58,44 @@
 		UInt16 flipShort = flipUInt16([n unsignedShortValue]);
 		[encodedOrder appendBytes:&flipShort length:2];
 	}
-	return [[[TLV alloc] initWithType:FEEDBAG_ATTRIBUTE_ORDER data:[encodedOrder autorelease]] autorelease];;
+	return [[[TLV alloc] initWithType:FEEDBAG_ATTRIBUTE_ORDER data:[encodedOrder autorelease]] autorelease];
+}
+
+- (TLV *)orderByRemovingID:(UInt16)theID {
+	NSMutableArray * existingOrder = [NSMutableArray arrayWithArray:[self groupOrder]];
+	NSNumber * obj = [NSNumber numberWithUnsignedShort:theID];
+	if ([existingOrder containsObject:obj]) [existingOrder removeObject:obj];
+	NSMutableData * encodedOrder = [[NSMutableData alloc] init];
+	for (NSNumber * n in existingOrder) {
+		UInt16 flipShort = flipUInt16([n unsignedShortValue]);
+		[encodedOrder appendBytes:&flipShort length:2];
+	}
+	return [[[TLV alloc] initWithType:FEEDBAG_ATTRIBUTE_ORDER data:[encodedOrder autorelease]] autorelease];
 }
 
 - (AIMFeedbagItem *)itemByAddingOrderItem:(UInt16)newItem {
 	AIMFeedbagItem * thisCopy = [self copy];
 	BOOL exists = NO;
 	TLV * newOrder = [self orderByAddingID:newItem];
+	for (int i = 0; i < [thisCopy.attributes count]; i++) {
+		TLV * attr = [thisCopy.attributes objectAtIndex:i];
+		if ([attr type] == FEEDBAG_ATTRIBUTE_ORDER) {
+			exists = YES;
+			// replace
+			[thisCopy.attributes replaceObjectAtIndex:i withObject:newOrder];
+			break;
+		}
+	}
+	if (!exists) {
+		[thisCopy.attributes addObject:newOrder];
+	}
+	return [thisCopy autorelease];
+}
+
+- (AIMFeedbagItem *)itemByRemovingOrderItem:(UInt16)newItem {
+	AIMFeedbagItem * thisCopy = [self copy];
+	BOOL exists = NO;
+	TLV * newOrder = [self orderByRemovingID:newItem];
 	for (int i = 0; i < [thisCopy.attributes count]; i++) {
 		TLV * attr = [thisCopy.attributes objectAtIndex:i];
 		if ([attr type] == FEEDBAG_ATTRIBUTE_ORDER) {

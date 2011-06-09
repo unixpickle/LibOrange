@@ -12,6 +12,7 @@
 		FA1B67BA139DA456008F1884 /* AIMTempBuddyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1B67B9139DA456008F1884 /* AIMTempBuddyHandler.m */; };
 		FA232A1C1399FA0000852CC1 /* AIMFeedbagHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA232A1B1399FA0000852CC1 /* AIMFeedbagHandler.m */; };
 		FA32379013A12154005D7B69 /* FTAddBuddy.m in Sources */ = {isa = PBXBuildFile; fileRef = FA32378F13A12154005D7B69 /* FTAddBuddy.m */; };
+		FA32379913A15EC3005D7B69 /* FTRemoveBuddy.m in Sources */ = {isa = PBXBuildFile; fileRef = FA32379813A15EC3005D7B69 /* FTRemoveBuddy.m */; };
 		FA38A51F139860F1000237DF /* AIMRateParams.m in Sources */ = {isa = PBXBuildFile; fileRef = FA38A51E139860F1000237DF /* AIMRateParams.m */; };
 		FA38A5221398667A000237DF /* AIMRateMembers.m in Sources */ = {isa = PBXBuildFile; fileRef = FA38A5211398667A000237DF /* AIMRateMembers.m */; };
 		FA38A52513987487000237DF /* AIMRateParamsReply.m in Sources */ = {isa = PBXBuildFile; fileRef = FA38A52413987487000237DF /* AIMRateParamsReply.m */; };
@@ -89,6 +90,8 @@
 		FA232A1B1399FA0000852CC1 /* AIMFeedbagHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMFeedbagHandler.m; sourceTree = "<group>"; };
 		FA32378E13A12154005D7B69 /* FTAddBuddy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTAddBuddy.h; sourceTree = "<group>"; };
 		FA32378F13A12154005D7B69 /* FTAddBuddy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTAddBuddy.m; sourceTree = "<group>"; };
+		FA32379713A15EC3005D7B69 /* FTRemoveBuddy.h */ = {isa = PBXFileReference; fileEncoding = 4; path = FTRemoveBuddy.h; sourceTree = "<group>"; };
+		FA32379813A15EC3005D7B69 /* FTRemoveBuddy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTRemoveBuddy.m; sourceTree = "<group>"; };
 		FA38A51D139860F1000237DF /* AIMRateParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMRateParams.h; sourceTree = "<group>"; };
 		FA38A51E139860F1000237DF /* AIMRateParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMRateParams.m; sourceTree = "<group>"; };
 		FA38A5201398667A000237DF /* AIMRateMembers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMRateMembers.h; sourceTree = "<group>"; };
@@ -250,6 +253,8 @@
 			children = (
 				FA32378E13A12154005D7B69 /* FTAddBuddy.h */,
 				FA32378F13A12154005D7B69 /* FTAddBuddy.m */,
+				FA32379713A15EC3005D7B69 /* FTRemoveBuddy.h */,
+				FA32379813A15EC3005D7B69 /* FTRemoveBuddy.m */,
 			);
 			name = "User Modifications";
 			sourceTree = "<group>";
@@ -666,6 +671,7 @@
 				FA0B641A13A115F3002B848D /* FTSetPDMode.m in Sources */,
 				FA0B642013A11CA4002B848D /* NSString+AOLRTF.m in Sources */,
 				FA32379013A12154005D7B69 /* FTAddBuddy.m in Sources */,
+				FA32379913A15EC3005D7B69 /* FTRemoveBuddy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
