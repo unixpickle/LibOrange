@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA0B641A13A115F3002B848D /* FTSetPDMode.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0B641913A115F3002B848D /* FTSetPDMode.m */; };
+		FA0B642013A11CA4002B848D /* NSString+AOLRTF.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0B641F13A11CA4002B848D /* NSString+AOLRTF.m */; };
 		FA1B67BA139DA456008F1884 /* AIMTempBuddyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1B67B9139DA456008F1884 /* AIMTempBuddyHandler.m */; };
 		FA232A1C1399FA0000852CC1 /* AIMFeedbagHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA232A1B1399FA0000852CC1 /* AIMFeedbagHandler.m */; };
 		FA38A51F139860F1000237DF /* AIMRateParams.m in Sources */ = {isa = PBXBuildFile; fileRef = FA38A51E139860F1000237DF /* AIMRateParams.m */; };
@@ -26,6 +28,9 @@
 		FA616C51139EEACA00780097 /* AIMBArtID.m in Sources */ = {isa = PBXBuildFile; fileRef = FA616C50139EEACA00780097 /* AIMBArtID.m */; };
 		FA616C54139EEF5900780097 /* AIMNickWInfo+BArt.m in Sources */ = {isa = PBXBuildFile; fileRef = FA616C53139EEF5900780097 /* AIMNickWInfo+BArt.m */; };
 		FA616C5713A00C8400780097 /* AIMNickWInfo+Update.m in Sources */ = {isa = PBXBuildFile; fileRef = FA616C5613A00C8300780097 /* AIMNickWInfo+Update.m */; };
+		FA8591FB13A0FBC800B5D088 /* FTCreateRootGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8591FA13A0FBC800B5D088 /* FTCreateRootGroup.m */; };
+		FA8591FE13A0FF0300B5D088 /* AIMFeedbagStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8591FD13A0FF0300B5D088 /* AIMFeedbagStatus.m */; };
+		FA85920113A1023700B5D088 /* AIMFeedbag+Search.m in Sources */ = {isa = PBXBuildFile; fileRef = FA85920013A1023600B5D088 /* AIMFeedbag+Search.m */; };
 		FA8CE5AA139BCE3C00096743 /* AIMICBMMissedCall.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8CE5A9139BCE3C00096743 /* AIMICBMMissedCall.m */; };
 		FA8CE5AD139BD0D400096743 /* AIMMissedCall.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8CE5AC139BD0D400096743 /* AIMMissedCall.m */; };
 		FA963ECE139EB49E009F3157 /* AIMStatusHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA963ECD139EB49E009F3157 /* AIMStatusHandler.m */; };
@@ -73,6 +78,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FA0B641813A115F3002B848D /* FTSetPDMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTSetPDMode.h; sourceTree = "<group>"; };
+		FA0B641913A115F3002B848D /* FTSetPDMode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTSetPDMode.m; sourceTree = "<group>"; };
+		FA0B641E13A11CA4002B848D /* NSString+AOLRTF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+AOLRTF.h"; sourceTree = "<group>"; };
+		FA0B641F13A11CA4002B848D /* NSString+AOLRTF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+AOLRTF.m"; sourceTree = "<group>"; };
 		FA1B67B8139DA456008F1884 /* AIMTempBuddyHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMTempBuddyHandler.h; sourceTree = "<group>"; };
 		FA1B67B9139DA456008F1884 /* AIMTempBuddyHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMTempBuddyHandler.m; sourceTree = "<group>"; };
 		FA232A1A1399FA0000852CC1 /* AIMFeedbagHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMFeedbagHandler.h; sourceTree = "<group>"; };
@@ -111,6 +120,13 @@
 		FA616C53139EEF5900780097 /* AIMNickWInfo+BArt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AIMNickWInfo+BArt.m"; sourceTree = "<group>"; };
 		FA616C5513A00C8300780097 /* AIMNickWInfo+Update.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AIMNickWInfo+Update.h"; sourceTree = "<group>"; };
 		FA616C5613A00C8300780097 /* AIMNickWInfo+Update.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AIMNickWInfo+Update.m"; sourceTree = "<group>"; };
+		FA8591F813A0F9F900B5D088 /* FeedbagTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbagTransaction.h; sourceTree = "<group>"; };
+		FA8591F913A0FBC800B5D088 /* FTCreateRootGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTCreateRootGroup.h; sourceTree = "<group>"; };
+		FA8591FA13A0FBC800B5D088 /* FTCreateRootGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTCreateRootGroup.m; sourceTree = "<group>"; };
+		FA8591FC13A0FF0300B5D088 /* AIMFeedbagStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMFeedbagStatus.h; sourceTree = "<group>"; };
+		FA8591FD13A0FF0300B5D088 /* AIMFeedbagStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMFeedbagStatus.m; sourceTree = "<group>"; };
+		FA8591FF13A1023600B5D088 /* AIMFeedbag+Search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AIMFeedbag+Search.h"; sourceTree = "<group>"; };
+		FA85920013A1023600B5D088 /* AIMFeedbag+Search.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AIMFeedbag+Search.m"; sourceTree = "<group>"; };
 		FA8CE5A8139BCE3C00096743 /* AIMICBMMissedCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMICBMMissedCall.h; sourceTree = "<group>"; };
 		FA8CE5A9139BCE3C00096743 /* AIMICBMMissedCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMICBMMissedCall.m; sourceTree = "<group>"; };
 		FA8CE5AB139BD0D400096743 /* AIMMissedCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMMissedCall.h; sourceTree = "<group>"; };
@@ -231,14 +247,10 @@
 		FA4CE776139AA43E00487172 /* Feedbag */ = {
 			isa = PBXGroup;
 			children = (
+				FA85920213A1023D00B5D088 /* Data Structure */,
+				FA8591F713A0F9DB00B5D088 /* Transactions */,
 				FA232A1A1399FA0000852CC1 /* AIMFeedbagHandler.h */,
 				FA232A1B1399FA0000852CC1 /* AIMFeedbagHandler.m */,
-				FA4CE770139A9F8A00487172 /* AIMFeedbag.h */,
-				FA4CE771139A9F8A00487172 /* AIMFeedbag.m */,
-				FA4CE773139A9F9100487172 /* AIMFeedbagItem.h */,
-				FA4CE774139A9F9100487172 /* AIMFeedbagItem.m */,
-				FA4CE782139AA82D00487172 /* AIMFeedbagItem+Order.h */,
-				FA4CE783139AA82D00487172 /* AIMFeedbagItem+Order.m */,
 				FAA6E8B5139C4F6C004AA5B8 /* AIMFeedbagRights.h */,
 				FAA6E8B6139C4F6C004AA5B8 /* AIMFeedbagRights.m */,
 			);
@@ -264,6 +276,8 @@
 				FA4CE7A5139AE5C500487172 /* ICBM Messages */,
 				FA4CE786139AB51200487172 /* AIMICBMHandler.h */,
 				FA4CE787139AB51200487172 /* AIMICBMHandler.m */,
+				FA0B641E13A11CA4002B848D /* NSString+AOLRTF.h */,
+				FA0B641F13A11CA4002B848D /* NSString+AOLRTF.m */,
 			);
 			name = Messages;
 			sourceTree = "<group>";
@@ -327,6 +341,43 @@
 				FA616C5613A00C8300780097 /* AIMNickWInfo+Update.m */,
 			);
 			name = NickWInfo;
+			sourceTree = "<group>";
+		};
+		FA8591F613A0F9C900B5D088 /* Items */ = {
+			isa = PBXGroup;
+			children = (
+				FA4CE773139A9F9100487172 /* AIMFeedbagItem.h */,
+				FA4CE774139A9F9100487172 /* AIMFeedbagItem.m */,
+				FA4CE782139AA82D00487172 /* AIMFeedbagItem+Order.h */,
+				FA4CE783139AA82D00487172 /* AIMFeedbagItem+Order.m */,
+			);
+			name = Items;
+			sourceTree = "<group>";
+		};
+		FA8591F713A0F9DB00B5D088 /* Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				FA8591F813A0F9F900B5D088 /* FeedbagTransaction.h */,
+				FA8591F913A0FBC800B5D088 /* FTCreateRootGroup.h */,
+				FA8591FA13A0FBC800B5D088 /* FTCreateRootGroup.m */,
+				FA0B641813A115F3002B848D /* FTSetPDMode.h */,
+				FA0B641913A115F3002B848D /* FTSetPDMode.m */,
+				FA8591FC13A0FF0300B5D088 /* AIMFeedbagStatus.h */,
+				FA8591FD13A0FF0300B5D088 /* AIMFeedbagStatus.m */,
+			);
+			name = Transactions;
+			sourceTree = "<group>";
+		};
+		FA85920213A1023D00B5D088 /* Data Structure */ = {
+			isa = PBXGroup;
+			children = (
+				FA8591F613A0F9C900B5D088 /* Items */,
+				FA4CE770139A9F8A00487172 /* AIMFeedbag.h */,
+				FA4CE771139A9F8A00487172 /* AIMFeedbag.m */,
+				FA8591FF13A1023600B5D088 /* AIMFeedbag+Search.h */,
+				FA85920013A1023600B5D088 /* AIMFeedbag+Search.m */,
+			);
+			name = "Data Structure";
 			sourceTree = "<group>";
 		};
 		FABC0E711396CD7E0050D130 = {
@@ -588,6 +639,11 @@
 				FA616C51139EEACA00780097 /* AIMBArtID.m in Sources */,
 				FA616C54139EEF5900780097 /* AIMNickWInfo+BArt.m in Sources */,
 				FA616C5713A00C8400780097 /* AIMNickWInfo+Update.m in Sources */,
+				FA8591FB13A0FBC800B5D088 /* FTCreateRootGroup.m in Sources */,
+				FA8591FE13A0FF0300B5D088 /* AIMFeedbagStatus.m in Sources */,
+				FA85920113A1023700B5D088 /* AIMFeedbag+Search.m in Sources */,
+				FA0B641A13A115F3002B848D /* FTSetPDMode.m in Sources */,
+				FA0B642013A11CA4002B848D /* NSString+AOLRTF.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

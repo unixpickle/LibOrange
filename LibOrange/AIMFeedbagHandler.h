@@ -8,9 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "AIMSession.h"
-#import "AIMFeedbag.h"
+#import "AIMFeedbag+Search.h"
 #import "AIMFeedbagRights.h"
 #import "AIMTempBuddyHandler.h"
+
+#import "FTCreateRootGroup.h"
+#import "FTSetPDMode.h"
+#import "AIMFeedbagStatus.h"
+
 
 @class AIMFeedbagHandler;
 
@@ -32,6 +37,7 @@
 	AIMFeedbagRights * feedbagRights;
 	AIMTempBuddyHandler * tempBuddyHandler;
 	id<AIMFeedbagHandlerDelegate> delegate;
+	NSMutableArray * transactions;
 }
 
 @property (readonly) AIMFeedbag * feedbag;
@@ -42,5 +48,7 @@
 
 - (id)initWithSession:(AIMSession *)theSession;
 - (BOOL)sendFeedbagRequest;
+- (void)pushTransaction:(id<FeedbagTransaction>)transaction;
+- (UInt8)currentPDMode:(BOOL *)isPresent;
 
 @end

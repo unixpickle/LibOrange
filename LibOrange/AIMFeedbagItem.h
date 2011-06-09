@@ -32,6 +32,9 @@
 #define FEEDBAG_CUSTOM_EMOTICONS 36
 
 #define FEEDBAG_ATTRIBUTE_ORDER 200
+#define FEEDBAG_ATTRIBUTE_PD_MODE 202
+#define FEEDBAG_ATTRIBUTE_PD_FLAGS 204
+#define FEEDBAG_ATTRIBUTE_PD_MASK 203
 
 @interface AIMFeedbagItem : NSObject <OSCARPacket> {
 	NSString * itemName; // max: 97 chars

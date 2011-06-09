@@ -143,7 +143,7 @@ static void stripNL (char * buff) {
 	[self checkThreading];
 	
 	NSString * autoresp = [message isAutoresponse] ? @" (Auto-Response)" : @"";
-	NSLog(@"%@%@: %@", [[message buddy] username], autoresp, [message message]);
+	NSLog(@"(%@) %@%@: %@", [NSDate date], [[message buddy] username], autoresp, [message plainTextMessage]);
 	
 	AIMMessage * reply = [AIMMessage autoresponseMessageWithBuddy:[message buddy] message:@"I am not here right now."];
 	[sender sendMessage:reply];

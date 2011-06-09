@@ -10,6 +10,8 @@
 
 @interface AIMFeedbagHandler (private)
 
+- (void)_handleFeedbagResponse:(SNAC *)feedbagSnac;
+
 - (void)_handleInsert:(NSArray *)feedbagItems;
 - (void)_handleDelete:(NSArray *)feedbagItems;
 - (void)_handleUpdate:(NSArray *)feedbagItems;
@@ -26,6 +28,11 @@
 - (void)_delegateInformRemovedG:(AIMBlistGroup *)theGroup;
 - (void)_delegateInformRenamed:(AIMBlistGroup *)theGroup;
 
+/* Transactions */
+- (void)handleTransactionStatus:(SNAC *)statusCodes;
+- (void)execNextOperation;
+- (SNAC *)prevOperation;
+
 @end
 
 @implementation AIMFeedbagHandler
@@ -40,6 +47,7 @@
 	if ((self = [super init])) {
 		session = theSession;
 		[session addHandler:self];
+		transactions = [[NSMutableArray alloc] init];
 	}
 	return self;
 }
@@ -52,23 +60,28 @@
 	return success;
 }
 
+- (UInt8)currentPDMode:(BOOL *)isPresent {
+	AIMFeedbagItem * pdInfo = [feedbag findPDMode];
+	if (!pdInfo) {
+		if (isPresent) *isPresent = NO;
+		return 1;
+	} else {
+		for (TLV * attr in pdInfo.attributes) {
+			if ([attr type] == FEEDBAG_ATTRIBUTE_PD_MODE && [[attr tlvData] length] == 1) {
+				UInt8 pdMode = *(const UInt8 *)([[attr tlvData] bytes]);
+				if (isPresent) *isPresent = YES;
+				return pdMode;
+			}
+		}
+		if (isPresent) *isPresent = NO;
+		return 1;
+	}
+}
+
 - (void)handleIncomingSnac:(SNAC *)aSnac {
 	NSAssert([NSThread currentThread] == [session backgroundThread], @"Running on incorrect thread");
 	if (SNAC_ID_IS_EQUAL([aSnac snac_id], SNAC_ID_NEW(SNAC_FEEDBAG, FEEDBAG__REPLY))) {
-		if (!feedbag) {
-			feedbag = [[AIMFeedbag alloc] initWithSnac:aSnac];
-		} else {
-			AIMFeedbag * theFeedbag = [[AIMFeedbag alloc] initWithSnac:aSnac];
-			[feedbag appendFeedbagItems:theFeedbag];
-			[theFeedbag release];
-		}
-		if ([aSnac isLastResponse]) {
-			SNAC * feedbagUse = [[SNAC alloc] initWithID:SNAC_ID_NEW(SNAC_FEEDBAG, FEEDBAG__USE) flags:0 requestID:[session generateReqID] data:nil];
-			[session writeSnac:feedbagUse];
-			[feedbagUse release];
-			session.buddyList = [[[AIMBlist alloc] initWithFeedbag:feedbag tempBuddyHandler:tempBuddyHandler] autorelease];
-			[self performSelector:@selector(_delegateInformHasBlist) onThread:[session mainThread] withObject:nil waitUntilDone:NO];
-		}
+		[self _handleFeedbagResponse:aSnac];
 	} else if (SNAC_ID_IS_EQUAL([aSnac snac_id], SNAC_ID_NEW(SNAC_FEEDBAG, FEEDBAG__INSERT_ITEMS))) {
 		NSArray * items = [AIMFeedbagItem decodeArray:[aSnac innerContents]];
 		[self performSelector:@selector(_handleInsert:) onThread:session.mainThread withObject:items waitUntilDone:YES];
@@ -78,6 +91,36 @@
 	} else if (SNAC_ID_IS_EQUAL([aSnac snac_id], SNAC_ID_NEW(SNAC_FEEDBAG, FEEDBAG__DELETE_ITEMS))) {
 		NSArray * items = [AIMFeedbagItem decodeArray:[aSnac innerContents]];
 		[self performSelector:@selector(_handleDelete:) onThread:session.mainThread withObject:items waitUntilDone:YES];
+	} else if (SNAC_ID_IS_EQUAL([aSnac snac_id], SNAC_ID_NEW(SNAC_FEEDBAG, FEEDBAG__STATUS))) {
+		[self handleTransactionStatus:aSnac];
+	}
+}
+
+- (void)_handleFeedbagResponse:(SNAC *)aSnac {
+	if (!feedbag) {
+		feedbag = [[AIMFeedbag alloc] initWithSnac:aSnac];
+	} else {
+		AIMFeedbag * theFeedbag = [[AIMFeedbag alloc] initWithSnac:aSnac];
+		[feedbag appendFeedbagItems:theFeedbag];
+		[theFeedbag release];
+	}
+	if ([aSnac isLastResponse]) {
+		SNAC * feedbagUse = [[SNAC alloc] initWithID:SNAC_ID_NEW(SNAC_FEEDBAG, FEEDBAG__USE) flags:0 requestID:[session generateReqID] data:nil];
+		[session writeSnac:feedbagUse];
+		[feedbagUse release];
+		session.buddyList = [[[AIMBlist alloc] initWithFeedbag:feedbag tempBuddyHandler:tempBuddyHandler] autorelease];
+		[self performSelector:@selector(_delegateInformHasBlist) onThread:[session mainThread] withObject:nil waitUntilDone:NO];
+		
+		if (![feedbag findRootGroup]) {
+			FTCreateRootGroup * createRootGroup = [[FTCreateRootGroup alloc] init];
+			[self pushTransaction:createRootGroup];
+			[createRootGroup release];
+		}
+		if (![feedbag findPDMode]) {
+			FTSetPDMode * setMode = [[FTSetPDMode alloc] initWithPDMode:PD_MODE_PERMIT_ALL pdFlags:1];
+			[self pushTransaction:setMode];
+			[setMode release];
+		}
 	}
 }
 
@@ -242,7 +285,73 @@
 	}
 }
 
+#pragma mark Transactions
+
+- (void)pushTransaction:(id<FeedbagTransaction>)transaction {
+	if ([NSThread currentThread] != session.backgroundThread) {
+		[self performSelector:@selector(pushTransaction:) onThread:session.backgroundThread withObject:transaction waitUntilDone:NO];
+		return;
+	}
+	// should never be asserted...
+	NSAssert([NSThread currentThread] == [session backgroundThread], @"Running on incorrect thread");
+	[transactions addObject:transaction];
+	if ([transactions count] == 1) {
+		[self execNextOperation];
+	}
+}
+
+- (void)execNextOperation {
+	if ([NSThread currentThread] != [session mainThread]) {
+		[self performSelector:@selector(execNextOperation) onThread:[session mainThread] withObject:nil waitUntilDone:NO];
+		return;
+	}
+	// should never be asserted...
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	if ([transactions count] == 0) return;
+	id<FeedbagTransaction> trans = [transactions objectAtIndex:0];
+	if (![trans hasCreatedOperations]) [trans createOperationsWithFeedbag:feedbag session:session];
+	SNAC * nextTrans = [trans nextTransactionSNAC];
+	if (!nextTrans) {
+		[transactions removeObjectAtIndex:0];
+		[self execNextOperation];
+	} else {
+		[session performSelector:@selector(writeSnac:) onThread:session.backgroundThread withObject:nextTrans waitUntilDone:NO];
+	}
+}
+
+- (SNAC *)prevOperation {
+	NSAssert([NSThread currentThread] == [session backgroundThread], @"Running on incorrect thread");
+	if ([transactions count] == 0) return nil;
+	id<FeedbagTransaction> trans = [transactions objectAtIndex:0];
+	SNAC * prevTrans = [trans currentTransactionSNAC];
+	return prevTrans;
+}
+
+- (void)handleTransactionStatus:(SNAC *)statusCodes {
+	NSAssert([NSThread currentThread] == [session backgroundThread], @"Running on incorrect thread");
+	AIMFeedbagStatus * statuses = [[AIMFeedbagStatus alloc] initWithCodeData:[statusCodes innerContents]];
+	for (NSUInteger i = 0; i < [statuses statusCodeCount]; i++) {
+		AIMFeedbagStatusType type = [statuses statusAtIndex:i];
+		if (type != FBS_SUCCESS) {
+			// failure.
+			NSLog(@"Feedbag operation failed with code %d", type);
+			[transactions removeObjectAtIndex:0];
+			[self execNextOperation];
+		} else {
+			SNAC * prev = [self prevOperation];
+			/* 
+			 * Simulate that the transaction SNAC was sent from the client, thus
+			 * applying it to the feedbag FOR US!
+			 */
+			[self handleIncomingSnac:prev];
+			[self execNextOperation];
+		}
+	}
+	[statuses release];
+}
+
 - (void)dealloc {
+	[transactions release];
 	[feedbag release];
 	self.feedbagRights = nil;
 	[super dealloc];

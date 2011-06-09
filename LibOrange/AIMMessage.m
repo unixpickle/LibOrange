@@ -38,6 +38,10 @@
 	return msg;
 }
 
+- (NSString *)plainTextMessage {
+	return [message stringByRemovingAOLRTFTags];
+}
+
 - (void)dealloc {
 	self.buddy = nil;
 	self.message = nil;

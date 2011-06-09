@@ -10,6 +10,7 @@
 #import "AIMBlistBuddy.h"
 #import "AIMBlist.h"
 #import "AIMICBMMessageToClient.h"
+#import "NSString+AOLRTF.h"
 
 @interface AIMMessage : NSObject {
 	AIMBlistBuddy * buddy;
@@ -24,5 +25,7 @@
 - (id)initWithICBMMessage:(AIMICBMMessageToClient *)message fromBlist:(AIMBlist *)blist;
 + (AIMMessage *)messageWithBuddy:(AIMBlistBuddy *)_buddy message:(NSString *)_message;
 + (AIMMessage *)autoresponseMessageWithBuddy:(AIMBlistBuddy *)_buddy message:(NSString *)_message;
+
+- (NSString *)plainTextMessage;
 
 @end
