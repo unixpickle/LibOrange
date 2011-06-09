@@ -84,6 +84,10 @@ static void stripNL (char * buff) {
 	session.messageHandler.delegate = self;
 	session.statusHandler.delegate = self;
 	
+	AIMBuddyStatus * newStatus = [[AIMBuddyStatus alloc] initWithMessage:@"LibOrange test for Mac!" type:AIMBuddyStatusAvailable timeIdle:0];
+	[session.statusHandler updateStatus:newStatus];
+	[newStatus release];
+	
 	NSLog(@"Got session: %@", session);
 	NSLog(@"Our status: %@", session.statusHandler.userStatus);
 	NSLog(@"Disconnecting in %d seconds ...", kSignoffTime);

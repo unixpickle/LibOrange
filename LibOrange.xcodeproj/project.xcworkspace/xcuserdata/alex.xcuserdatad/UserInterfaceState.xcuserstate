@@ -708,10 +708,10 @@
 		<string>PrimaryDocumentVisibleCharacterRange</string>
 		<string>HideAllIssues</string>
 		<string>PrimaryDocumentSelectedCharacterRange</string>
-		<real>329260237.50602603</real>
-		<string>{3251, 1235}</string>
+		<real>329274486.25177002</real>
+		<string>{1716, 1140}</string>
 		<false/>
-		<string>{3937, 0}</string>
+		<string>{2197, 0}</string>
 		<dict>
 			<key>$classes</key>
 			<array>
@@ -721,7 +721,7 @@
 			<key>$classname</key>
 			<string>NSDictionary</string>
 		</dict>
-		<string>-aimICBMHandler:gotMessage:</string>
+		<string>-aimLogin:openedSession:</string>
 		<string>Xcode.IDEKit.EditorDocument.SourceCode</string>
 		<dict>
 			<key>$class</key>
@@ -3089,7 +3089,7 @@
 		</dict>
 		<string>IDEUtilitiesArea</string>
 		<real>260</real>
-		<string>{{340, 184}, {1400, 874}}</string>
+		<string>{{466, 184}, {1400, 874}}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -9913,9 +9913,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>329260237.50527799</real>
-		<string>{3251, 1235}</string>
-		<string>{3937, 0}</string>
+		<real>329274486.25070399</real>
+		<string>{1716, 1140}</string>
+		<string>{2197, 0}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -11349,9 +11349,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>329260223.92770201</real>
-		<string>{7410, 1644}</string>
-		<string>{8268, 0}</string>
+		<real>329274379.65040201</real>
+		<string>{6356, 1380}</string>
+		<string>{6843, 0}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -11731,7 +11731,7 @@
 				</dict>
 			</array>
 		</dict>
-		<real>329257602.676171</real>
+		<real>329274244.17039001</real>
 		<string>{26, 1050}</string>
 		<string>{625, 0}</string>
 		<dict>
@@ -14171,7 +14171,7 @@
 				<integer>1118</integer>
 			</dict>
 			<key>NS.time</key>
-			<real>329260165.71725899</real>
+			<real>329274459.10319602</real>
 		</dict>
 		<dict>
 			<key>$classes</key>
@@ -14182,7 +14182,7 @@
 			<key>$classname</key>
 			<string>NSDate</string>
 		</dict>
-		<string>Today at 5:09 PM</string>
+		<string>Today at 9:07 PM</string>
 		<integer>106</integer>
 		<dict>
 			<key>$class</key>
@@ -14269,7 +14269,7 @@
 				<integer>1125</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMSessionManager.m</string>
+		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMStatusHandler.m</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -14287,7 +14287,7 @@
 				<integer>1127</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMStatusHandler.m</string>
+		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMStatusHandler.h</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -14305,7 +14305,7 @@
 				<integer>1129</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMNickWInfo+Update.m</string>
+		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMSessionManager.m</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -14323,7 +14323,7 @@
 				<integer>1131</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/TLV_Types.h</string>
+		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMNickWInfo+Update.m</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -14341,7 +14341,7 @@
 				<integer>1133</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/MyTest.h</string>
+		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/TLV_Types.h</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -14359,7 +14359,7 @@
 				<integer>1135</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMBuddyStatus.h</string>
+		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/MyTest.h</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -14377,7 +14377,7 @@
 				<integer>1137</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMSessionManager.h</string>
+		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMBuddyStatus.h</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -14395,7 +14395,7 @@
 				<integer>1139</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMNickWInfo.m</string>
+		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMSessionManager.h</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -14413,7 +14413,7 @@
 				<integer>1141</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/main.m</string>
+		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMNickWInfo.m</string>
 		<dict>
 			<key>$class</key>
 			<dict>

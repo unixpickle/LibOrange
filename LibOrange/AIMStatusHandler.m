@@ -19,6 +19,7 @@
 
 - (void)setStatusText:(NSString *)statText;
 - (void)setUnavailableText:(NSString *)statText;
+- (void)sendIdleNote:(UInt32)idleSeconds;
 
 - (void)handleUserInfoUpdate:(AIMNickWInfo *)newInfo;
 - (void)_delegateInformNewStatus;
@@ -172,7 +173,11 @@
 		default:
 			break;
 	}
-	/* TODO: set idle time */
+	
+	if ([newStatus idleTime] > 0) {
+		UInt32 idleSecs = [newStatus idleTime] * 60;
+		[self sendIdleNote:idleSecs];
+	}
 }
 
 - (void)setStatusText:(NSString *)statText {
@@ -196,6 +201,14 @@
 	[unavail release];
 	[session performSelector:@selector(writeSnac:) onThread:session.backgroundThread withObject:locateUpdate waitUntilDone:NO];
 	[locateUpdate release];
+}
+
+- (void)sendIdleNote:(UInt32)idleSeconds {
+	NSAssert([NSThread currentThread] == session.mainThread, @"Running on incorrect thread");
+	UInt32 idleSecondsFlip = flipUInt32(idleSeconds);
+	SNAC * idleNote = [[SNAC alloc] initWithID:SNAC_ID_NEW(SNAC_OSERVICE, OSERVICE__IDLE_NOTIFICATION) flags:0 requestID:[session generateReqID] data:[NSData dataWithBytes:&idleSecondsFlip length:4]];
+	[session performSelector:@selector(writeSnac:) onThread:session.backgroundThread withObject:idleNote waitUntilDone:NO];
+	[idleNote release];
 }
 
 #pragma mark User Status (Reading)
