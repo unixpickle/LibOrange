@@ -117,8 +117,11 @@
 		
 		if (![feedbag findRootGroup]) {
 			FTCreateRootGroup * createRootGroup = [[FTCreateRootGroup alloc] init];
+			FTAddGroup * addGroup = [[FTAddGroup alloc] initWithName:@"Buddies"];
 			[self pushTransaction:createRootGroup];
+			[self pushTransaction:addGroup];
 			[createRootGroup release];
+			[addGroup release];
 		}
 		if (![feedbag findPDMode]) {
 			FTSetPDMode * setMode = [[FTSetPDMode alloc] initWithPDMode:PD_MODE_PERMIT_ALL pdFlags:1];

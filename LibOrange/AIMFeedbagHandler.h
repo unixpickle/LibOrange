@@ -15,6 +15,7 @@
 #import "FTCreateRootGroup.h"
 #import "FTSetPDMode.h"
 #import "AIMFeedbagStatus.h"
+#import "FTAddGroup.h"
 
 
 @class AIMFeedbagHandler;
