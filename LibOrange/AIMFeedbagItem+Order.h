@@ -26,4 +26,18 @@
  */
 - (BOOL)orderChangeToItem:(AIMFeedbagItem *)newItem added:(NSArray **)added removed:(NSArray **)removed;
 
+/**
+ * Returns a new ORDER TLV containing an additional item ID.
+ * @param theID The item ID to add.
+ * @return A generated ORDER attribute.
+ */
+- (TLV *)orderByAddingID:(UInt16)theID;
+
+/**
+ * Creates a duplicate item, containing an updated order item.
+ * @param newItem The item to add to the ORDER attribute.
+ * @return An autorelease'd item that should be used in a FEEDBAG__UPDATE.
+ */
+- (AIMFeedbagItem *)itemByAddingOrderItem:(UInt16)newItem;
+
 @end

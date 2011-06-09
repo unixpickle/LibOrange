@@ -26,6 +26,7 @@
 - (NSArray *)buddiesWithUsername:(NSString *)username;
 - (AIMBlistBuddy *)buddyWithFeedbagID:(UInt16)feedbagID;
 - (AIMBlistGroup *)groupWithFeedbagID:(UInt16)feedbagID;
+- (AIMBlistGroup *)groupWithName:(NSString *)name;
 
 - (AIMBlistGroup *)loadGroup:(AIMFeedbagItem *)group inFeedbag:(AIMFeedbag *)feedbag;
 

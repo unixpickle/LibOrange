@@ -61,6 +61,7 @@
 }
 
 - (UInt8)currentPDMode:(BOOL *)isPresent {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
 	AIMFeedbagItem * pdInfo = [feedbag findPDMode];
 	if (!pdInfo) {
 		if (isPresent) *isPresent = NO;
@@ -200,10 +201,12 @@
 					[buddy setGroup:group];
 					[buddy setFeedbagItemID:[theItem itemID]];
 					/* Should be running on main thread anyway. */
-					[self performSelector:@selector(_delegateInformAddedB:) onThread:session.mainThread withObject:buddy waitUntilDone:YES];
-					if ([tempBuddyHandler tempBuddyWithName:[theItem itemName]]) {
-						[tempBuddyHandler deleteTempBuddy:[tempBuddyHandler tempBuddyWithName:[theItem itemName]]];
+					AIMBlistBuddy * tempBuddy = [tempBuddyHandler tempBuddyWithName:[theItem itemName]];
+					if (tempBuddy) {
+						[buddy setStatus:[tempBuddy status]];
+						[tempBuddyHandler deleteTempBuddy:tempBuddy];
 					}
+					[self performSelector:@selector(_delegateInformAddedB:) onThread:session.mainThread withObject:buddy waitUntilDone:YES];
 				} else {
 					NSLog(@"%@ added to unknown group %@", buddy, [oldItem itemName]);
 				}
@@ -235,8 +238,10 @@
 			NSMutableArray * groups = (NSMutableArray *)[session.buddyList groups];
 			[groups addObject:group];
 			for (AIMBlistBuddy * buddy in [group buddies]) {
-				if ([tempBuddyHandler tempBuddyWithName:[buddy username]]) {
-					[tempBuddyHandler deleteTempBuddy:[tempBuddyHandler tempBuddyWithName:[buddy username]]];
+				AIMBlistBuddy * tempBuddy = [tempBuddyHandler tempBuddyWithName:[buddy username]];
+				if (tempBuddy) {
+					[buddy setStatus:[tempBuddy status]];
+					[tempBuddyHandler deleteTempBuddy:tempBuddy];
 				}
 			}
 			/* Should be running on main thread anyway. */

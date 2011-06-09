@@ -24,5 +24,6 @@
 @property (nonatomic, retain) AIMBuddyStatus * status;
 
 - (id)initWithUsername:(NSString *)theUsername;
+- (BOOL)usernameIsEqual:(NSString *)aUsername;
 
 @end

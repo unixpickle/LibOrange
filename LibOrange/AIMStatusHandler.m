@@ -118,6 +118,13 @@
 				[buddy setStatus:status];
 			}
 		}
+		if ([allBuddies count] == 0) {
+			AIMBlistBuddy * tempBuddy = [[session buddyList] buddyWithUsername:[nickInfo username]];
+			if ([delegate respondsToSelector:@selector(aimStatusHandler:buddy:statusChanged:)]) {
+				[delegate aimStatusHandler:self buddy:tempBuddy statusChanged:status];
+			}
+			[tempBuddy setStatus:status];
+		}
 	}
 }
 - (void)handleBuddyDeparted:(AIMNickWInfo *)nickInfo {
@@ -131,6 +138,13 @@
 			}
 			[buddy setStatus:status];
 		}
+	}
+	if ([allBuddies count] == 0) {
+		AIMBlistBuddy * tempBuddy = [[session buddyList] buddyWithUsername:[nickInfo username]];
+		if ([delegate respondsToSelector:@selector(aimStatusHandler:buddy:statusChanged:)]) {
+			[delegate aimStatusHandler:self buddy:tempBuddy statusChanged:status];
+		}
+		[tempBuddy setStatus:status];
 	}
 }
 
@@ -183,6 +197,9 @@
 }
 
 - (void)setStatusText:(NSString *)statText {
+	if ([statText length] > 253) {
+		[self setStatusText:[[statText substringWithRange:NSMakeRange(0, 250)] stringByAppendingFormat:@"..."]];
+	}
 	NSAssert([NSThread currentThread] == session.mainThread, @"Running on incorrect thread");
 	NSData * statusData = encodeString16(statText);
 	AIMBArtID * statusStr = [[AIMBArtID alloc] initWithType:BART_TYPE_STATUS_STR flags:BART_FLAG_DATA opaqueData:statusData];

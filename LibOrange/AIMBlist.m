@@ -90,6 +90,15 @@
 	return nil;
 }	
 
+- (AIMBlistGroup *)groupWithName:(NSString *)name {
+	for (AIMBlistGroup * group in groups) {
+		if ([[[group name] lowercaseString] isEqual:[name lowercaseString]]) {
+			return group;
+		}
+	}
+	return nil;
+}
+
 #pragma mark Private
 
 - (AIMBlistGroup *)loadGroup:(AIMFeedbagItem *)group inFeedbag:(AIMFeedbag *)feedbag {

@@ -37,7 +37,7 @@
 }
 - (AIMBlistBuddy *)tempBuddyWithName:(NSString *)screenName {
 	for (AIMBlistBuddy * buddy in tempBuddies) {
-		if ([[[buddy username] lowercaseString] isEqual:[screenName lowercaseString]]) {
+		if ([buddy usernameIsEqual:screenName]) {
 			return buddy;
 		}
 	}

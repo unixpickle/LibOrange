@@ -23,7 +23,7 @@
 }
 - (AIMBlistBuddy *)buddyWithUsername:(NSString *)screenName {
 	for (AIMBlistBuddy * buddy in buddies) {
-		if ([[[buddy username] lowercaseString] isEqual:[screenName lowercaseString]]) {
+		if ([buddy usernameIsEqual:screenName]) {
 			return buddy;
 		}
 	}

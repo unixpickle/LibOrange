@@ -24,6 +24,15 @@
 	return self;
 }
 
+- (BOOL)usernameIsEqual:(NSString *)aUsername {
+	// compress our username
+	NSString * compressed = [username stringByReplacingOccurrencesOfString:@" " withString:@""];
+	NSString * anotherCompressed = [aUsername stringByReplacingOccurrencesOfString:@" " withString:@""];
+	if ([[compressed lowercaseString] isEqual:[anotherCompressed lowercaseString]]) {
+		return YES;
+	} else return NO;
+}
+
 - (NSString *)description {
 	return [NSString stringWithFormat:@"%@", username];
 }

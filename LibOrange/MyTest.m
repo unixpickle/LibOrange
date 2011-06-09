@@ -142,16 +142,47 @@ static void stripNL (char * buff) {
 - (void)aimICBMHandler:(AIMICBMHandler *)sender gotMessage:(AIMMessage *)message {
 	[self checkThreading];
 	
+	NSString * msgTxt = [message plainTextMessage];
+	
 	NSString * autoresp = [message isAutoresponse] ? @" (Auto-Response)" : @"";
 	NSLog(@"(%@) %@%@: %@", [NSDate date], [[message buddy] username], autoresp, [message plainTextMessage]);
 	
-	AIMMessage * reply = [AIMMessage autoresponseMessageWithBuddy:[message buddy] message:@"I am not here right now."];
-	[sender sendMessage:reply];
+	if ([msgTxt hasPrefix:@"add "]) {
+		[self handleAddBuddyMsg:message msgSender:sender];
+	} else if ([msgTxt isEqual:@"blist"]) {
+		NSString * desc = [[theSession.session buddyList] description];
+		AIMMessage * blistMsg = [AIMMessage messageWithBuddy:[message buddy] message:[desc stringByAddingAOLRTFTags]];
+		[sender sendMessage:blistMsg];
+	} else {
+		AIMMessage * reply = [AIMMessage autoresponseMessageWithBuddy:[message buddy] message:@"I am a robot!"];
+		[sender sendMessage:reply];
+	}
 }
 
 - (void)aimICBMHandler:(AIMICBMHandler *)sender gotMissedCall:(AIMMissedCall *)missedCall {
 	[self checkThreading];
 	NSLog(@"Missed call from %@", [missedCall buddy]);
+}
+
+- (void)handleAddBuddyMsg:(AIMMessage *)message msgSender:(AIMICBMHandler *)sender {
+	NSString * msgTxt = [message plainTextMessage];
+	NSString * buddyName = [msgTxt substringFromIndex:4];
+	if (!buddyName || [buddyName length] == 0) {
+		AIMMessage * reply = [AIMMessage messageWithBuddy:[message buddy] message:@"Invalid buddy name."];
+		[sender sendMessage:reply];
+	} else {
+		AIMBlistGroup * group = [theSession.session.buddyList groupWithName:@"Buddies"];
+		if (!group) {
+			AIMMessage * reply = [AIMMessage messageWithBuddy:[message buddy] message:@"Err: No \"Buddies\" group found!"];
+			[sender sendMessage:reply];
+		} else {
+			FTAddBuddy * addBudd = [[FTAddBuddy alloc] initWithUsername:buddyName group:group];
+			[theSession.feedbagHandler pushTransaction:addBudd];
+			[addBudd release];
+			AIMMessage * reply = [AIMMessage messageWithBuddy:[message buddy] message:@"Buddy insert requested."];
+			[sender sendMessage:reply];
+		}
+	}
 }
 
 #pragma mark Status Handler

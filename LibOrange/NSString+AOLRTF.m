@@ -12,6 +12,7 @@
 @implementation NSString (AOLRTF)
 
 - (NSString *)stringByRemovingAOLRTFTags {
+	/* TODO: make this work through an XML parser of some sort. */
 	NSMutableString * newString = [NSMutableString string];
 	int depth = 0;
 	NSMutableString * tagName = nil;
@@ -49,8 +50,12 @@
 	return newString;
 }
 - (NSString *)stringByAddingAOLRTFTags {
-	// WIP
-	return nil;
+	NSMutableString * newString = [NSMutableString stringWithString:self];
+	[newString replaceOccurrencesOfString:@"&" withString:@"&amp;" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [newString length])];
+	[newString replaceOccurrencesOfString:@"<" withString:@"&lt;" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [newString length])];
+	[newString replaceOccurrencesOfString:@">" withString:@"&gt;" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [newString length])];
+	[newString replaceOccurrencesOfString:@"\n" withString:@"<br>" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [newString length])];
+	return [NSString stringWithFormat:@"<HTML><BODY>%@</BODY></HTML>", newString];
 }
 
 @end
