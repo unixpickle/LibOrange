@@ -17,6 +17,8 @@
 - (void)_handleUpdate:(NSArray *)feedbagItems;
 
 /* Update Handlers */
+- (void)_handleGroupPostInserted:(AIMFeedbagItem *)newGroup asGroup:(AIMBlistGroup *)theGroup;
+- (void)_handleBuddyPostInserted:(AIMFeedbagItem *)newBuddy asBuddy:(AIMBlistBuddy *)oldBuddy;
 - (void)_handleGroupChanged:(AIMFeedbagItem *)oldItem newItem:(AIMFeedbagItem *)item;
 - (void)_handleRootGroupChanged:(AIMFeedbagItem *)oldItem newItem:(AIMFeedbagItem *)newItem;
 
@@ -27,6 +29,7 @@
 - (void)_delegateInformAddedG:(AIMBlistGroup *)theGroup;
 - (void)_delegateInformRemovedG:(AIMBlistGroup *)theGroup;
 - (void)_delegateInformRenamed:(AIMBlistGroup *)theGroup;
+- (void)_delegateInformFailedTransaction:(id<FeedbagTransaction>)transaction;
 
 /* Transactions */
 - (void)handleTransactionStatus:(SNAC *)statusCodes;
@@ -131,6 +134,24 @@
 	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
 	for (AIMFeedbagItem * item in feedbagItems) {
 		[[feedbag items] addObject:item];
+		if ([item classID] == FEEDBAG_GROUP) {
+			// check if the group has been inserted through an update
+			// before it was INSERTED.
+			for (int i = 0; i < [session.buddyList.groups count]; i++) {
+				AIMBlistGroup * group = [session.buddyList.groups objectAtIndex:i];
+				if ([group feedbagGroupID] == [item groupID]) {
+					[self _handleGroupPostInserted:item asGroup:group];
+					break;
+				}
+			}
+		} else if ([item classID] == FEEDBAG_BUDDY) {
+			// check if the buddy was inserted after it was inserted through
+			// an update.
+			AIMBlistBuddy * buddy = [session.buddyList buddyWithFeedbagID:[item itemID]];
+			if (buddy) {
+				[self _handleBuddyPostInserted:item asBuddy:buddy];
+			}
+		}
 	}
 }
 - (void)_handleDelete:(NSArray *)feedbagItems {
@@ -172,6 +193,31 @@
 	}
 }
 
+- (void)_handleGroupPostInserted:(AIMFeedbagItem *)newGroup asGroup:(AIMBlistGroup *)theGroup {
+	AIMBlistGroup * additionalGroup = [session.buddyList loadGroup:newGroup inFeedbag:feedbag];
+	NSMutableArray * groups = (NSMutableArray *)[session.buddyList groups];
+	for (int i = 0; i < [groups count]; i++) {
+		AIMBlistGroup * innerGrp = [groups objectAtIndex:i];
+		if (innerGrp == theGroup) {
+			[groups replaceObjectAtIndex:i withObject:additionalGroup];
+			break;
+		}
+	}
+}
+
+- (void)_handleBuddyPostInserted:(AIMFeedbagItem *)newBuddy asBuddy:(AIMBlistBuddy *)oldBuddy {
+	AIMBlistBuddy * updatedBuddy = [[AIMBlistBuddy alloc] initWithUsername:[newBuddy itemName]];
+	AIMBlistGroup * theGroup = [oldBuddy group];
+	NSMutableArray * arr = (NSMutableArray *)[theGroup buddies];
+	if ([arr containsObject:oldBuddy]) {
+		int index = (int)[arr indexOfObject:oldBuddy];
+		[arr replaceObjectAtIndex:index withObject:updatedBuddy];
+	} else {
+		[arr addObject:updatedBuddy];
+	}
+	[updatedBuddy release];
+}
+
 - (void)_handleGroupChanged:(AIMFeedbagItem *)oldItem newItem:(AIMFeedbagItem *)item {
 	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
 	NSArray * added = nil;
@@ -181,7 +227,7 @@
 		for (NSNumber * removedID in removed) {
 			UInt16 itemID = [removedID unsignedShortValue];
 			AIMBlistBuddy * buddy = [[session.buddyList buddyWithFeedbagID:itemID] retain];
-			if (buddy) {
+			if (buddy && [buddy group]) {
 				AIMBlistGroup * group = [buddy group];
 				NSMutableArray * buddies = (NSMutableArray *)[group buddies];
 				[buddies removeObject:buddy];
@@ -192,26 +238,24 @@
 		}
 		for (NSNumber * addedID in added) {
 			AIMFeedbagItem * theItem = [feedbag itemWithItemID:[addedID unsignedShortValue]];
-			if (theItem) {
-				AIMBlistBuddy * buddy = [[AIMBlistBuddy alloc] initWithUsername:[theItem itemName]];
-				AIMBlistGroup * group = [session.buddyList groupWithFeedbagID:[oldItem groupID]];
-				if (group) {
-					NSMutableArray * buddies = (NSMutableArray *)[group buddies];
-					[buddies addObject:buddy];
-					[buddy setGroup:group];
-					[buddy setFeedbagItemID:[theItem itemID]];
-					/* Should be running on main thread anyway. */
-					AIMBlistBuddy * tempBuddy = [tempBuddyHandler tempBuddyWithName:[theItem itemName]];
-					if (tempBuddy) {
-						[buddy setStatus:[tempBuddy status]];
-						[tempBuddyHandler deleteTempBuddy:tempBuddy];
-					}
-					[self performSelector:@selector(_delegateInformAddedB:) onThread:session.mainThread withObject:buddy waitUntilDone:YES];
-				} else {
-					NSLog(@"%@ added to unknown group %@", buddy, [oldItem itemName]);
+			AIMBlistBuddy * buddy = [[AIMBlistBuddy alloc] initWithUsername:[theItem itemName]];
+			AIMBlistGroup * group = [session.buddyList groupWithFeedbagID:[oldItem groupID]];
+			if (group && theItem) {
+				NSMutableArray * buddies = (NSMutableArray *)[group buddies];
+				[buddies addObject:buddy];
+				[buddy setGroup:group];
+				[buddy setFeedbagItemID:[addedID unsignedShortValue]];
+				/* Should be running on main thread anyway. */
+				AIMBlistBuddy * tempBuddy = [tempBuddyHandler tempBuddyWithName:[theItem itemName]];
+				if (tempBuddy) {
+					[buddy setStatus:[tempBuddy status]];
+					[tempBuddyHandler deleteTempBuddy:tempBuddy];
 				}
-				[buddy release];
+				[self performSelector:@selector(_delegateInformAddedB:) onThread:session.mainThread withObject:buddy waitUntilDone:YES];
+			} else {
+				NSLog(@"%@ added to unknown group %@", buddy, [oldItem itemName]);
 			}
+			[buddy release];
 		}
 	}
 }
@@ -234,18 +278,21 @@
 		for (NSNumber * addedID in added) {
 			UInt16 groupID = [addedID unsignedShortValue];
 			AIMFeedbagItem * item = [feedbag groupWithGroupID:groupID];
-			AIMBlistGroup * group = [session.buddyList loadGroup:item inFeedbag:feedbag];
-			NSMutableArray * groups = (NSMutableArray *)[session.buddyList groups];
-			[groups addObject:group];
-			for (AIMBlistBuddy * buddy in [group buddies]) {
-				AIMBlistBuddy * tempBuddy = [tempBuddyHandler tempBuddyWithName:[buddy username]];
-				if (tempBuddy) {
-					[buddy setStatus:[tempBuddy status]];
-					[tempBuddyHandler deleteTempBuddy:tempBuddy];
+			if (item) {
+				AIMBlistGroup * group = [session.buddyList loadGroup:item inFeedbag:feedbag];
+				if (![group name]) [group setName:@""];
+				NSMutableArray * groups = (NSMutableArray *)[session.buddyList groups];
+				[groups addObject:group];
+				for (AIMBlistBuddy * buddy in [group buddies]) {
+					AIMBlistBuddy * tempBuddy = [tempBuddyHandler tempBuddyWithName:[buddy username]];
+					if (tempBuddy) {
+						[buddy setStatus:[tempBuddy status]];
+						[tempBuddyHandler deleteTempBuddy:tempBuddy];
+					}
 				}
+				/* Should be running on main thread anyway. */
+				[self performSelector:@selector(_delegateInformAddedG:) onThread:session.mainThread withObject:group waitUntilDone:NO];
 			}
-			/* Should be running on main thread anyway. */
-			[self performSelector:@selector(_delegateInformAddedG:) onThread:session.mainThread withObject:group waitUntilDone:NO];
 		}
 	}
 }
@@ -289,6 +336,12 @@
 		[delegate aimFeedbagHandler:self groupRenamed:theGroup];
 	}
 }
+- (void)_delegateInformFailedTransaction:(id<FeedbagTransaction>)transaction {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	if ([delegate respondsToSelector:@selector(aimFeedbagHandler:transactionFailed:)]) {
+		[delegate aimFeedbagHandler:self transactionFailed:transaction];
+	}
+}
 
 #pragma mark Transactions
 
@@ -308,12 +361,12 @@
 }
 
 - (void)execNextOperation {
-	if ([NSThread currentThread] != [session mainThread]) {
-		[self performSelector:@selector(execNextOperation) onThread:[session mainThread] withObject:nil waitUntilDone:NO];
+	if ([NSThread currentThread] != [session backgroundThread]) {
+		[self performSelector:@selector(execNextOperation) onThread:[session backgroundThread] withObject:nil waitUntilDone:NO];
 		return;
 	}
 	// should never be asserted...
-	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	NSAssert([NSThread currentThread] == [session backgroundThread], @"Running on incorrect thread");
 	@synchronized (transactions) {
 		if ([transactions count] == 0) return;
 		id<FeedbagTransaction> trans = [transactions objectAtIndex:0];
@@ -323,7 +376,7 @@
 			[transactions removeObjectAtIndex:0];
 			[self execNextOperation];
 		} else {
-			[session performSelector:@selector(writeSnac:) onThread:session.backgroundThread withObject:nextTrans waitUntilDone:NO];
+			[session writeSnac:nextTrans];
 		}
 	}
 }
@@ -346,6 +399,8 @@
 		if (type != FBS_SUCCESS) {
 			// failure.
 			NSLog(@"Feedbag operation failed with code %d", type);
+			id<FeedbagTransaction> trans = [transactions objectAtIndex:0];
+			[self performSelector:@selector(aimFeedbagHandler:transactionFailed:) onThread:session.mainThread withObject:trans waitUntilDone:NO];
 			@synchronized (transactions) {
 				[transactions removeObjectAtIndex:0];
 			}

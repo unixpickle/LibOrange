@@ -8,7 +8,7 @@
 
 #import "MyTest.h"
 
-#define kSignoffTime 120
+#define kSignoffTime 180
 
 static void stripNL (char * buff) {
 	if (strlen(buff) == 0) return;
@@ -108,7 +108,7 @@ static void stripNL (char * buff) {
 - (void)aimFeedbagHandlerGotBuddyList:(AIMFeedbagHandler *)feedbagHandler {
 	[self checkThreading];
 	NSLog(@"%@ got the buddy list.", feedbagHandler);
-	NSLog(@"%@", [theSession.session buddyList]);
+	NSLog(@"Blist: %@", [theSession.session buddyList]);
 }
 
 - (void)aimFeedbagHandler:(AIMFeedbagHandler *)sender buddyAdded:(AIMBlistBuddy *)newBuddy {
@@ -137,6 +137,11 @@ static void stripNL (char * buff) {
 	NSLog(@"Blist: %@", theSession.session.buddyList);
 }
 
+- (void)aimFeedbagHandler:(AIMFeedbagHandler *)sender transactionFailed:(id<FeedbagTransaction>)transaction {
+	[self checkThreading];
+	NSLog(@"Transaction failed: %@", transaction);
+}
+
 #pragma mark Message Handler
 
 - (void)aimICBMHandler:(AIMICBMHandler *)sender gotMessage:(AIMMessage *)message {
@@ -153,11 +158,9 @@ static void stripNL (char * buff) {
 		[self handleDelBuddyMsg:message msgSender:sender];
 	} else if ([msgTxt isEqual:@"blist"]) {
 		NSString * desc = [[theSession.session buddyList] description];
-		AIMMessage * blistMsg = [AIMMessage messageWithBuddy:[message buddy] message:[desc stringByAddingAOLRTFTags]];
-		[sender sendMessage:blistMsg];
+		[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[desc stringByAddingAOLRTFTags]]];
 	} else {
-		AIMMessage * reply = [AIMMessage autoresponseMessageWithBuddy:[message buddy] message:@"I am a robot!"];
-		[sender sendMessage:reply];
+		[sender sendMessage:[AIMMessage autoresponseMessageWithBuddy:[message buddy] message:@"I am a robot!"]];
 	}
 }
 
@@ -166,58 +169,56 @@ static void stripNL (char * buff) {
 	NSLog(@"Missed call from %@", [missedCall buddy]);
 }
 
+#pragma mark Status Handler
+
+- (void)aimStatusHandler:(AIMStatusHandler *)handler buddy:(AIMBlistBuddy *)theBuddy statusChanged:(AIMBuddyStatus *)status {
+	[self checkThreading];
+	NSLog(@"\"%@\"%s%@", theBuddy, ".status = ", status);
+}
+
+- (void)aimStatusHandlerUserStatusUpdated:(AIMStatusHandler *)handler {
+	[self checkThreading];
+	NSLog(@"user.status = %@", [handler userStatus]);
+}
+
+#pragma mark Commands
+
 - (void)handleAddBuddyMsg:(AIMMessage *)message msgSender:(AIMICBMHandler *)sender {
+	[self checkThreading];
 	NSString * msgTxt = [message plainTextMessage];
 	NSString * buddyName = [msgTxt substringFromIndex:4];
 	if (!buddyName || [buddyName length] == 0) {
-		AIMMessage * reply = [AIMMessage messageWithBuddy:[message buddy] message:@"Err: Invalid buddy name."];
-		[sender sendMessage:reply];
+		[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:@"Err: Invalid buddy name."]];
 	} else {
 		AIMBlistGroup * group = [theSession.session.buddyList groupWithName:@"Buddies"];
 		if (!group) {
-			AIMMessage * reply = [AIMMessage messageWithBuddy:[message buddy] message:@"Err: No \"Buddies\" group found!"];
-			[sender sendMessage:reply];
+			[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:@"Err: No \"Buddies\" group found!"]];
 		} else {
 			FTAddBuddy * addBudd = [[FTAddBuddy alloc] initWithUsername:buddyName group:group];
 			[theSession.feedbagHandler pushTransaction:addBudd];
 			[addBudd release];
-			AIMMessage * reply = [AIMMessage messageWithBuddy:[message buddy] message:@"Buddy insert requested."];
-			[sender sendMessage:reply];
+			[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:@"Buddy insert requested."]];
 		}
 	}
 }
 
 - (void)handleDelBuddyMsg:(AIMMessage *)message msgSender:(AIMICBMHandler *)sender {
+	[self checkThreading];
 	NSString * msgTxt = [message plainTextMessage];
 	NSString * buddyName = [msgTxt substringFromIndex:7];
 	if (!buddyName || [buddyName length] == 0) {
-		AIMMessage * reply = [AIMMessage messageWithBuddy:[message buddy] message:@"Err: Invalid buddy name."];
-		[sender sendMessage:reply];
+		[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:@"Err: Invalid buddy name."]];
 	} else {
 		AIMBlistBuddy * buddy = [theSession.session.buddyList buddyWithUsername:buddyName];
-		if (!buddy) {
-			AIMMessage * reply = [AIMMessage messageWithBuddy:[message buddy] message:@"Err: Buddy not found!"];
-			[sender sendMessage:reply];
+		if (!buddy || [buddy group] == nil) {
+			[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:@"Err: Buddy not found!"]];
 		} else {
 			FTRemoveBuddy * remove = [[FTRemoveBuddy alloc] initWithBuddy:buddy];
 			[theSession.feedbagHandler pushTransaction:remove];
 			[remove release];
-			AIMMessage * reply = [AIMMessage messageWithBuddy:[message buddy] message:@"Buddy delete requested."];
-			[sender sendMessage:reply];
+			[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:@"Buddy delete requested."]];
 		}
 	}
-}
-
-#pragma mark Status Handler
-
-- (void)aimStatusHandler:(AIMStatusHandler *)handler buddy:(AIMBlistBuddy *)theBuddy statusChanged:(AIMBuddyStatus *)status {
-	[self checkThreading];
-	NSLog(@"%@ status = %@", theBuddy, status);
-}
-
-- (void)aimStatusHandlerUserStatusUpdated:(AIMStatusHandler *)handler {
-	[self checkThreading];
-	NSLog(@"our user status = %@", [handler userStatus]);
 }
 
 @end

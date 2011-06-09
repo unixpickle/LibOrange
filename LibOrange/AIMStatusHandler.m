@@ -197,10 +197,11 @@
 }
 
 - (void)setStatusText:(NSString *)statText {
+	NSAssert([NSThread currentThread] == session.mainThread, @"Running on incorrect thread");
 	if ([statText length] > 253) {
 		[self setStatusText:[[statText substringWithRange:NSMakeRange(0, 250)] stringByAppendingFormat:@"..."]];
+		return;
 	}
-	NSAssert([NSThread currentThread] == session.mainThread, @"Running on incorrect thread");
 	NSData * statusData = encodeString16(statText);
 	AIMBArtID * statusStr = [[AIMBArtID alloc] initWithType:BART_TYPE_STATUS_STR flags:BART_FLAG_DATA opaqueData:statusData];
 	TLV * statusObj = [[TLV alloc] initWithType:TLV_BART_INFO data:[statusStr encodePacket]];
