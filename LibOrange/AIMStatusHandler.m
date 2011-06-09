@@ -177,6 +177,8 @@
 	if ([newStatus idleTime] > 0) {
 		UInt32 idleSecs = [newStatus idleTime] * 60;
 		[self sendIdleNote:idleSecs];
+	} else if ([userStatus idleTime] != 0) {
+		[self sendIdleNote:0];
 	}
 }
 
