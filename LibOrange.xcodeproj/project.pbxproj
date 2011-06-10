@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA05170E13A2AEA500A951F2 /* FTRemoveGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FA05170D13A2AEA500A951F2 /* FTRemoveGroup.m */; };
+		FA05171113A2B0CD00A951F2 /* CommandTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = FA05171013A2B0CD00A951F2 /* CommandTokenizer.m */; };
 		FA0B641A13A115F3002B848D /* FTSetPDMode.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0B641913A115F3002B848D /* FTSetPDMode.m */; };
 		FA0B642013A11CA4002B848D /* NSString+AOLRTF.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0B641F13A11CA4002B848D /* NSString+AOLRTF.m */; };
 		FA1B67BA139DA456008F1884 /* AIMTempBuddyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1B67B9139DA456008F1884 /* AIMTempBuddyHandler.m */; };
@@ -81,6 +83,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FA05170C13A2AEA500A951F2 /* FTRemoveGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTRemoveGroup.h; sourceTree = "<group>"; };
+		FA05170D13A2AEA500A951F2 /* FTRemoveGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTRemoveGroup.m; sourceTree = "<group>"; };
+		FA05170F13A2B0CD00A951F2 /* CommandTokenizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandTokenizer.h; sourceTree = "<group>"; };
+		FA05171013A2B0CD00A951F2 /* CommandTokenizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommandTokenizer.m; sourceTree = "<group>"; };
 		FA0B641813A115F3002B848D /* FTSetPDMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTSetPDMode.h; sourceTree = "<group>"; };
 		FA0B641913A115F3002B848D /* FTSetPDMode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTSetPDMode.m; sourceTree = "<group>"; };
 		FA0B641E13A11CA4002B848D /* NSString+AOLRTF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+AOLRTF.h"; sourceTree = "<group>"; };
@@ -260,6 +266,8 @@
 				FA32379813A15EC3005D7B69 /* FTRemoveBuddy.m */,
 				FA3237A013A17776005D7B69 /* FTAddGroup.h */,
 				FA3237A113A17777005D7B69 /* FTAddGroup.m */,
+				FA05170C13A2AEA500A951F2 /* FTRemoveGroup.h */,
+				FA05170D13A2AEA500A951F2 /* FTRemoveGroup.m */,
 			);
 			name = "User Modifications";
 			sourceTree = "<group>";
@@ -443,6 +451,8 @@
 				FABC0E831396CD7F0050D130 /* main.m */,
 				FABC0EDE13970D400050D130 /* MyTest.h */,
 				FABC0EDF13970D410050D130 /* MyTest.m */,
+				FA05170F13A2B0CD00A951F2 /* CommandTokenizer.h */,
+				FA05171013A2B0CD00A951F2 /* CommandTokenizer.m */,
 				FABC0E871396CD7F0050D130 /* LibOrange.1 */,
 				FABC0E851396CD7F0050D130 /* Supporting Files */,
 			);
@@ -678,6 +688,8 @@
 				FA32379013A12154005D7B69 /* FTAddBuddy.m in Sources */,
 				FA32379913A15EC3005D7B69 /* FTRemoveBuddy.m in Sources */,
 				FA3237A213A17777005D7B69 /* FTAddGroup.m in Sources */,
+				FA05170E13A2AEA500A951F2 /* FTRemoveGroup.m in Sources */,
+				FA05171113A2B0CD00A951F2 /* CommandTokenizer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

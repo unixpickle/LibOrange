@@ -152,15 +152,41 @@ static void stripNL (char * buff) {
 	NSString * autoresp = [message isAutoresponse] ? @" (Auto-Response)" : @"";
 	NSLog(@"(%@) %@%@: %@", [NSDate date], [[message buddy] username], autoresp, [message plainTextMessage]);
 	
-	if ([msgTxt hasPrefix:@"add "]) {
-		[self handleAddBuddyMsg:message msgSender:sender];
-	} else if ([msgTxt hasPrefix:@"remove "]) {
-		[self handleDelBuddyMsg:message msgSender:sender];
-	} else if ([msgTxt isEqual:@"blist"]) {
-		NSString * desc = [[theSession.session buddyList] description];
-		[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[desc stringByAddingAOLRTFTags]]];
-	} else {
-		[sender sendMessage:[AIMMessage autoresponseMessageWithBuddy:[message buddy] message:@"I am a robot!"]];
+	NSArray * tokens = [CommandTokenizer tokensOfCommand:msgTxt];
+	if ([tokens count] == 1) {
+		if ([[tokens objectAtIndex:0] isEqual:@"blist"]) {
+			NSString * desc = [[theSession.session buddyList] description];
+			[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[desc stringByAddingAOLRTFTags]]];
+		}
+	} else if ([tokens count] == 2) {
+		if ([[tokens objectAtIndex:0] isEqual:@"delbuddy"]) {
+			NSString * buddy = [tokens objectAtIndex:1];
+			NSString * msg = [self removeBuddy:buddy];
+			if (msg) {
+				[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[msg stringByAddingAOLRTFTags]]];
+			}
+		} else if ([[tokens objectAtIndex:0] isEqual:@"addgroup"]) {
+			NSString * group = [tokens objectAtIndex:1];
+			NSString * msg = [self addGroup:group];
+			if (msg) {
+				[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[msg stringByAddingAOLRTFTags]]];
+			}
+		} else if ([[tokens objectAtIndex:0] isEqual:@"delgroup"]) {
+			NSString * group = [tokens objectAtIndex:1];
+			NSString * msg = [self deleteGroup:group];
+			if (msg) {
+				[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[msg stringByAddingAOLRTFTags]]];
+			}
+		}
+	} else if ([tokens count] == 3) {
+		if ([[tokens objectAtIndex:0] isEqual:@"addbuddy"]) {
+			NSString * group = [tokens objectAtIndex:1];
+			NSString * buddy = [tokens objectAtIndex:2];
+			NSString * msg = [self addBuddy:buddy toGroup:group];
+			if (msg) {
+				[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[msg stringByAddingAOLRTFTags]]];
+			}
+		}
 	}
 }
 
@@ -183,42 +209,50 @@ static void stripNL (char * buff) {
 
 #pragma mark Commands
 
-- (void)handleAddBuddyMsg:(AIMMessage *)message msgSender:(AIMICBMHandler *)sender {
-	[self checkThreading];
-	NSString * msgTxt = [message plainTextMessage];
-	NSString * buddyName = [msgTxt substringFromIndex:4];
-	if (!buddyName || [buddyName length] == 0) {
-		[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:@"Err: Invalid buddy name."]];
+- (NSString *)removeBuddy:(NSString *)username {
+	AIMBlistBuddy * buddy = [theSession.session.buddyList buddyWithUsername:username];
+	if (buddy && [buddy group]) {
+		FTRemoveBuddy * remove = [[FTRemoveBuddy alloc] initWithBuddy:buddy];
+		[theSession.feedbagHandler pushTransaction:remove];
+		[remove release];
+		return @"Remove (buddy) request sent.";
 	} else {
-		AIMBlistGroup * group = [theSession.session.buddyList groupWithName:@"Buddies"];
-		if (!group) {
-			[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:@"Err: No \"Buddies\" group found!"]];
-		} else {
-			FTAddBuddy * addBudd = [[FTAddBuddy alloc] initWithUsername:buddyName group:group];
-			[theSession.feedbagHandler pushTransaction:addBudd];
-			[addBudd release];
-			[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:@"Buddy insert requested."]];
-		}
+		return @"Err: buddy not found.";
 	}
 }
-
-- (void)handleDelBuddyMsg:(AIMMessage *)message msgSender:(AIMICBMHandler *)sender {
-	[self checkThreading];
-	NSString * msgTxt = [message plainTextMessage];
-	NSString * buddyName = [msgTxt substringFromIndex:7];
-	if (!buddyName || [buddyName length] == 0) {
-		[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:@"Err: Invalid buddy name."]];
-	} else {
-		AIMBlistBuddy * buddy = [theSession.session.buddyList buddyWithUsername:buddyName];
-		if (!buddy || [buddy group] == nil) {
-			[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:@"Err: Buddy not found!"]];
-		} else {
-			FTRemoveBuddy * remove = [[FTRemoveBuddy alloc] initWithBuddy:buddy];
-			[theSession.feedbagHandler pushTransaction:remove];
-			[remove release];
-			[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:@"Buddy delete requested."]];
-		}
+- (NSString *)addBuddy:(NSString *)username toGroup:(NSString *)groupName {
+	AIMBlistGroup * group = [theSession.session.buddyList groupWithName:groupName];
+	if (!group) {
+		return @"Err: group not found.";
 	}
+	AIMBlistBuddy * buddy = [group buddyWithUsername:username];
+	if (buddy) {
+		return @"Err: buddy exists.";
+	}
+	FTAddBuddy * addBudd = [[FTAddBuddy alloc] initWithUsername:username group:group];
+	[theSession.feedbagHandler pushTransaction:addBudd];
+	[addBudd release];
+	return @"Add (buddy) request sent.";
+}
+- (NSString *)deleteGroup:(NSString *)groupName {
+	AIMBlistGroup * group = [theSession.session.buddyList groupWithName:groupName];
+	if (!group) {
+		return @"Err: group not found.";
+	}
+	FTRemoveGroup * delGrp = [[FTRemoveGroup alloc] initWithGroup:group];
+	[theSession.feedbagHandler pushTransaction:delGrp];
+	[delGrp release];
+	return @"Delete (group) request sent.";
+}
+- (NSString *)addGroup:(NSString *)groupName {
+	AIMBlistGroup * group = [theSession.session.buddyList groupWithName:groupName];
+	if (group) {
+		return @"Err: group exists.";
+	}
+	FTAddGroup * addGrp = [[FTAddGroup alloc] initWithName:groupName];
+	[theSession.feedbagHandler pushTransaction:addGrp];
+	[addGrp release];
+	return @"Add (group) request sent.";
 }
 
 @end

@@ -11,6 +11,8 @@
 #import "AIMSessionManager.h"
 #import "FTAddBuddy.h"
 #import "FTRemoveBuddy.h"
+#import "FTRemoveGroup.h"
+#import "CommandTokenizer.h"
 
 @interface MyTest : NSObject <AIMLoginDelegate, AIMSessionManagerDelegate, AIMFeedbagHandlerDelegate, AIMICBMHandlerDelegate, AIMStatusHandlerDelegate> {
     AIMLogin * login;
@@ -22,7 +24,9 @@
 - (void)blockingCheck;
 - (void)checkThreading;
 
-- (void)handleAddBuddyMsg:(AIMMessage *)message msgSender:(AIMICBMHandler *)sender;
-- (void)handleDelBuddyMsg:(AIMMessage *)message msgSender:(AIMICBMHandler *)sender;
+- (NSString *)removeBuddy:(NSString *)username;
+- (NSString *)addBuddy:(NSString *)username toGroup:(NSString *)groupName;
+- (NSString *)deleteGroup:(NSString *)groupName;
+- (NSString *)addGroup:(NSString *)groupName;
 
 @end

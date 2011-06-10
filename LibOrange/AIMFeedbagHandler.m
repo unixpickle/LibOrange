@@ -17,8 +17,6 @@
 - (void)_handleUpdate:(NSArray *)feedbagItems;
 
 /* Update Handlers */
-- (void)_handleGroupPostInserted:(AIMFeedbagItem *)newGroup asGroup:(AIMBlistGroup *)theGroup;
-- (void)_handleBuddyPostInserted:(AIMFeedbagItem *)newBuddy asBuddy:(AIMBlistBuddy *)oldBuddy;
 - (void)_handleGroupChanged:(AIMFeedbagItem *)oldItem newItem:(AIMFeedbagItem *)item;
 - (void)_handleRootGroupChanged:(AIMFeedbagItem *)oldItem newItem:(AIMFeedbagItem *)newItem;
 
@@ -101,6 +99,7 @@
 }
 
 - (void)_handleFeedbagResponse:(SNAC *)aSnac {
+	NSAssert([NSThread currentThread] == [session backgroundThread], @"Running on incorrect thread");
 	if (!feedbag) {
 		feedbag = [[AIMFeedbag alloc] initWithSnac:aSnac];
 	} else {
@@ -137,24 +136,6 @@
 	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
 	for (AIMFeedbagItem * item in feedbagItems) {
 		[[feedbag items] addObject:item];
-		if ([item classID] == FEEDBAG_GROUP) {
-			// check if the group has been inserted through an update
-			// before it was INSERTED.
-			for (int i = 0; i < [session.buddyList.groups count]; i++) {
-				AIMBlistGroup * group = [session.buddyList.groups objectAtIndex:i];
-				if ([group feedbagGroupID] == [item groupID]) {
-					[self _handleGroupPostInserted:item asGroup:group];
-					break;
-				}
-			}
-		} else if ([item classID] == FEEDBAG_BUDDY) {
-			// check if the buddy was inserted after it was inserted through
-			// an update.
-			AIMBlistBuddy * buddy = [session.buddyList buddyWithFeedbagID:[item itemID]];
-			if (buddy) {
-				[self _handleBuddyPostInserted:item asBuddy:buddy];
-			}
-		}
 	}
 }
 - (void)_handleDelete:(NSArray *)feedbagItems {
@@ -196,31 +177,6 @@
 	}
 }
 
-- (void)_handleGroupPostInserted:(AIMFeedbagItem *)newGroup asGroup:(AIMBlistGroup *)theGroup {
-	AIMBlistGroup * additionalGroup = [session.buddyList loadGroup:newGroup inFeedbag:feedbag];
-	NSMutableArray * groups = (NSMutableArray *)[session.buddyList groups];
-	for (int i = 0; i < [groups count]; i++) {
-		AIMBlistGroup * innerGrp = [groups objectAtIndex:i];
-		if (innerGrp == theGroup) {
-			[groups replaceObjectAtIndex:i withObject:additionalGroup];
-			break;
-		}
-	}
-}
-
-- (void)_handleBuddyPostInserted:(AIMFeedbagItem *)newBuddy asBuddy:(AIMBlistBuddy *)oldBuddy {
-	AIMBlistBuddy * updatedBuddy = [[AIMBlistBuddy alloc] initWithUsername:[newBuddy itemName]];
-	AIMBlistGroup * theGroup = [oldBuddy group];
-	NSMutableArray * arr = (NSMutableArray *)[theGroup buddies];
-	if ([arr containsObject:oldBuddy]) {
-		int index = (int)[arr indexOfObject:oldBuddy];
-		[arr replaceObjectAtIndex:index withObject:updatedBuddy];
-	} else {
-		[arr addObject:updatedBuddy];
-	}
-	[updatedBuddy release];
-}
-
 - (void)_handleGroupChanged:(AIMFeedbagItem *)oldItem newItem:(AIMFeedbagItem *)item {
 	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
 	NSArray * added = nil;
@@ -237,7 +193,7 @@
 				/* Should be running on main thread anyway. */
 				[self performSelector:@selector(_delegateInformRemovedB:) onThread:session.mainThread withObject:buddy waitUntilDone:YES];
 				[buddy release];
-			}
+			} else if (buddy) [buddy release];
 		}
 		for (NSNumber * addedID in added) {
 			AIMFeedbagItem * theItem = [feedbag itemWithItemID:[addedID unsignedShortValue]];
@@ -256,7 +212,7 @@
 				}
 				[self performSelector:@selector(_delegateInformAddedB:) onThread:session.mainThread withObject:buddy waitUntilDone:YES];
 			} else {
-				NSLog(@"%@ added to unknown group %@", buddy, [oldItem itemName]);
+				NSLog(@"%@ added to group: %@.  This is most likely because of AOL adding to the Recent Buddies.", buddy, [oldItem itemName]);
 			}
 			[buddy release];
 		}
@@ -403,7 +359,7 @@
 			// failure.
 			NSLog(@"Feedbag operation failed with code %d", type);
 			id<FeedbagTransaction> trans = [transactions objectAtIndex:0];
-			[self performSelector:@selector(aimFeedbagHandler:transactionFailed:) onThread:session.mainThread withObject:trans waitUntilDone:NO];
+			[self performSelector:@selector(_delegateInformFailedTransaction:) onThread:session.mainThread withObject:trans waitUntilDone:NO];
 			@synchronized (transactions) {
 				[transactions removeObjectAtIndex:0];
 			}

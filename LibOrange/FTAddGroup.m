@@ -33,6 +33,7 @@
 	snacs = [[NSArray alloc] initWithObjects:insert, update, nil];
 	[insert release];
 	[update release];
+	[newGroup release];
 	snacIndex = -1;
 }
 
