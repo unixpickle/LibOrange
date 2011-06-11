@@ -14,5 +14,6 @@
 
 - (NSArray *)bartIDs;
 - (NSArray *)bartIDUpdateToList:(NSArray *)newIDs;
+- (AIMBArtID *)bartBuddyIcon;
 
 @end

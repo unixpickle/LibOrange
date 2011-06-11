@@ -8,7 +8,7 @@
 
 #import "MyTest.h"
 
-#define kSignoffTime 100
+#define kSignoffTime 120
 
 static void stripNL (char * buff) {
 	if (strlen(buff) == 0) return;
@@ -207,6 +207,31 @@ static void stripNL (char * buff) {
 - (void)aimStatusHandlerUserStatusUpdated:(AIMStatusHandler *)handler {
 	[self checkThreading];
 	NSLog(@"user.status = %@", [handler userStatus]);
+}
+
+- (void)aimStatusHandler:(AIMStatusHandler *)handler buddyIconChanged:(AIMBlistBuddy *)theBuddy {
+	[self checkThreading];
+	NSString * dirPath = [NSString stringWithFormat:@"%@/Desktop/buddyicons/", NSHomeDirectory()];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:dirPath]) {
+		NSString * path = nil;
+		AIMBuddyIconFormat fmt = [[theBuddy buddyIcon] iconDataFormat];
+		switch (fmt) {
+			case AIMBuddyIconBMPFormat:
+				path = [dirPath stringByAppendingFormat:@"%@.bmp", [theBuddy username]];
+				break;
+			case AIMBuddyIconGIFFormat:
+				path = [dirPath stringByAppendingFormat:@"%@.gif", [theBuddy username]];
+				break;
+			case AIMBuddyIconJPEGFormat:
+				path = [dirPath stringByAppendingFormat:@"%@.jpg", [theBuddy username]];
+				break;
+			default:
+				break;
+		}
+		if (path) {
+			[[[theBuddy buddyIcon] iconData] writeToFile:path atomically:YES];
+		}
+	}
 }
 
 #pragma mark Commands

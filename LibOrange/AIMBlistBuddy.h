@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "AIMBuddyStatus.h"
+#import "AIMBuddyIcon.h"
 
 @class AIMBlistGroup;
 
@@ -16,12 +17,14 @@
 	NSString * username;
 	UInt16 feedbagItemID;
 	AIMBuddyStatus * status;
+	AIMBuddyIcon * buddyIcon;
 }
 
 @property (nonatomic, assign) AIMBlistGroup * group;
 @property (readonly) NSString * username;
 @property (readwrite) UInt16 feedbagItemID;
 @property (nonatomic, retain) AIMBuddyStatus * status;
+@property (nonatomic, retain) AIMBuddyIcon * buddyIcon;
 
 - (id)initWithUsername:(NSString *)theUsername;
 - (BOOL)usernameIsEqual:(NSString *)aUsername;

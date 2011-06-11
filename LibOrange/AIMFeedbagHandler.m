@@ -208,6 +208,7 @@
 				AIMBlistBuddy * tempBuddy = [tempBuddyHandler tempBuddyWithName:[theItem itemName]];
 				if (tempBuddy) {
 					[buddy setStatus:[tempBuddy status]];
+					[buddy setBuddyIcon:[tempBuddy buddyIcon]];
 					[tempBuddyHandler deleteTempBuddy:tempBuddy];
 				}
 				[self performSelector:@selector(_delegateInformAddedB:) onThread:session.mainThread withObject:buddy waitUntilDone:YES];
@@ -246,6 +247,7 @@
 					AIMBlistBuddy * tempBuddy = [tempBuddyHandler tempBuddyWithName:[buddy username]];
 					if (tempBuddy) {
 						[buddy setStatus:[tempBuddy status]];
+						[buddy setBuddyIcon:[tempBuddy buddyIcon]];
 						[tempBuddyHandler deleteTempBuddy:tempBuddy];
 					}
 				}

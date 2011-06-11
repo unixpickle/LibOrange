@@ -19,6 +19,7 @@
 
 @optional
 - (void)aimStatusHandler:(AIMStatusHandler *)handler buddy:(AIMBlistBuddy *)theBuddy statusChanged:(AIMBuddyStatus *)status;
+- (void)aimStatusHandler:(AIMStatusHandler *)handler buddyIconChanged:(AIMBlistBuddy *)theBuddy;
 - (void)aimStatusHandler:(AIMStatusHandler *)handler buddyRejected:(NSString *)loginID;
 - (void)aimStatusHandlerUserStatusUpdated:(AIMStatusHandler *)handler;
 

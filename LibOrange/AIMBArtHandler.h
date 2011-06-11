@@ -8,9 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "SNAC.h"
-#import "AIMBArtID.h"
+#import "AIMBArtIDWName.h"
 #import "OSCARConnection.h"
 #import "AIMSession.h"
+#import "AIMBuddyIcon.h"
+#import "AIMBArtDownloadReply.h"
 
 @class AIMBArtHandler;
 
@@ -20,6 +22,7 @@
 - (void)aimBArtHandlerConnectedToBArt:(AIMBArtHandler *)handler;
 - (void)aimBArtHandlerConnectFailed:(AIMBArtHandler *)handler;
 - (void)aimBArtHandlerDisconnected:(AIMBArtHandler *)handler;
+- (void)aimBArtHandler:(AIMBArtHandler *)handler gotBuddyIcon:(AIMBuddyIcon *)icns forUser:(NSString *)loginID;
 
 @end
 
@@ -31,9 +34,11 @@
 	id<AIMBArtHandlerDelegate> delegate;
 }
 
-@property (nonatomic, assign) id<AIMBArtHandlerDelegate> delegate;
+@property (nonatomic, retain) id<AIMBArtHandlerDelegate> delegate;
 
 - (id)initWithSession:(AIMSession *)aSession;
 - (BOOL)startupBArt;
+
+- (BOOL)fetchBArtIcon:(AIMBArtID *)bartID forUser:(NSString *)username;
 
 @end

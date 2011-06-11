@@ -77,6 +77,13 @@
 	else return NO;
 }
 
+- (BOOL)isEqualToBartID:(AIMBArtID *)anotherID {
+	if ([self flags] != [anotherID flags]) return NO;
+	if ([self type] != [anotherID type]) return NO;
+	if (![[self opaqueData] isEqualToData:[anotherID opaqueData]]) return NO;
+	return YES;
+}
+
 #pragma mark NSCoding
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {

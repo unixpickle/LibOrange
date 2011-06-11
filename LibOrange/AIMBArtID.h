@@ -37,5 +37,6 @@
 + (NSData *)encodeArray:(NSArray *)array;
 
 - (BOOL)dataFlagIsSet;
+- (BOOL)isEqualToBartID:(AIMBArtID *)anotherID;
 
 @end

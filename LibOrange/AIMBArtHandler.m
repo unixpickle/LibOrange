@@ -14,10 +14,14 @@
 - (void)_delegateInformConnectionFailed;
 - (void)_delegateInformConnected;
 - (void)_delegateInformDisconnected;
+- (void)_delegateInformHasData:(AIMBArtDownloadReply *)dlReply;
 
 - (void)_handleConnectInfo:(NSArray *)tlvs;
 - (BOOL)_openConnection:(NSString *)hostWPort;
 - (BOOL)_bartSignon:(NSData *)cookie;
+
+- (void)_handleBartSnac:(SNAC *)aSnac;
+- (void)_handleDownloadReply:(SNAC *)downloadReply;
 
 - (SNAC *)waitOnConnectionForSnacID:(SNAC_ID)snacID;
 
@@ -52,6 +56,19 @@
 	}
 }
 
+- (BOOL)fetchBArtIcon:(AIMBArtID *)bartID forUser:(NSString *)username {
+	if (!currentConnection) return NO;
+	if (![currentConnection isOpen]) return NO;
+	AIMBArtIDWName * fetch = [[AIMBArtIDWName alloc] initWithNick:username bartIds:[NSArray arrayWithObject:bartID]];
+	// send fetch
+	SNAC * download = [[SNAC alloc] initWithID:SNAC_ID_NEW(SNAC_BART, BART__DOWNLOAD2) flags:0 requestID:[bossSession generateReqID] data:[fetch encodePacket]];
+	FLAPFrame * flap = [currentConnection createFlapChannel:2 data:[download encodePacket]];
+	BOOL success = [currentConnection writeFlap:flap];
+	[download release];
+	[fetch release];
+	return success;
+}
+
 #pragma mark Private
 
 - (void)_delegateInformConnectionFailed {
@@ -72,6 +89,15 @@
 	NSAssert([NSThread currentThread] == [bossSession mainThread], @"Running on incorrect thread");
 	if ([delegate respondsToSelector:@selector(aimBArtHandlerDisconnected:)]) {
 		[delegate aimBArtHandlerDisconnected:self];
+	}
+}
+
+- (void)_delegateInformHasData:(AIMBArtDownloadReply *)dlReply {
+	NSAssert([NSThread currentThread] == [bossSession mainThread], @"Running on incorrect thread");
+	if ([delegate respondsToSelector:@selector(aimBArtHandler:gotBuddyIcon:forUser:)]) {
+		AIMBuddyIcon * bicon = [[AIMBuddyIcon alloc] initWithBid:[[dlReply replyInfo] initialID] iconData:[dlReply assetData]];
+		[delegate aimBArtHandler:self gotBuddyIcon:bicon forUser:[dlReply username]];
+		[bicon release];
 	}
 }
 
@@ -181,8 +207,46 @@
 	[self performSelector:@selector(_delegateInformDisconnected) onThread:[bossSession mainThread] withObject:nil waitUntilDone:NO];
 }
 
+#pragma mark Snac Handlers
+
 - (void)oscarConnectionPacketWaiting:(OSCARConnection *)connection {
-	
+	if ([bossSession backgroundThread] == nil) {
+		[currentConnection disconnect];
+		[currentConnection autorelease];
+		currentConnection = nil;
+		return;
+	}
+	NSAssert([NSThread currentThread] == [bossSession backgroundThread], @"Running on incorrect thread");
+	FLAPFrame * flap = [connection readFlap];
+	if (flap) {
+		if ([flap channel] == 2) {
+			SNAC * s = [[SNAC alloc] initWithData:[flap frameData]];
+			if (s) {
+				[self _handleBartSnac:s];
+				[s release];
+			}
+		}
+	}
+}
+
+- (void)_handleBartSnac:(SNAC *)aSnac {
+	NSAssert([NSThread currentThread] == [bossSession backgroundThread], @"Running on incorrect thread");
+	if (SNAC_ID_IS_EQUAL(SNAC_ID_NEW(SNAC_BART, BART__DOWNLOAD_REPLY2), [aSnac snac_id])) {
+		[self _handleDownloadReply:aSnac];
+	}
+}
+
+- (void)_handleDownloadReply:(SNAC *)downloadReply {
+	NSAssert([NSThread currentThread] == [bossSession backgroundThread], @"Running on incorrect thread");
+	AIMBArtDownloadReply * downloadInf = [[AIMBArtDownloadReply alloc] initWithData:[downloadReply innerContents]];
+	if (!downloadInf) {
+		NSLog(@"WARNING: BArt sent incomplete download response.");
+		return;
+	}
+	AIMBArtID * icon = [[downloadInf replyInfo] initialID];
+	if ([icon type] == BART_TYPE_BUDDY_ICON) {
+		[self performSelector:@selector(_delegateInformHasData:) onThread:[bossSession mainThread] withObject:downloadInf waitUntilDone:NO];
+	}
 }
 
 - (void)dealloc {
@@ -193,6 +257,7 @@
 	[currentConnection release];
 	[bartHost release];
 	[bartCookie release];
+	self.delegate = nil;
 	[super dealloc];
 }
 

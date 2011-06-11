@@ -16,6 +16,7 @@
 @synthesize username;
 @synthesize feedbagItemID;
 @synthesize status;
+@synthesize buddyIcon;
 
 - (id)initWithUsername:(NSString *)theUsername {
 	if ((self = [super init])) {
@@ -39,6 +40,7 @@
 
 - (void)dealloc {
 	self.status = nil;
+	self.buddyIcon = nil;
 	[username release];
 	[super dealloc];
 }

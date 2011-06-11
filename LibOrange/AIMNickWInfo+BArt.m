@@ -49,5 +49,14 @@
 	[idList release];
 	return immutable;
 }
+- (AIMBArtID *)bartBuddyIcon {
+	NSArray * bartIds = [self bartIDs];
+	for (AIMBArtID * bid in bartIds) {
+		if ([bid type] == BART_TYPE_BUDDY_ICON) {
+			return bid;
+		}
+	}
+	return nil;
+}
 
 @end

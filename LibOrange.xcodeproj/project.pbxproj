@@ -33,6 +33,10 @@
 		FA616C51139EEACA00780097 /* AIMBArtID.m in Sources */ = {isa = PBXBuildFile; fileRef = FA616C50139EEACA00780097 /* AIMBArtID.m */; };
 		FA616C54139EEF5900780097 /* AIMNickWInfo+BArt.m in Sources */ = {isa = PBXBuildFile; fileRef = FA616C53139EEF5900780097 /* AIMNickWInfo+BArt.m */; };
 		FA616C5713A00C8400780097 /* AIMNickWInfo+Update.m in Sources */ = {isa = PBXBuildFile; fileRef = FA616C5613A00C8300780097 /* AIMNickWInfo+Update.m */; };
+		FA73ACB813A3ADA200E13FDA /* AIMBuddyIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = FA73ACB713A3ADA200E13FDA /* AIMBuddyIcon.m */; };
+		FA73ACBB13A3BA8500E13FDA /* AIMBArtIDWName.m in Sources */ = {isa = PBXBuildFile; fileRef = FA73ACBA13A3BA8500E13FDA /* AIMBArtIDWName.m */; };
+		FA73ACBF13A3C4CF00E13FDA /* AIMBArtQueryReplyID.m in Sources */ = {isa = PBXBuildFile; fileRef = FA73ACBE13A3C4CF00E13FDA /* AIMBArtQueryReplyID.m */; };
+		FA73ACC213A3C79100E13FDA /* AIMBArtDownloadReply.m in Sources */ = {isa = PBXBuildFile; fileRef = FA73ACC113A3C79000E13FDA /* AIMBArtDownloadReply.m */; };
 		FA7FF69913A2EDF30079E2E1 /* AIMBArtHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA7FF69813A2EDF30079E2E1 /* AIMBArtHandler.m */; };
 		FA8591FB13A0FBC800B5D088 /* FTCreateRootGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8591FA13A0FBC800B5D088 /* FTCreateRootGroup.m */; };
 		FA8591FE13A0FF0300B5D088 /* AIMFeedbagStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8591FD13A0FF0300B5D088 /* AIMFeedbagStatus.m */; };
@@ -136,6 +140,14 @@
 		FA616C53139EEF5900780097 /* AIMNickWInfo+BArt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AIMNickWInfo+BArt.m"; sourceTree = "<group>"; };
 		FA616C5513A00C8300780097 /* AIMNickWInfo+Update.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AIMNickWInfo+Update.h"; sourceTree = "<group>"; };
 		FA616C5613A00C8300780097 /* AIMNickWInfo+Update.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AIMNickWInfo+Update.m"; sourceTree = "<group>"; };
+		FA73ACB613A3ADA200E13FDA /* AIMBuddyIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMBuddyIcon.h; sourceTree = "<group>"; };
+		FA73ACB713A3ADA200E13FDA /* AIMBuddyIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMBuddyIcon.m; sourceTree = "<group>"; };
+		FA73ACB913A3BA8500E13FDA /* AIMBArtIDWName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMBArtIDWName.h; sourceTree = "<group>"; };
+		FA73ACBA13A3BA8500E13FDA /* AIMBArtIDWName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMBArtIDWName.m; sourceTree = "<group>"; };
+		FA73ACBD13A3C4CF00E13FDA /* AIMBArtQueryReplyID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMBArtQueryReplyID.h; sourceTree = "<group>"; };
+		FA73ACBE13A3C4CF00E13FDA /* AIMBArtQueryReplyID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMBArtQueryReplyID.m; sourceTree = "<group>"; };
+		FA73ACC013A3C79000E13FDA /* AIMBArtDownloadReply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMBArtDownloadReply.h; sourceTree = "<group>"; };
+		FA73ACC113A3C79000E13FDA /* AIMBArtDownloadReply.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMBArtDownloadReply.m; sourceTree = "<group>"; };
 		FA7FF69713A2EDF30079E2E1 /* AIMBArtHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMBArtHandler.h; sourceTree = "<group>"; };
 		FA7FF69813A2EDF30079E2E1 /* AIMBArtHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMBArtHandler.m; sourceTree = "<group>"; };
 		FA8591F813A0F9F900B5D088 /* FeedbagTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbagTransaction.h; sourceTree = "<group>"; };
@@ -368,10 +380,13 @@
 		FA616C4E139EEABD00780097 /* Buddy Art */ = {
 			isa = PBXGroup;
 			children = (
+				FA73ACBC13A3C4BF00E13FDA /* Queries & Replies */,
 				FA616C4F139EEACA00780097 /* AIMBArtID.h */,
 				FA616C50139EEACA00780097 /* AIMBArtID.m */,
 				FA7FF69713A2EDF30079E2E1 /* AIMBArtHandler.h */,
 				FA7FF69813A2EDF30079E2E1 /* AIMBArtHandler.m */,
+				FA73ACB613A3ADA200E13FDA /* AIMBuddyIcon.h */,
+				FA73ACB713A3ADA200E13FDA /* AIMBuddyIcon.m */,
 			);
 			name = "Buddy Art";
 			sourceTree = "<group>";
@@ -387,6 +402,19 @@
 				FA616C5613A00C8300780097 /* AIMNickWInfo+Update.m */,
 			);
 			name = NickWInfo;
+			sourceTree = "<group>";
+		};
+		FA73ACBC13A3C4BF00E13FDA /* Queries & Replies */ = {
+			isa = PBXGroup;
+			children = (
+				FA73ACB913A3BA8500E13FDA /* AIMBArtIDWName.h */,
+				FA73ACBA13A3BA8500E13FDA /* AIMBArtIDWName.m */,
+				FA73ACBD13A3C4CF00E13FDA /* AIMBArtQueryReplyID.h */,
+				FA73ACBE13A3C4CF00E13FDA /* AIMBArtQueryReplyID.m */,
+				FA73ACC013A3C79000E13FDA /* AIMBArtDownloadReply.h */,
+				FA73ACC113A3C79000E13FDA /* AIMBArtDownloadReply.m */,
+			);
+			name = "Queries & Replies";
 			sourceTree = "<group>";
 		};
 		FA8591F613A0F9C900B5D088 /* Items */ = {
@@ -696,6 +724,10 @@
 				FA05170E13A2AEA500A951F2 /* FTRemoveGroup.m in Sources */,
 				FA05171113A2B0CD00A951F2 /* CommandTokenizer.m in Sources */,
 				FA7FF69913A2EDF30079E2E1 /* AIMBArtHandler.m in Sources */,
+				FA73ACB813A3ADA200E13FDA /* AIMBuddyIcon.m in Sources */,
+				FA73ACBB13A3BA8500E13FDA /* AIMBArtIDWName.m in Sources */,
+				FA73ACBF13A3C4CF00E13FDA /* AIMBArtQueryReplyID.m in Sources */,
+				FA73ACC213A3C79100E13FDA /* AIMBArtDownloadReply.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

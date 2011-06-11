@@ -23,6 +23,8 @@
 
 - (void)handleUserInfoUpdate:(AIMNickWInfo *)newInfo;
 - (void)_delegateInformNewStatus;
+- (void)_delegateInformBuddyIconChange:(AIMBlistBuddy *)theBuddy;
+- (void)_fetchNickInfoIcon:(AIMNickWInfo *)nickWIcon;
 
 @end
 
@@ -49,15 +51,30 @@
 }
 
 - (void)aimBArtHandlerConnectedToBArt:(AIMBArtHandler *)handler {
-
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
 }
 
 - (void)aimBArtHandlerConnectFailed:(AIMBArtHandler *)handler {
-
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
 }
 
 - (void)aimBArtHandlerDisconnected:(AIMBArtHandler *)handler {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+}
 
+- (void)aimBArtHandler:(AIMBArtHandler *)handler gotBuddyIcon:(AIMBuddyIcon *)icns forUser:(NSString *)loginID {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	AIMBlistBuddy * buddy = [[session buddyList] buddyWithUsername:loginID];
+	NSArray * buddies = [[session buddyList] buddiesWithUsername:loginID];
+	if (buddy && [buddies count] < 2) {
+		[buddy setBuddyIcon:icns];
+		[self _delegateInformBuddyIconChange:buddy];
+	} else if ([buddies count] > 1) {
+		for (AIMBlistBuddy * theBuddy in buddies) {
+			[theBuddy setBuddyIcon:icns];
+			[self _delegateInformBuddyIconChange:theBuddy];
+		}
+	}
 }
 
 #pragma mark Network Handlers
@@ -125,11 +142,20 @@
 	if ([nickInfo nickFlags] == 0) {
 		[self handleBuddyDeparted:nickInfo];
 	} else {
+		AIMBArtID * bid = [nickInfo bartBuddyIcon];
 		// buddy is online, extract their status and set their stuff.
 		BOOL wantsAwayData = NO;
 		AIMBuddyStatus * status = [self statusFromNickInfo:nickInfo fetchAwayData:&wantsAwayData];
 		NSArray * allBuddies = [[session buddyList] buddiesWithUsername:[nickInfo username]];
+		BOOL hasFetchedIcon = NO;
 		for (AIMBlistBuddy * buddy in allBuddies) {
+			if (bid) {
+				AIMBArtID * oldBuddyIcon = [[buddy buddyIcon] bartItem];
+				if ((![buddy buddyIcon] || ![bid isEqualToBartID:oldBuddyIcon]) && !hasFetchedIcon) {
+					hasFetchedIcon = YES;
+					[self performSelector:@selector(_fetchNickInfoIcon:) onThread:[session backgroundThread] withObject:nickInfo waitUntilDone:NO];
+				}
+			}
 			if (![[buddy status] isEqualToStatus:status]) {
 				if ([delegate respondsToSelector:@selector(aimStatusHandler:buddy:statusChanged:)]) {
 					[delegate aimStatusHandler:self buddy:buddy statusChanged:status];
@@ -139,6 +165,13 @@
 		}
 		if ([allBuddies count] == 0) {
 			AIMBlistBuddy * tempBuddy = [[session buddyList] buddyWithUsername:[nickInfo username]];
+			if (bid) {
+				AIMBArtID * oldBuddyIcon = [[tempBuddy buddyIcon] bartItem];
+				if ((![tempBuddy buddyIcon] || ![bid isEqualToBartID:oldBuddyIcon]) && !hasFetchedIcon) {
+					hasFetchedIcon = YES;
+					[self performSelector:@selector(_fetchNickInfoIcon:) onThread:[session backgroundThread] withObject:nickInfo waitUntilDone:NO];
+				}
+			}
 			if ([delegate respondsToSelector:@selector(aimStatusHandler:buddy:statusChanged:)]) {
 				[delegate aimStatusHandler:self buddy:tempBuddy statusChanged:status];
 			}
@@ -279,6 +312,19 @@
 	if ([delegate respondsToSelector:@selector(aimStatusHandlerUserStatusUpdated:)]) {
 		[delegate aimStatusHandlerUserStatusUpdated:self];
 	}
+}
+
+- (void)_delegateInformBuddyIconChange:(AIMBlistBuddy *)theBuddy {
+	NSAssert([NSThread currentThread] == session.mainThread, @"Running on incorrect thread");
+	if ([delegate respondsToSelector:@selector(aimStatusHandler:buddyIconChanged:)]) {
+		[delegate aimStatusHandler:self buddyIconChanged:theBuddy];
+	}
+}
+
+- (void)_fetchNickInfoIcon:(AIMNickWInfo *)nickWIcon {
+	NSLog(@"Fetch buddy icon: %@", [nickWIcon username]);
+	NSAssert([NSThread currentThread] == session.backgroundThread, @"Running on incorrect thread");
+	if (bartHandler) [bartHandler fetchBArtIcon:[nickWIcon bartBuddyIcon] forUser:[nickWIcon username]];
 }
 
 - (void)dealloc {
