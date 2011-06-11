@@ -57,6 +57,7 @@
 				return nil;
 			}
 			[bartIdArray addObject:bid];
+			[bid release];
 			start = &start[used];
 			remaining -= used;
 			if ([bartIdArray count] == numIds) break;

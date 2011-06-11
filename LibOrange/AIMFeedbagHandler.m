@@ -108,11 +108,15 @@
 		[theFeedbag release];
 	}
 	if ([aSnac isLastResponse]) {
+		// inform the delegate before sending feedbag use, that way we know that the main thread
+		// isn't doing something like configuring OSERVICE's like BArt.
+		// if you don't understand this, dont worry.
+		session.buddyList = [[[AIMBlist alloc] initWithFeedbag:feedbag tempBuddyHandler:tempBuddyHandler] autorelease];
+		[self performSelector:@selector(_delegateInformHasBlist) onThread:[session mainThread] withObject:nil waitUntilDone:NO];
+		
 		SNAC * feedbagUse = [[SNAC alloc] initWithID:SNAC_ID_NEW(SNAC_FEEDBAG, FEEDBAG__USE) flags:0 requestID:[session generateReqID] data:nil];
 		[session writeSnac:feedbagUse];
 		[feedbagUse release];
-		session.buddyList = [[[AIMBlist alloc] initWithFeedbag:feedbag tempBuddyHandler:tempBuddyHandler] autorelease];
-		[self performSelector:@selector(_delegateInformHasBlist) onThread:[session mainThread] withObject:nil waitUntilDone:NO];
 		
 		if (![feedbag findRootGroup]) {
 			FTCreateRootGroup * createRootGroup = [[FTCreateRootGroup alloc] init];

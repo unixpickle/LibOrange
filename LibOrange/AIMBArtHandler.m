@@ -247,6 +247,7 @@
 	if ([icon type] == BART_TYPE_BUDDY_ICON) {
 		[self performSelector:@selector(_delegateInformHasData:) onThread:[bossSession mainThread] withObject:downloadInf waitUntilDone:NO];
 	}
+	[downloadInf release];
 }
 
 - (void)dealloc {
