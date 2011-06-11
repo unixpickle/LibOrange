@@ -50,6 +50,7 @@
 @synthesize messageHandler;
 @synthesize tempBuddyHandler;
 @synthesize statusHandler;
+@synthesize bartHandler;
 
 - (id)initWithLoginHostInfo:(AIMLoginHostInfo *)hostInf delegate:(id<AIMSessionManagerDelegate>)_delegate {
 	if ((self = [super init])) {
@@ -61,6 +62,14 @@
 		[bgThread release];
 	}
 	return self;
+}
+
+- (void)configureBuddyArt {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	NSAssert(bartHandler == nil, @"-configureBuddyArt called too many times.");
+	bartHandler = [[AIMBArtHandler alloc] initWithSession:session];
+	[statusHandler setBartHandler:bartHandler];
+	[statusHandler performSelector:@selector(configureBart) onThread:[session backgroundThread] withObject:nil waitUntilDone:NO];
 }
 
 + (BOOL)signonClientOnline:(OSCARConnection *)connection {
@@ -498,6 +507,7 @@
 	[messageHandler release];
 	[tempBuddyHandler release];
 	[statusHandler release];
+	[bartHandler release];
 	[session release];
 	[super dealloc];
 }

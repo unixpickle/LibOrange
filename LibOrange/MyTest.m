@@ -8,7 +8,7 @@
 
 #import "MyTest.h"
 
-#define kSignoffTime 180
+#define kSignoffTime 100
 
 static void stripNL (char * buff) {
 	if (strlen(buff) == 0) return;
@@ -20,6 +20,7 @@ static void stripNL (char * buff) {
 @implementation MyTest
 
 - (void)beginTest {
+	printf("LibOrange (v: %s): -beginTest\n", lib_orange_version_string);
 	mainThread = [NSThread currentThread];
 	char buffer[512];
 	printf("Enter username: ");
@@ -84,7 +85,8 @@ static void stripNL (char * buff) {
 	session.messageHandler.delegate = self;
 	session.statusHandler.delegate = self;
 	
-	AIMBuddyStatus * newStatus = [[AIMBuddyStatus alloc] initWithMessage:@"LibOrange test for Mac!" type:AIMBuddyStatusAvailable timeIdle:0];
+	[session configureBuddyArt];
+	AIMBuddyStatus * newStatus = [[AIMBuddyStatus alloc] initWithMessage:@"Using LibOrange on Mac!" type:AIMBuddyStatusAvailable timeIdle:0];
 	[session.statusHandler updateStatus:newStatus];
 	[newStatus release];
 	

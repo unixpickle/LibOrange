@@ -30,6 +30,7 @@
 
 @synthesize delegate;
 @synthesize userStatus;
+@synthesize bartHandler;
 
 - (id)initWithSession:(AIMSession *)theSession initialInfo:(AIMNickWInfo *)initInfo {
 	if ((self = [super init])) {
@@ -39,6 +40,24 @@
 		[self performSelector:@selector(handleUserInfoUpdate:) onThread:session.mainThread withObject:initInfo waitUntilDone:NO];
 	}
 	return self;
+}
+
+- (void)configureBart {
+	NSAssert([NSThread currentThread] == [session backgroundThread], @"Running on incorrect thread");
+	[bartHandler setDelegate:self];
+	[bartHandler startupBArt];
+}
+
+- (void)aimBArtHandlerConnectedToBArt:(AIMBArtHandler *)handler {
+
+}
+
+- (void)aimBArtHandlerConnectFailed:(AIMBArtHandler *)handler {
+
+}
+
+- (void)aimBArtHandlerDisconnected:(AIMBArtHandler *)handler {
+
 }
 
 #pragma mark Network Handlers

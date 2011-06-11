@@ -33,6 +33,7 @@
 		FA616C51139EEACA00780097 /* AIMBArtID.m in Sources */ = {isa = PBXBuildFile; fileRef = FA616C50139EEACA00780097 /* AIMBArtID.m */; };
 		FA616C54139EEF5900780097 /* AIMNickWInfo+BArt.m in Sources */ = {isa = PBXBuildFile; fileRef = FA616C53139EEF5900780097 /* AIMNickWInfo+BArt.m */; };
 		FA616C5713A00C8400780097 /* AIMNickWInfo+Update.m in Sources */ = {isa = PBXBuildFile; fileRef = FA616C5613A00C8300780097 /* AIMNickWInfo+Update.m */; };
+		FA7FF69913A2EDF30079E2E1 /* AIMBArtHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA7FF69813A2EDF30079E2E1 /* AIMBArtHandler.m */; };
 		FA8591FB13A0FBC800B5D088 /* FTCreateRootGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8591FA13A0FBC800B5D088 /* FTCreateRootGroup.m */; };
 		FA8591FE13A0FF0300B5D088 /* AIMFeedbagStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8591FD13A0FF0300B5D088 /* AIMFeedbagStatus.m */; };
 		FA85920113A1023700B5D088 /* AIMFeedbag+Search.m in Sources */ = {isa = PBXBuildFile; fileRef = FA85920013A1023600B5D088 /* AIMFeedbag+Search.m */; };
@@ -135,6 +136,8 @@
 		FA616C53139EEF5900780097 /* AIMNickWInfo+BArt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AIMNickWInfo+BArt.m"; sourceTree = "<group>"; };
 		FA616C5513A00C8300780097 /* AIMNickWInfo+Update.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AIMNickWInfo+Update.h"; sourceTree = "<group>"; };
 		FA616C5613A00C8300780097 /* AIMNickWInfo+Update.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AIMNickWInfo+Update.m"; sourceTree = "<group>"; };
+		FA7FF69713A2EDF30079E2E1 /* AIMBArtHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMBArtHandler.h; sourceTree = "<group>"; };
+		FA7FF69813A2EDF30079E2E1 /* AIMBArtHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMBArtHandler.m; sourceTree = "<group>"; };
 		FA8591F813A0F9F900B5D088 /* FeedbagTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbagTransaction.h; sourceTree = "<group>"; };
 		FA8591F913A0FBC800B5D088 /* FTCreateRootGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTCreateRootGroup.h; sourceTree = "<group>"; };
 		FA8591FA13A0FBC800B5D088 /* FTCreateRootGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTCreateRootGroup.m; sourceTree = "<group>"; };
@@ -367,6 +370,8 @@
 			children = (
 				FA616C4F139EEACA00780097 /* AIMBArtID.h */,
 				FA616C50139EEACA00780097 /* AIMBArtID.m */,
+				FA7FF69713A2EDF30079E2E1 /* AIMBArtHandler.h */,
+				FA7FF69813A2EDF30079E2E1 /* AIMBArtHandler.m */,
 			);
 			name = "Buddy Art";
 			sourceTree = "<group>";
@@ -690,6 +695,7 @@
 				FA3237A213A17777005D7B69 /* FTAddGroup.m in Sources */,
 				FA05170E13A2AEA500A951F2 /* FTRemoveGroup.m in Sources */,
 				FA05171113A2B0CD00A951F2 /* CommandTokenizer.m in Sources */,
+				FA7FF69913A2EDF30079E2E1 /* AIMBArtHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

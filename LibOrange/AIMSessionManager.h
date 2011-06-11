@@ -17,6 +17,7 @@
 #import "AIMICBMHandler.h"
 #import "AIMTempBuddyHandler.h"
 #import "AIMStatusHandler.h"
+#import "AIMBArtHandler.h"
 
 #define kMinICBMInterval 200
 
@@ -52,6 +53,7 @@
 	AIMICBMHandler * messageHandler;
 	AIMTempBuddyHandler * tempBuddyHandler;
 	AIMStatusHandler * statusHandler;
+	AIMBArtHandler * bartHandler; // nil by default.
 	
 	id<AIMSessionManagerDelegate> delegate;
 }
@@ -64,6 +66,7 @@
 @property (readonly) AIMICBMHandler * messageHandler;
 @property (readonly) AIMTempBuddyHandler * tempBuddyHandler;
 @property (readonly) AIMStatusHandler * statusHandler;
+@property (readonly) AIMBArtHandler * bartHandler;
 
 + (BOOL)signonClientOnline:(OSCARConnection *)connection;
 
@@ -73,5 +76,12 @@
  * will be called, and the session can be passed around.
  */
 - (id)initWithLoginHostInfo:(AIMLoginHostInfo *)hostInf delegate:(id<AIMSessionManagerDelegate>)delegate;
+
+/**
+ * Should be called directly after the signon is performed to indicate that the
+ * API user wants to have access to buddy icons.  If this is not called externally,
+ * buddy icon notifications will not be given, and buddy icons will not be settable.
+ */
+- (void)configureBuddyArt;
 
 @end

@@ -30,3 +30,8 @@ Open Source Development
 =======================
 
 I encourage anybody that wants to fork this project to do so.  It's always good to have multiple people working on something.  I would prefer that you wait until LibOrange has all of the key features that I plan on implementing first, that way our forks don't become too different.
+
+What the hell is wrong with you?
+================================
+
+Well, first of all, I have recently adopted an obsession with making IM protocols and rewriting Oscar APIs. I wrote two more before this, each being more readable than the last. But I'm probably going to end up writing another one after this one, probably in RoR.

@@ -11,6 +11,7 @@
 #import "AIMNickWInfo.h"
 #import "AIMNickWInfo+BArt.h"
 #import "AIMNickWInfo+Update.h"
+#import "AIMBArtHandler.h"
 
 @class AIMStatusHandler;
 
@@ -23,18 +24,21 @@
 
 @end
 
-@interface AIMStatusHandler : NSObject <AIMSessionHandler> {
+@interface AIMStatusHandler : NSObject <AIMSessionHandler, AIMBArtHandlerDelegate> {
     AIMSession * session;
 	AIMBuddyStatus * userStatus;
 	id<AIMStatusHandlerDelegate> delegate;
 	AIMNickWInfo * lastInfo;
+	AIMBArtHandler * bartHandler;
 }
 
 @property (readonly) AIMBuddyStatus * userStatus;
 @property (nonatomic, assign) id<AIMStatusHandlerDelegate> delegate;
+@property (nonatomic, assign) AIMBArtHandler * bartHandler;
 
 - (id)initWithSession:(AIMSession *)theSession initialInfo:(AIMNickWInfo *)initInfo;
 - (void)queryUserInfo;
 - (void)updateStatus:(AIMBuddyStatus *)newStatus;
+- (void)configureBart;
 
 @end

@@ -7,11 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AIMLogin.h"
-#import "AIMSessionManager.h"
-#import "FTAddBuddy.h"
-#import "FTRemoveBuddy.h"
-#import "FTRemoveGroup.h"
+#import "LibOrange.h"
 #import "CommandTokenizer.h"
 
 @interface MyTest : NSObject <AIMLoginDelegate, AIMSessionManagerDelegate, AIMFeedbagHandlerDelegate, AIMICBMHandlerDelegate, AIMStatusHandlerDelegate> {
