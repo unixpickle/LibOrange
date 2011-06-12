@@ -322,7 +322,7 @@
 }
 
 - (void)_fetchNickInfoIcon:(AIMNickWInfo *)nickWIcon {
-	NSLog(@"Fetch buddy icon: %@", [nickWIcon username]);
+	// NSLog(@"Fetch buddy icon: %@", [nickWIcon username]);
 	NSAssert([NSThread currentThread] == session.backgroundThread, @"Running on incorrect thread");
 	if (bartHandler) [bartHandler fetchBArtIcon:[nickWIcon bartBuddyIcon] forUser:[nickWIcon username]];
 }

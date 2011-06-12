@@ -37,6 +37,7 @@
 	newItem.itemID = [feedbag randomItemID];
 	newItem.itemName = username;
 	newItem.attributes = [NSArray array];
+	originalGroup = [groupItem copy];
 	AIMFeedbagItem * groupUpdate = [groupItem itemByAddingOrderItem:newItem.itemID];
 	
 	// create SNACs
@@ -68,6 +69,7 @@
 	[username release];
 	[group release];
 	[snacs release];
+	[originalGroup release];
 	[super dealloc];
 }
 

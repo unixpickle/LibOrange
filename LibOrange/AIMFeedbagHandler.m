@@ -364,7 +364,10 @@
 		if (type != FBS_SUCCESS) {
 			// failure.
 			NSLog(@"Feedbag operation failed with code %d", type);
-			id<FeedbagTransaction> trans = [transactions objectAtIndex:0];
+			id<FeedbagTransaction> trans = nil;
+			@synchronized (transactions) {
+				trans = [transactions objectAtIndex:0];
+			}
 			[self performSelector:@selector(_delegateInformFailedTransaction:) onThread:session.mainThread withObject:trans waitUntilDone:NO];
 			@synchronized (transactions) {
 				[transactions removeObjectAtIndex:0];

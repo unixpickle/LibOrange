@@ -13,6 +13,7 @@
 @interface FTAddBuddy : NSObject <FeedbagTransaction> {
     NSString * username;
 	AIMBlistGroup * group;
+	AIMFeedbagItem * originalGroup;
 	
 	NSArray * snacs;
 	NSInteger snacIndex;
