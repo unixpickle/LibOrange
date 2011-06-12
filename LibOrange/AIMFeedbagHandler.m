@@ -137,6 +137,7 @@
 #pragma mark Modification Handlers
 
 - (void)_handleInsert:(NSArray *)feedbagItems {
+	//TODO: check if it exists in the order, if it does add it.
 	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
 	for (AIMFeedbagItem * item in feedbagItems) {
 		[[feedbag items] addObject:item];

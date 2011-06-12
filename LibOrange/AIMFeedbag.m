@@ -97,7 +97,14 @@
 
 - (UInt16)randomItemID {
 	for (UInt16 i = (arc4random() % 10000) + 2000; i < 0xFFFE; i++) {
-		if (![self itemWithItemID:i]) return i;
+		BOOL exists = NO;
+		for (AIMFeedbagItem * item in items) {
+			if ([item itemID] == i) {
+				exists = YES;
+				break;
+			}
+		}
+		if (!exists) return i;
 	}
 	return 0;
 }
