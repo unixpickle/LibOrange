@@ -10,12 +10,15 @@
 
 #define kMaxBufferSize 65536
 
-@interface OSCARConnection ()
+@interface OSCARConnection (Private)
+
+- (OSCARConnectionState)_state;
+- (void)_setState:(OSCARConnectionState)newState;
+- (int)socketfd;
+- (void)setSocketfd:(int)newFd;
 
 - (void)readInBackground:(NSThread *)mainThread;
-- (void)officialClosedown;
 - (void)packetWaiting;
-- (void)setIsOpen:(BOOL)_isOpen;
 
 @end
 
@@ -26,21 +29,14 @@
 @synthesize sequenceNumber;
 @synthesize delegate;
 
-- (BOOL)isOpen {
-	[isOpenLock lock];
-	BOOL _isOpen = isOpen;
-	[isOpenLock unlock];
-	return _isOpen;
-}
-
 - (id)initWithHost:(NSString *)host port:(int)_port {
 	if ((self = [super init])) {
 		hostName = [host retain];
 		port = _port;
-		isOpenLock = [[NSLock alloc] init];
-		isOpen = NO;
+		stateLock = [[NSLock alloc] init];
+		socketfdLock = [[NSLock alloc] init];
+		state = OSCARConnectionStateUnopened;
 		isNonBlocking = NO;
-		hasDied = NO;
 		sequenceNumber = arc4random() % 0xFFFF;
 	}
 	return self;
@@ -48,14 +44,14 @@
 
 - (BOOL)connectToHost:(NSError **)error {
 	// first, launch the connection.
-	if (hasDied || self.isOpen) return NO;
+	if (state != OSCARConnectionStateUnopened) return NO;
 	struct sockaddr_in serv_addr;
 	struct hostent * server;
-	socketfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (socketfd < 0) {
+	self.socketfd = socket(AF_INET, SOCK_STREAM, 0);
+	if (self.socketfd < 0) {
 		if (error)
 			*error = [NSError errorWithDomain:@"Socket creation failed" code:200 userInfo:nil];
-		hasDied = YES;
+		state = OSCARConnectionStateUnopened;
 		return NO;
 	}
 	
@@ -63,7 +59,7 @@
 	if (!server) {
 		if (error) 
 			*error = [NSError errorWithDomain:@"No host" code:201 userInfo:nil];
-		hasDied = YES;
+		state = OSCARConnectionStateUnopened;
 		return NO;
 	}
 	
@@ -73,17 +69,15 @@
 	bcopy(server->h_addr, &serv_addr.sin_addr.s_addr, server->h_length);
 	serv_addr.sin_port = htons(port);
 	
-	if (connect(socketfd, (const struct sockaddr *)&serv_addr, sizeof(struct sockaddr_in)) < 0) {
-		hasDied = YES;
+	if (connect(self.socketfd, (const struct sockaddr *)&serv_addr, sizeof(struct sockaddr_in)) < 0) {
+		state = OSCARConnectionStateUnopened;
 		if (error)
 			*error = [NSError errorWithDomain:@"Connect failed" code:202 userInfo:nil];
 	}
 	
 	buffer = [[NSMutableArray alloc] init];
 	
-	// we have our socket, we need to listen.
-	isOpen = YES;
-	hasDied = NO;
+	state = OSCARConnectionStateOpen;
 	
 	backgroundThread = [[NSThread alloc] initWithTarget:self
 											   selector:@selector(readInBackground:)
@@ -91,6 +85,13 @@
 	[backgroundThread start];
 	
 	return YES;
+}
+
+- (BOOL)isOpen {
+	[stateLock lock];
+	BOOL isOpen = (state == OSCARConnectionStateOpen);
+	[stateLock unlock];
+	return isOpen;
 }
 
 - (BOOL)hasFlap {
@@ -101,6 +102,7 @@
 	}
 	return (count > 0) ? YES : NO;
 }
+
 - (FLAPFrame *)readFlap {
 	if (![self isOpen]) return nil;
 	if (isNonBlocking && ![self hasFlap]) return nil;
@@ -114,10 +116,10 @@
 		return [frame autorelease];
 	} else if (!isNonBlocking) {
 		while (![self hasFlap]) {
-			// block
 			if (![self isOpen]) {
 				return nil;
 			}
+			[NSThread sleepForTimeInterval:0.1];
 		}
 		return [self readFlap];
 	}
@@ -138,9 +140,11 @@
 	int toWrite = (int)[bufferData length];
 	while (toWrite > 0) {
 		int needsWritten = (toWrite <= kMaxBufferSize) ? toWrite : kMaxBufferSize;
-		int wrote = (int)write(socketfd, &bytes[[bufferData length] - toWrite], needsWritten);
+		int wrote = (int)write(self.socketfd, &bytes[[bufferData length] - toWrite], needsWritten);
 		if (wrote <= 0) {
-			[self officialClosedown];
+			if ([self isOpen]) {
+				[self _setState:OSCARConnectionStateClosedByPeer];
+			}
 			return NO;
 		}
 		toWrite -= wrote;
@@ -150,20 +154,24 @@
 
 - (BOOL)disconnect {
 	if (![self isOpen]) return NO;
-	if ([NSThread currentThread] != initThread) {
-		[self performSelector:@selector(disconnect) onThread:initThread withObject:nil waitUntilDone:YES];
-		return YES;
-	}
 	[backgroundThread cancel];
 	[backgroundThread release];
 	backgroundThread = nil;
-	[self officialClosedown];
+	[socketfdLock lock];
+	if (_socketfd >= 0) {
+		close(_socketfd);
+		_socketfd = -1;
+	}
+	[socketfdLock unlock];
+	
+	[self _setState:OSCARConnectionStateClosedByUser];
 	return YES;
 }
 
 - (void)dealloc {
 	[backgroundThread release];
-	[isOpenLock release];
+	[stateLock release];
+	[socketfdLock release];
 	[hostName release];
 	[buffer release];
 	[super dealloc];
@@ -171,39 +179,41 @@
 
 #pragma mark Private
 
-- (void)readInBackground:(NSThread *)mainThread {
-	initThread = mainThread;
+- (void)readInBackground:(NSThread *)_mainThread {
+	mainThread = _mainThread;
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	[[mainThread retain] autorelease];
 	
 	while (![[NSThread currentThread] isCancelled]) {
-		
 		// first, await some data.
 		int error;
 		fd_set readDetector;
 		struct timeval myVar;
 		do {
 			FD_ZERO(&readDetector);
-			FD_SET(socketfd, &readDetector);
+			FD_SET(self.socketfd, &readDetector);
 			myVar.tv_sec = 10;
 			myVar.tv_usec = 0;
-			error = select(socketfd + 1, &readDetector,
+			error = select(self.socketfd + 1, &readDetector,
 							   NULL, NULL, &myVar);
 			if (error < 0) {
-				[self setIsOpen:NO];
-				[self performSelector:@selector(officialClosedown) onThread:mainThread withObject:nil waitUntilDone:NO];
+				if ([self _state] == OSCARConnectionStateOpen)
+					[self _setState:OSCARConnectionStateClosedByPeer];
 				[pool drain];
 				return;
 			}
-		} while (!FD_ISSET(socketfd, &readDetector) && error <= 0);
+		} while (!FD_ISSET(self.socketfd, &readDetector) && error <= 0);
+		
+		if ([[NSThread currentThread] isCancelled]) break;
 		
 		// here we read a header's length, and the data.
 		int headerGot = 0;
 		char headerData[6];
 		while (headerGot < 6) {
-			int justRead = (int)read(socketfd, &headerData[headerGot], 6 - headerGot);
+			int justRead = (int)read(self.socketfd, &headerData[headerGot], 6 - headerGot);
 			if (justRead <= 0) {
-				[self setIsOpen:NO];
-				[self performSelector:@selector(officialClosedown) onThread:mainThread withObject:nil waitUntilDone:NO];
+				if ([self _state] == OSCARConnectionStateOpen)
+					[self _setState:OSCARConnectionStateClosedByPeer];
 				[pool drain];
 				return;
 			}
@@ -219,11 +229,11 @@
 		while (bytesNeeded > 0) {
 			int startIndex = payloadLength - bytesNeeded;
 			int wants = (bytesNeeded <= kMaxBufferSize) ? bytesNeeded : kMaxBufferSize;
-			int justRead = (int)read(socketfd, &payload[startIndex], wants);
+			int justRead = (int)read(self.socketfd, &payload[startIndex], wants);
 			if (justRead <= 0) {
 				free(payload);
-				[self setIsOpen:NO];
-				[self performSelector:@selector(officialClosedown) onThread:mainThread withObject:nil waitUntilDone:NO];
+				if ([self _state] == OSCARConnectionStateOpen)
+					[self _setState:OSCARConnectionStateClosedByPeer];
 				[pool drain];
 				return;
 			}
@@ -243,35 +253,53 @@
 			[flap release];
 		}
 		
-		[self performSelector:@selector(packetWaiting) onThread:mainThread
-				   withObject:nil waitUntilDone:NO];
+		if ([mainThread isExecuting]) [self performSelector:@selector(packetWaiting) onThread:mainThread withObject:nil waitUntilDone:NO];
 	}
 	
-	[self setIsOpen:NO];
-	[self performSelector:@selector(officialClosedown) onThread:mainThread
-			   withObject:nil waitUntilDone:NO];
+	if ([self _state] == OSCARConnectionStateOpen)
+		[self _setState:OSCARConnectionStateClosedByPeer];
 	
 	[pool drain];
 }
-- (void)officialClosedown {
-	if (hasDied) return;
-	[self setIsOpen:NO];
-	close(socketfd);
-	socketfd = -1;
-	if (!hasDied) {
-		if ([delegate respondsToSelector:@selector(oscarConnectionClosed:)]) 
-			[delegate oscarConnectionClosed:self];
-		hasDied = YES;
-	}
-}
+
 - (void)packetWaiting {
+	NSAssert([NSThread currentThread] == mainThread, @"Running on incorrect thread");
 	if ([delegate respondsToSelector:@selector(oscarConnectionPacketWaiting:)]) 
 		[delegate oscarConnectionPacketWaiting:self];
 }
-- (void)setIsOpen:(BOOL)_isOpen {
-	[isOpenLock lock];
-	isOpen = _isOpen;
-	[isOpenLock unlock];
+
+#pragma mark Private
+
+- (OSCARConnectionState)_state {
+	[stateLock lock];
+	OSCARConnectionState theState = state;
+	[stateLock unlock];
+	return theState;
+}
+- (void)_setState:(OSCARConnectionState)newState {
+	[stateLock lock];
+	BOOL wasClosed = NO;
+	if (state == OSCARConnectionStateOpen && newState != OSCARConnectionStateOpen) {
+		wasClosed = YES;
+	}
+	state = newState;
+	[stateLock unlock];
+	if (wasClosed) {
+		if ([delegate respondsToSelector:@selector(oscarConnectionClosed:)]) {
+			[(NSObject *)delegate performSelector:@selector(oscarConnectionClosed:) onThread:mainThread withObject:self waitUntilDone:NO];
+		}
+	}
+}
+- (int)socketfd {
+	[socketfdLock lock];
+	int sfd = _socketfd;
+	[socketfdLock unlock];
+	return sfd;
+}
+- (void)setSocketfd:(int)newFd {
+	[socketfdLock lock];
+	_socketfd = newFd;
+	[socketfdLock unlock];
 }
 
 @end

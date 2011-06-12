@@ -38,6 +38,7 @@
 
 - (id)initWithSession:(AIMSession *)aSession;
 - (BOOL)startupBArt;
+- (void)closeBArtConnection;
 
 - (BOOL)fetchBArtIcon:(AIMBArtID *)bartID forUser:(NSString *)username;
 

@@ -167,8 +167,7 @@
 			AIMBlistBuddy * tempBuddy = [[session buddyList] buddyWithUsername:[nickInfo username]];
 			if (bid) {
 				AIMBArtID * oldBuddyIcon = [[tempBuddy buddyIcon] bartItem];
-				if ((![tempBuddy buddyIcon] || ![bid isEqualToBartID:oldBuddyIcon]) && !hasFetchedIcon) {
-					hasFetchedIcon = YES;
+				if ((![tempBuddy buddyIcon] || ![bid isEqualToBartID:oldBuddyIcon])) {
 					[self performSelector:@selector(_fetchNickInfoIcon:) onThread:[session backgroundThread] withObject:nickInfo waitUntilDone:NO];
 				}
 			}

@@ -22,43 +22,46 @@
 
 @protocol OSCARConnectionDelegate<NSObject>
 
-- (void)oscarConnectionClosed:(OSCARConnection *)connection;
-
 @optional
+- (void)oscarConnectionClosed:(OSCARConnection *)connection;
 - (void)oscarConnectionPacketWaiting:(OSCARConnection *)connection;
 
 @end
 
+typedef enum {
+	OSCARConnectionStateUnopened,
+	OSCARConnectionStateOpen,
+	OSCARConnectionStateClosedByPeer,
+	OSCARConnectionStateClosedByUser
+} OSCARConnectionState;
+
 
 @interface OSCARConnection : NSObject {
-	int socketfd;
+	NSLock * socketfdLock;
+	int _socketfd;
 	int port;
 	NSString * hostName;
-	BOOL isOpen;
+	OSCARConnectionState state;
+	NSLock * stateLock;
 	BOOL isNonBlocking;
-	BOOL hasDied;
-	
-	NSLock * isOpenLock;
 	
 	NSThread * backgroundThread;
-	NSThread * initThread;
+	NSThread * mainThread;
 	NSMutableArray * buffer;
 	
 	id<OSCARConnectionDelegate> delegate;
-	
-	// OSCAR
 	UInt16 sequenceNumber;
 }
 
 @property (readonly) NSString * hostName;
 @property (readwrite) BOOL isNonBlocking;
 @property (readonly) UInt16 sequenceNumber;
-@property (readonly) BOOL isOpen;
 @property (nonatomic, assign) id<OSCARConnectionDelegate> delegate;
 
 - (id)initWithHost:(NSString *)host port:(int)_port;
 - (BOOL)connectToHost:(NSError **)error;
 
+- (BOOL)isOpen;
 - (BOOL)hasFlap;
 - (FLAPFrame *)readFlap;
 

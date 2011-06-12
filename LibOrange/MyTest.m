@@ -8,7 +8,7 @@
 
 #import "MyTest.h"
 
-#define kSignoffTime 120
+#define kSignoffTime 30
 
 static void stripNL (char * buff) {
 	if (strlen(buff) == 0) return;

@@ -17,6 +17,8 @@
 - (void)_handleUpdate:(NSArray *)feedbagItems;
 
 /* Update Handlers */
+- (void)_handleBuddyInserted:(AIMFeedbagItem *)newItem;
+- (void)_handleGroupInserted:(AIMFeedbagItem *)newGroup;
 - (void)_handleGroupChanged:(AIMFeedbagItem *)oldItem newItem:(AIMFeedbagItem *)item;
 - (void)_handleRootGroupChanged:(AIMFeedbagItem *)oldItem newItem:(AIMFeedbagItem *)newItem;
 
@@ -137,10 +139,15 @@
 #pragma mark Modification Handlers
 
 - (void)_handleInsert:(NSArray *)feedbagItems {
-	//TODO: check if it exists in the order, if it does add it.
+	// TODO: check if it exists in the order, if it does add it.
 	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
 	for (AIMFeedbagItem * item in feedbagItems) {
 		[[feedbag items] addObject:item];
+		if ([item classID] == FEEDBAG_BUDDY) {
+			[self _handleBuddyInserted:item];
+		} else if ([item classID] == FEEDBAG_GROUP) {
+			[self _handleGroupInserted:item];
+		}
 	}
 }
 - (void)_handleDelete:(NSArray *)feedbagItems {
@@ -182,6 +189,61 @@
 	}
 }
 
+- (void)_handleBuddyInserted:(AIMFeedbagItem *)newItem {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	AIMFeedbagItem * group = [feedbag groupWithGroupID:[newItem groupID]];
+	if (!group) return;
+	NSArray * order = [group groupOrder];
+	NSNumber * itemIDObj = [NSNumber numberWithUnsignedShort:[newItem itemID]];
+	if ([order containsObject:itemIDObj]) {
+		// it existed in the order, let's add it to the group.
+		AIMBlistBuddy * buddy = [[AIMBlistBuddy alloc] initWithUsername:[newItem itemName]];
+		AIMBlistGroup * theGroup = [session.buddyList groupWithFeedbagID:[group groupID]];
+		if (theGroup) {
+			NSMutableArray * buddies = (NSMutableArray *)[theGroup buddies];
+			[buddies addObject:buddy];
+			[buddy setGroup:theGroup];
+			[buddy setFeedbagItemID:[itemIDObj unsignedShortValue]];
+			AIMBlistBuddy * tempBuddy = [tempBuddyHandler tempBuddyWithName:[newItem itemName]];
+			if (tempBuddy) {
+				[buddy setStatus:[tempBuddy status]];
+				[buddy setBuddyIcon:[tempBuddy buddyIcon]];
+				[tempBuddyHandler deleteTempBuddy:tempBuddy];
+			}
+			/* Should be running on main thread anyway. */
+			[self performSelector:@selector(_delegateInformAddedB:) onThread:session.mainThread withObject:buddy waitUntilDone:YES];
+		}
+		[buddy release];
+	}
+}
+
+- (void)_handleGroupInserted:(AIMFeedbagItem *)newGroup {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	AIMFeedbagItem * rootGroup = [feedbag findRootGroup];
+	if (!rootGroup) return;
+	NSArray * order = [rootGroup groupOrder];
+	if ([order containsObject:[NSNumber numberWithUnsignedShort:[newGroup groupID]]]) {
+		// some lousy client adds things in the wrong order, but whatever, just add the thing
+		// and quit complaining....
+		AIMBlistGroup * group = [session.buddyList loadGroup:newGroup inFeedbag:feedbag];
+		if (group) {
+			NSMutableArray * groups = (NSMutableArray *)[session.buddyList groups];
+			if (![group name]) [group setName:@""];
+			[groups addObject:group];
+			for (AIMBlistBuddy * buddy in [group buddies]) {
+				AIMBlistBuddy * tempBuddy = [tempBuddyHandler tempBuddyWithName:[buddy username]];
+				if (tempBuddy) {
+					[buddy setStatus:[tempBuddy status]];
+					[buddy setBuddyIcon:[tempBuddy buddyIcon]];
+					[tempBuddyHandler deleteTempBuddy:tempBuddy];
+				}
+			}
+			/* Should be running on main thread anyway. */
+			[self performSelector:@selector(_delegateInformAddedG:) onThread:session.mainThread withObject:group waitUntilDone:NO];
+		}
+	}
+}
+
 - (void)_handleGroupChanged:(AIMFeedbagItem *)oldItem newItem:(AIMFeedbagItem *)item {
 	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
 	NSArray * added = nil;
@@ -217,8 +279,6 @@
 					[tempBuddyHandler deleteTempBuddy:tempBuddy];
 				}
 				[self performSelector:@selector(_delegateInformAddedB:) onThread:session.mainThread withObject:buddy waitUntilDone:YES];
-			} else {
-				NSLog(@"%@ added to group: %@.  This is most likely because of AOL adding to the Recent Buddies.", buddy, [oldItem itemName]);
 			}
 			[buddy release];
 		}
@@ -234,11 +294,13 @@
 		for (NSNumber * removedID in removed) {
 			UInt16 groupID = [removedID unsignedShortValue];
 			AIMBlistGroup * group = [[session.buddyList groupWithFeedbagID:groupID] retain];
-			NSMutableArray * groups = (NSMutableArray *)[session.buddyList groups];
-			[groups removeObject:group];
-			/* Should be running on main thread anyway. */
-			[self performSelector:@selector(_delegateInformRemovedG:) onThread:session.mainThread withObject:group waitUntilDone:NO];
-			[group release];
+			if (group) {
+				NSMutableArray * groups = (NSMutableArray *)[session.buddyList groups];
+				[groups removeObject:group];
+				/* Should be running on main thread anyway. */
+				[self performSelector:@selector(_delegateInformRemovedG:) onThread:session.mainThread withObject:group waitUntilDone:NO];
+				[group release];
+			}
 		}
 		for (NSNumber * addedID in added) {
 			UInt16 groupID = [addedID unsignedShortValue];

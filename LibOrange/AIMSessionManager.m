@@ -507,6 +507,7 @@
 	[messageHandler release];
 	[tempBuddyHandler release];
 	[statusHandler release];
+	[bartHandler closeBArtConnection];
 	[bartHandler release];
 	[session release];
 	[super dealloc];

@@ -47,6 +47,14 @@
 	[serviceRequest release];
 	return success;
 }
+- (void)closeBArtConnection {
+	if (currentConnection) {
+		[currentConnection setDelegate:nil];
+		[currentConnection disconnect];
+		[currentConnection release];
+		currentConnection = nil;
+	}
+}
 
 - (void)handleIncomingSnac:(SNAC *)aSnac {
 	NSAssert([NSThread currentThread] == [bossSession backgroundThread], @"Running on incorrect thread");
@@ -125,6 +133,11 @@
 		if (cookie) {
 			[bartCookie release];
 			bartCookie = [cookie retain];
+		}
+		if (currentConnection) {
+			[currentConnection setDelegate:nil];
+			[currentConnection release];
+			currentConnection = nil;
 		}
 		BOOL success = [self _openConnection:bartHost];
 		if (!success) {

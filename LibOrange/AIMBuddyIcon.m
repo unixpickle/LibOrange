@@ -59,6 +59,8 @@
 }
 
 - (void)dealloc {
+	[bartItem release];
+	[iconData release];
 	[super dealloc];
 }
 
