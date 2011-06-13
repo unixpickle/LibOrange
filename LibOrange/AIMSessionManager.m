@@ -490,9 +490,20 @@
 #pragma mark Session
 
 - (void)aimSessionClosed:(AIMSession *)session {
+	// if something is going to release us, we do not want it to
+	// affect us until after we finish closing session handlers.
+	[self retain];
 	if ([delegate respondsToSelector:@selector(aimSessionManagerSignedOff:)]) {
 		[delegate aimSessionManagerSignedOff:self];
 	}
+	[feedbagHandler sessionClosed];
+	[messageHandler sessionClosed];
+	[tempBuddyHandler sessionClosed];
+	[statusHandler sessionClosed];
+	[bartHandler sessionClosed];
+	[bartHandler closeBArtConnection];
+	[rateHandler sessionClosed];
+	[self release];
 }
 
 #pragma mark Memory Management
@@ -508,23 +519,11 @@
 	self.mainThread = nil;
 	self.backgroundThread = nil;
 	
-	[feedbagHandler sessionClosed];
 	[feedbagHandler release];
-	
-	[messageHandler sessionClosed];
 	[messageHandler release];
-	
-	[tempBuddyHandler sessionClosed];
 	[tempBuddyHandler release];
-	
-	[statusHandler sessionClosed];
 	[statusHandler release];
-	
-	[bartHandler sessionClosed];
-	[bartHandler closeBArtConnection];
 	[bartHandler release];
-	
-	[rateHandler sessionClosed];
 	[rateHandler release];
 	
 	[session release];

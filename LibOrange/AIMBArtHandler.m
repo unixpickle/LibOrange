@@ -71,6 +71,7 @@
 }
 
 - (BOOL)fetchBArtIcon:(AIMBArtID *)bartID forUser:(NSString *)username {
+	NSAssert([NSThread currentThread] == bossSession.backgroundThread, @"Running on incorrect thread");
 	if (!currentConnection) return NO;
 	if (![currentConnection isOpen]) return NO;
 	AIMBArtIDWName * fetch = [[AIMBArtIDWName alloc] initWithNick:username bartIds:[NSArray arrayWithObject:bartID]];

@@ -24,9 +24,11 @@
 	session = nil;
 }
 - (NSArray *)temporaryBuddies {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
 	return (NSArray *)tempBuddies;
 }
 - (AIMBlistBuddy *)addTempBuddy:(NSString *)screenName {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
 	if ([self tempBuddyWithName:screenName]) {
 		return [self tempBuddyWithName:screenName];
 	}
@@ -41,6 +43,7 @@
 	return [newBuddy autorelease];
 }
 - (AIMBlistBuddy *)tempBuddyWithName:(NSString *)screenName {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
 	for (AIMBlistBuddy * buddy in tempBuddies) {
 		if ([buddy usernameIsEqual:screenName]) {
 			return buddy;
@@ -49,6 +52,7 @@
 	return nil;
 }
 - (void)deleteTempBuddy:(AIMBlistBuddy *)tempBuddy {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
 	AIMBlistBuddy * buddy = [self tempBuddyWithName:[tempBuddy username]];
 	if (buddy) {
 		NSData * unameStr = encodeString8([buddy username]);

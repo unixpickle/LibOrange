@@ -60,6 +60,7 @@
 
 - (void)aimBArtHandlerDisconnected:(AIMBArtHandler *)handler {
 	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	[handler performSelector:@selector(startupBArt) onThread:[session backgroundThread] withObject:nil waitUntilDone:NO];
 }
 
 - (void)aimBArtHandler:(AIMBArtHandler *)handler gotBuddyIcon:(AIMBuddyIcon *)icns forUser:(NSString *)loginID {
