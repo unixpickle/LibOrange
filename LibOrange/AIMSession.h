@@ -16,6 +16,7 @@
 @protocol AIMSessionHandler
 
 - (void)handleIncomingSnac:(SNAC *)aSnac;
+- (void)sessionClosed;
 
 @end
 

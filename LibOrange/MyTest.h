@@ -10,7 +10,7 @@
 #import "LibOrange.h"
 #import "CommandTokenizer.h"
 
-@interface MyTest : NSObject <AIMLoginDelegate, AIMSessionManagerDelegate, AIMFeedbagHandlerDelegate, AIMICBMHandlerDelegate, AIMStatusHandlerDelegate> {
+@interface MyTest : NSObject <AIMLoginDelegate, AIMSessionManagerDelegate, AIMFeedbagHandlerDelegate, AIMICBMHandlerDelegate, AIMStatusHandlerDelegate, AIMRateLimitHandlerDelegate> {
     AIMLogin * login;
 	AIMSessionManager * theSession;
 	NSThread * mainThread;

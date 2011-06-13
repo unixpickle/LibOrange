@@ -18,6 +18,7 @@
 }
 
 - (id)initWithSession:(AIMSession *)session;
+- (void)sessionClosed;
 - (NSArray *)temporaryBuddies;
 - (AIMBlistBuddy *)addTempBuddy:(NSString *)screenName;
 - (AIMBlistBuddy *)tempBuddyWithName:(NSString *)screenName;

@@ -157,13 +157,7 @@
 	[backgroundThread cancel];
 	[backgroundThread release];
 	backgroundThread = nil;
-	[socketfdLock lock];
-	if (_socketfd >= 0) {
-		close(_socketfd);
-		_socketfd = -1;
-	}
-	[socketfdLock unlock];
-	
+
 	[self _setState:OSCARConnectionStateClosedByUser];
 	return YES;
 }
@@ -202,9 +196,9 @@
 				[pool drain];
 				return;
 			}
-		} while (!FD_ISSET(self.socketfd, &readDetector) && error <= 0);
+		} while (!FD_ISSET(self.socketfd, &readDetector) && error <= 0 && [self isOpen]);
 		
-		if ([[NSThread currentThread] isCancelled]) break;
+		if ([[NSThread currentThread] isCancelled] || ![self isOpen]) break;
 		
 		// here we read a header's length, and the data.
 		int headerGot = 0;
@@ -220,7 +214,7 @@
 			headerGot += justRead;
 		}
 		
-		if ([[NSThread currentThread] isCancelled]) break;
+		if ([[NSThread currentThread] isCancelled] || ![self isOpen]) break;
 		
 		UInt16 payloadLength = flipUInt16(((UInt16 *)headerData)[2]);
 		int bytesNeeded = payloadLength;
@@ -288,6 +282,10 @@
 		if ([delegate respondsToSelector:@selector(oscarConnectionClosed:)]) {
 			[(NSObject *)delegate performSelector:@selector(oscarConnectionClosed:) onThread:mainThread withObject:self waitUntilDone:NO];
 		}
+		[socketfdLock lock];
+		close(_socketfd);
+		_socketfd = -1;
+		[socketfdLock unlock];
 	}
 }
 - (int)socketfd {

@@ -33,7 +33,7 @@
 
 - (id)initWithSession:(AIMSession *)aSession {
 	if ((self = [super init])) {
-		bossSession = aSession;
+		bossSession = [aSession retain];
 		[bossSession addHandler:self];
 	}
 	return self;
@@ -62,6 +62,12 @@
 		NSArray * connectInfo = [TLV decodeTLVArray:[aSnac innerContents]];
 		if (connectInfo) [self _handleConnectInfo:connectInfo];
 	}
+}
+
+- (void)sessionClosed {
+	[bossSession removeHandler:self];
+	[bossSession autorelease];
+	bossSession = nil;
 }
 
 - (BOOL)fetchBArtIcon:(AIMBArtID *)bartID forUser:(NSString *)username {

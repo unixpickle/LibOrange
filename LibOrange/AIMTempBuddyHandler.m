@@ -12,11 +12,16 @@
 
 @implementation AIMTempBuddyHandler
 
-- (id)initWithSession:(AIMSession *)session {
+- (id)initWithSession:(AIMSession *)theSession {
 	if ((self = [super init])) {
 		tempBuddies = [[NSMutableArray alloc] init];
+		session = [theSession retain];
 	}
 	return self;
+}
+- (void)sessionClosed {
+	[session autorelease];
+	session = nil;
 }
 - (NSArray *)temporaryBuddies {
 	return (NSArray *)tempBuddies;

@@ -8,7 +8,7 @@
 
 #import "MyTest.h"
 
-#define kSignoffTime 30
+#define kSignoffTime 60
 
 static void stripNL (char * buff) {
 	if (strlen(buff) == 0) return;
@@ -64,6 +64,12 @@ static void stripNL (char * buff) {
 	}
 }
 
+- (void)sendBogus {
+	AIMMessage * msg = [AIMMessage messageWithBuddy:[theSession.session.buddyList buddyWithUsername:@"alexqnichol"] message:@"Yo!"];
+	[theSession.messageHandler sendMessage:msg];
+	[self performSelector:@selector(sendBogus) withObject:nil afterDelay:1];
+}
+
 #pragma mark Login Delegate
 
 - (void)aimLogin:(AIMLogin *)theLogin failedWithError:(NSError *)error {
@@ -84,6 +90,7 @@ static void stripNL (char * buff) {
 	session.feedbagHandler.delegate = self;
 	session.messageHandler.delegate = self;
 	session.statusHandler.delegate = self;
+	session.rateHandler.delegate = self;
 	
 	[session configureBuddyArt];
 	AIMBuddyStatus * newStatus = [[AIMBuddyStatus alloc] initWithMessage:@"Using LibOrange on Mac!" type:AIMBuddyStatusAvailable timeIdle:0];
@@ -94,6 +101,9 @@ static void stripNL (char * buff) {
 	NSLog(@"Our status: %@", session.statusHandler.userStatus);
 	NSLog(@"Disconnecting in %d seconds ...", kSignoffTime);
 	[[session session] performSelector:@selector(closeConnection) withObject:nil afterDelay:kSignoffTime];
+	
+	// uncomment to test rate limit detection.
+	// [self sendBogus];
 }
 
 #pragma mark Session Delegate
@@ -232,6 +242,12 @@ static void stripNL (char * buff) {
 			[[[theBuddy buddyIcon] iconData] writeToFile:path atomically:YES];
 		}
 	}
+}
+
+#pragma mark Rate Handlers
+
+- (void)aimRateLimitHandler:(AIMRateLimitHandler *)handler gotRateAlert:(AIMRateNotificationInfo *)info {
+	// use this to show the user that they should stop sending messages.
 }
 
 #pragma mark Commands

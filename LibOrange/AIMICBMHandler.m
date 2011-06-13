@@ -21,7 +21,7 @@
 
 - (id)initWithSession:(AIMSession *)theSession {
 	if ((self = [super init])) {
-		session = theSession;
+		session = [theSession retain];
 		[theSession addHandler:self];
 	}
 	return self;
@@ -49,6 +49,12 @@
 			[self performSelector:@selector(_delegateInformMissedCall:) onThread:session.mainThread withObject:missedCall waitUntilDone:NO];
 		}
 	}
+}
+
+- (void)sessionClosed {
+	[session removeHandler:self];
+	[session autorelease];
+	session = nil;
 }
 
 #pragma mark Private

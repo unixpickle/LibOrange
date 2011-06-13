@@ -295,7 +295,7 @@
 							<real>186</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>340 292 788 504 0 0 1440 878 </string>
+						<string>590 426 788 504 0 0 1920 1058 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -330,14 +330,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {580, 251}}</string>
+								<string>{{0, 0}, {580, 242}}</string>
 								<key>RubberWindowFrame</key>
-								<string>340 292 788 504 0 0 1440 878 </string>
+								<string>590 426 788 504 0 0 1920 1058 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>251pt</string>
+							<string>242pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -350,14 +350,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 256}, {580, 207}}</string>
+								<string>{{0, 247}, {580, 216}}</string>
 								<key>RubberWindowFrame</key>
-								<string>340 292 788 504 0 0 1440 878 </string>
+								<string>590 426 788 504 0 0 1920 1058 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>207pt</string>
+							<string>216pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -376,9 +376,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>FA79FF4413A56A4600EB2641</string>
+				<string>FA5AAF8613A6B7C100EDC7A9</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>FA79FF4513A56A4600EB2641</string>
+				<string>FA5AAF8713A6B7C100EDC7A9</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -520,7 +520,7 @@
 		<string>/Users/alex/Desktop/LibOrange/LibOrange.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>340 292 788 504 0 0 1440 878 </string>
+	<string>590 426 788 504 0 0 1920 1058 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -550,7 +550,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {500, 218}}</string>
 								<key>RubberWindowFrame</key>
-								<string>347 276 500 500 0 0 1440 878 </string>
+								<string>524 399 500 500 0 0 1920 1058 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -574,7 +574,7 @@
 								<key>Frame</key>
 								<string>{{0, 223}, {500, 236}}</string>
 								<key>RubberWindowFrame</key>
-								<string>347 276 500 500 0 0 1440 878 </string>
+								<string>524 399 500 500 0 0 1920 1058 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXBuildResultsModule</string>
@@ -597,7 +597,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>FA7F4FC8139C4F480099E091</string>
-				<string>FA79FF4613A56A4600EB2641</string>
+				<string>FA5AAF8813A6B7C100EDC7A9</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -606,7 +606,7 @@
 			<key>WindowContentMinSize</key>
 			<string>486 300</string>
 			<key>WindowString</key>
-			<string>347 276 500 500 0 0 1440 878 </string>
+			<string>524 399 500 500 0 0 1920 1058 </string>
 			<key>WindowToolGUID</key>
 			<string>FA7F4FC8139C4F480099E091</string>
 			<key>WindowToolIsVisible</key>

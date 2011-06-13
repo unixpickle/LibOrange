@@ -48,7 +48,7 @@
 
 - (id)initWithSession:(AIMSession *)theSession {
 	if ((self = [super init])) {
-		session = theSession;
+		session = [theSession retain];
 		[session addHandler:self];
 		transactions = [[NSMutableArray alloc] init];
 	}
@@ -98,6 +98,12 @@
 	} else if (SNAC_ID_IS_EQUAL([aSnac snac_id], SNAC_ID_NEW(SNAC_FEEDBAG, FEEDBAG__STATUS))) {
 		[self handleTransactionStatus:aSnac];
 	}
+}
+
+- (void)sessionClosed {
+	[session removeHandler:self];
+	[session autorelease];
+	session = nil;
 }
 
 - (void)_handleFeedbagResponse:(SNAC *)aSnac {

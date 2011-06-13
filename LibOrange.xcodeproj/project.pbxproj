@@ -46,6 +46,9 @@
 		FA963ECE139EB49E009F3157 /* AIMStatusHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA963ECD139EB49E009F3157 /* AIMStatusHandler.m */; };
 		FA963ED1139EB6AB009F3157 /* AIMBuddyStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = FA963ED0139EB6AB009F3157 /* AIMBuddyStatus.m */; };
 		FAA6E8B7139C4F6C004AA5B8 /* AIMFeedbagRights.m in Sources */ = {isa = PBXBuildFile; fileRef = FAA6E8B6139C4F6C004AA5B8 /* AIMFeedbagRights.m */; };
+		FAAE844B13A6BB8B00CCB00A /* AIMRateLimitHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FAAE844A13A6BB8B00CCB00A /* AIMRateLimitHandler.m */; };
+		FAAE844E13A6BB9A00CCB00A /* AIMRateNotificationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = FAAE844D13A6BB9A00CCB00A /* AIMRateNotificationInfo.m */; };
+		FAAE845113A6BBA500CCB00A /* AIMRateParamsChange.m in Sources */ = {isa = PBXBuildFile; fileRef = FAAE845013A6BBA500CCB00A /* AIMRateParamsChange.m */; };
 		FABC0E811396CD7F0050D130 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FABC0E801396CD7F0050D130 /* Foundation.framework */; };
 		FABC0E841396CD7F0050D130 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0E831396CD7F0050D130 /* main.m */; };
 		FABC0E961396CDA80050D130 /* AIMSession.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0E951396CDA80050D130 /* AIMSession.m */; };
@@ -167,6 +170,12 @@
 		FA963ED0139EB6AB009F3157 /* AIMBuddyStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMBuddyStatus.m; sourceTree = "<group>"; };
 		FAA6E8B5139C4F6C004AA5B8 /* AIMFeedbagRights.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMFeedbagRights.h; sourceTree = "<group>"; };
 		FAA6E8B6139C4F6C004AA5B8 /* AIMFeedbagRights.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMFeedbagRights.m; sourceTree = "<group>"; };
+		FAAE844913A6BB8B00CCB00A /* AIMRateLimitHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMRateLimitHandler.h; sourceTree = "<group>"; };
+		FAAE844A13A6BB8B00CCB00A /* AIMRateLimitHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMRateLimitHandler.m; sourceTree = "<group>"; };
+		FAAE844C13A6BB9A00CCB00A /* AIMRateNotificationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMRateNotificationInfo.h; sourceTree = "<group>"; };
+		FAAE844D13A6BB9A00CCB00A /* AIMRateNotificationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMRateNotificationInfo.m; sourceTree = "<group>"; };
+		FAAE844F13A6BBA500CCB00A /* AIMRateParamsChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMRateParamsChange.h; sourceTree = "<group>"; };
+		FAAE845013A6BBA500CCB00A /* AIMRateParamsChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMRateParamsChange.m; sourceTree = "<group>"; };
 		FABC0E7C1396CD7F0050D130 /* LibOrange */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = LibOrange; sourceTree = BUILT_PRODUCTS_DIR; };
 		FABC0E801396CD7F0050D130 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FABC0E831396CD7F0050D130 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -252,6 +261,7 @@
 		FA232A181399F9E100852CC1 /* Handlers */ = {
 			isa = PBXGroup;
 			children = (
+				FAAE844813A6BB8000CCB00A /* Rate Limits */,
 				FA616C4E139EEABD00780097 /* Buddy Art */,
 				FA1B67B7139DA414008F1884 /* Temp Buddies */,
 				FA4CE792139AB53D00487172 /* Status */,
@@ -450,6 +460,19 @@
 				FA85920013A1023600B5D088 /* AIMFeedbag+Search.m */,
 			);
 			name = "Data Structure";
+			sourceTree = "<group>";
+		};
+		FAAE844813A6BB8000CCB00A /* Rate Limits */ = {
+			isa = PBXGroup;
+			children = (
+				FAAE844913A6BB8B00CCB00A /* AIMRateLimitHandler.h */,
+				FAAE844A13A6BB8B00CCB00A /* AIMRateLimitHandler.m */,
+				FAAE844C13A6BB9A00CCB00A /* AIMRateNotificationInfo.h */,
+				FAAE844D13A6BB9A00CCB00A /* AIMRateNotificationInfo.m */,
+				FAAE844F13A6BBA500CCB00A /* AIMRateParamsChange.h */,
+				FAAE845013A6BBA500CCB00A /* AIMRateParamsChange.m */,
+			);
+			name = "Rate Limits";
 			sourceTree = "<group>";
 		};
 		FABC0E711396CD7E0050D130 = {
@@ -728,6 +751,9 @@
 				FA73ACBB13A3BA8500E13FDA /* AIMBArtIDWName.m in Sources */,
 				FA73ACBF13A3C4CF00E13FDA /* AIMBArtQueryReplyID.m in Sources */,
 				FA73ACC213A3C79100E13FDA /* AIMBArtDownloadReply.m in Sources */,
+				FAAE844B13A6BB8B00CCB00A /* AIMRateLimitHandler.m in Sources */,
+				FAAE844E13A6BB9A00CCB00A /* AIMRateNotificationInfo.m in Sources */,
+				FAAE845113A6BBA500CCB00A /* AIMRateParamsChange.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

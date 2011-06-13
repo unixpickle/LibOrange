@@ -36,7 +36,7 @@
 
 - (id)initWithSession:(AIMSession *)theSession initialInfo:(AIMNickWInfo *)initInfo {
 	if ((self = [super init])) {
-		session = theSession;
+		session = [theSession retain];
 		[theSession addHandler:self];
 		userStatus = [[AIMBuddyStatus offlineStatus] retain];
 		[self performSelector:@selector(handleUserInfoUpdate:) onThread:session.mainThread withObject:initInfo waitUntilDone:NO];
@@ -103,6 +103,11 @@
 		else NSLog(@"Unfatal ERROR: Got invalid NickWInfo from OSERVICE");
 		[updateInf release];
 	}
+}
+
+- (void)sessionClosed {
+	[session removeHandler:self];
+	[session autorelease];
 }
 
 - (AIMBuddyStatus *)statusFromNickInfo:(AIMNickWInfo *)info fetchAwayData:(BOOL *)fetchAway {

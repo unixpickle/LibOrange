@@ -51,6 +51,7 @@
 @synthesize tempBuddyHandler;
 @synthesize statusHandler;
 @synthesize bartHandler;
+@synthesize rateHandler;
 
 - (id)initWithLoginHostInfo:(AIMLoginHostInfo *)hostInf delegate:(id<AIMSessionManagerDelegate>)_delegate {
 	if ((self = [super init])) {
@@ -262,6 +263,7 @@
 	messageHandler = [[AIMICBMHandler alloc] initWithSession:session];
 	tempBuddyHandler = [[AIMTempBuddyHandler alloc] initWithSession:session];
 	statusHandler = [[AIMStatusHandler alloc] initWithSession:session initialInfo:initialInfo];
+	rateHandler = [[AIMRateLimitHandler alloc] initWithSession:session];
 	
 	[initialInfo release];
 	initialInfo = nil;
@@ -352,6 +354,8 @@
 		[ackData appendBytes:&rateClass length:2];
 	}
 	
+	// TODO: store reply as a global variable and use it for a future
+	// rate handler.
 	[reply release];
 	
 	SNAC * ratesAccept = [[SNAC alloc] initWithID:SNAC_ID_NEW(SNAC_OSERVICE, OSERVICE__RATE_ADD_PARAM_SUB)
@@ -503,12 +507,26 @@
 	NSAssert(self.backgroundThread == nil, @"Background thread should retain AIMSessionManager but doesn't.");
 	self.mainThread = nil;
 	self.backgroundThread = nil;
+	
+	[feedbagHandler sessionClosed];
 	[feedbagHandler release];
+	
+	[messageHandler sessionClosed];
 	[messageHandler release];
+	
+	[tempBuddyHandler sessionClosed];
 	[tempBuddyHandler release];
+	
+	[statusHandler sessionClosed];
 	[statusHandler release];
+	
+	[bartHandler sessionClosed];
 	[bartHandler closeBArtConnection];
 	[bartHandler release];
+	
+	[rateHandler sessionClosed];
+	[rateHandler release];
+	
 	[session release];
 	[super dealloc];
 }
