@@ -15,6 +15,8 @@
 - (void)_delegateInformConnected;
 - (void)_delegateInformDisconnected;
 - (void)_delegateInformHasData:(AIMBArtDownloadReply *)dlReply;
+- (void)_delegateInformUploadedBid:(AIMBArtID *)ulID;
+- (void)_delegateInformUploadFailed:(NSNumber *)statusCode;
 
 - (void)_handleConnectInfo:(NSArray *)tlvs;
 - (BOOL)_openConnection:(NSString *)hostWPort;
@@ -22,6 +24,7 @@
 
 - (void)_handleBartSnac:(SNAC *)aSnac;
 - (void)_handleDownloadReply:(SNAC *)downloadReply;
+- (void)_handleUploadReply:(SNAC *)uploadReply;
 
 - (SNAC *)waitOnConnectionForSnacID:(SNAC_ID)snacID;
 
@@ -84,6 +87,26 @@
 	return success;
 }
 
+- (BOOL)uploadBArtData:(NSData *)data forType:(UInt16)bartType {
+	NSAssert([NSThread currentThread] == bossSession.backgroundThread, @"Running on incorrect thread");
+	if ([data length] > UINT16_MAX) {
+		return NO;
+	}
+	if (!currentConnection) return NO;
+	if (![currentConnection isOpen]) return NO;
+	UInt16 typeFlip = flipUInt16(bartType);
+	UInt16 lenFlip = flipUInt16([data length]);
+	NSMutableData * packetData = [[NSMutableData alloc] init];
+	[packetData appendBytes:&typeFlip length:2];
+	[packetData appendBytes:&lenFlip length:2];
+	[packetData appendData:data];
+	SNAC * bartUpload = [[SNAC alloc] initWithID:SNAC_ID_NEW(SNAC_BART, BART__UPLOAD) flags:0 requestID:[bossSession generateReqID] data:packetData];
+	[packetData release];
+	FLAPFrame * flap = [currentConnection createFlapChannel:2 data:[bartUpload encodePacket]];
+	[bartUpload release];
+	return [currentConnection writeFlap:flap];
+}
+
 #pragma mark Private
 
 - (void)_delegateInformConnectionFailed {
@@ -113,6 +136,20 @@
 		AIMBuddyIcon * bicon = [[AIMBuddyIcon alloc] initWithBid:[[dlReply replyInfo] initialID] iconData:[dlReply assetData]];
 		[delegate aimBArtHandler:self gotBuddyIcon:bicon forUser:[dlReply username]];
 		[bicon release];
+	}
+}
+
+- (void)_delegateInformUploadedBid:(AIMBArtID *)ulID {
+	NSAssert([NSThread currentThread] == [bossSession mainThread], @"Running on incorrect thread");
+	if ([delegate respondsToSelector:@selector(aimBArtHandler:uploadedBArtID:)]) {
+		[delegate aimBArtHandler:self uploadedBArtID:ulID];
+	}
+}
+
+- (void)_delegateInformUploadFailed:(NSNumber *)statusCode {
+	NSAssert([NSThread currentThread] == [bossSession mainThread], @"Running on incorrect thread");
+	if ([delegate respondsToSelector:@selector(aimBArtHandler:uploadFailed:)]) {
+		[delegate aimBArtHandler:self uploadFailed:[statusCode unsignedShortValue]];
 	}
 }
 
@@ -253,6 +290,8 @@
 	NSAssert([NSThread currentThread] == [bossSession backgroundThread], @"Running on incorrect thread");
 	if (SNAC_ID_IS_EQUAL(SNAC_ID_NEW(SNAC_BART, BART__DOWNLOAD_REPLY2), [aSnac snac_id])) {
 		[self _handleDownloadReply:aSnac];
+	} else if (SNAC_ID_IS_EQUAL(SNAC_ID_NEW(SNAC_BART, BART__UPLOAD_REPLY), [aSnac snac_id])) {
+		[self _handleUploadReply:aSnac];
 	}
 }
 
@@ -268,6 +307,27 @@
 		[self performSelector:@selector(_delegateInformHasData:) onThread:[bossSession mainThread] withObject:downloadInf waitUntilDone:NO];
 	}
 	[downloadInf release];
+}
+
+- (void)_handleUploadReply:(SNAC *)uploadReply {
+	NSAssert([NSThread currentThread] == [bossSession backgroundThread], @"Running on incorrect thread");
+	NSData * innerContents = [uploadReply innerContents];
+	if ([innerContents length] < 1) {
+		return;
+	}
+	UInt8 statusCode = *(const UInt8 *)[innerContents bytes];
+	if ([innerContents length] > 1) {
+		int newLen = (int)([innerContents length] - 1);
+		const char * bytes = [innerContents bytes];
+		AIMBArtID * bid = [(AIMBArtID *)[AIMBArtID alloc] initWithPointer:&bytes[1] length:&newLen];
+		if (bid) {
+			[self performSelector:@selector(_delegateInformUploadedBid:) onThread:[bossSession mainThread] withObject:bid waitUntilDone:NO];
+			[bid release];
+		}
+	} else {
+		NSNumber * sCode = [NSNumber numberWithUnsignedShort:statusCode];
+		[self performSelector:@selector(_delegateInformUploadFailed:) onThread:[bossSession mainThread] withObject:sCode waitUntilDone:NO];
+	}
 }
 
 - (void)dealloc {

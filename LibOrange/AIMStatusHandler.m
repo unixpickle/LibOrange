@@ -24,6 +24,7 @@
 - (void)handleUserInfoUpdate:(AIMNickWInfo *)newInfo;
 - (void)_delegateInformNewStatus;
 - (void)_delegateInformBuddyIconChange:(AIMBlistBuddy *)theBuddy;
+- (void)_delegateInformBArtConnected;
 - (void)_fetchNickInfoIcon:(AIMNickWInfo *)nickWIcon;
 
 @end
@@ -33,6 +34,7 @@
 @synthesize delegate;
 @synthesize userStatus;
 @synthesize bartHandler;
+@synthesize feedbagHandler;
 
 - (id)initWithSession:(AIMSession *)theSession initialInfo:(AIMNickWInfo *)initInfo {
 	if ((self = [super init])) {
@@ -52,6 +54,7 @@
 
 - (void)aimBArtHandlerConnectedToBArt:(AIMBArtHandler *)handler {
 	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	[self _delegateInformBArtConnected];
 }
 
 - (void)aimBArtHandlerConnectFailed:(AIMBArtHandler *)handler {
@@ -75,6 +78,37 @@
 			[theBuddy setBuddyIcon:icns];
 			[self _delegateInformBuddyIconChange:theBuddy];
 		}
+	}
+}
+
+- (void)aimBArtHandler:(AIMBArtHandler *)handler uploadedBArtID:(AIMBArtID *)newBartID {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	FTSetBArtItem * setBid = [[FTSetBArtItem alloc] initWithBArtID:newBartID];
+	[feedbagHandler pushTransaction:setBid];
+	[setBid release];
+}
+
+- (void)aimBArtHandler:(AIMBArtHandler *)handler uploadFailed:(UInt16)statusCode {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	AIMIconUploadErrorType errorType = AIMIconUploadErrorTypeOther;
+	switch (statusCode) {
+		case BART_STATUS_CODE_TOBIG:
+			errorType = AIMIconUploadErrorTypeTooBig;
+			break;
+		case BART_STATUS_CODE_TOSMALL:
+			errorType = AIMIconUploadErrorTypeTooSmall;
+			break;
+		case BART_STATUS_CODE_INVALID:
+			errorType = AIMIconUploadErrorTypeInvalid;
+			break;
+		case BART_STATUS_CODE_BANNED:
+			errorType = AIMIconUploadErrorTypeBanned;
+			break;
+		default:
+			break;
+	}
+	if ([delegate respondsToSelector:@selector(aimStatusHandler:setIconFailed:)]) {
+		[delegate aimStatusHandler:self setIconFailed:errorType];
 	}
 }
 
@@ -111,6 +145,7 @@
 	[session autorelease];
 	[bartHandler setDelegate:nil];
 	self.bartHandler = nil;
+	self.feedbagHandler = nil;
 }
 
 - (AIMBuddyStatus *)statusFromNickInfo:(AIMNickWInfo *)info fetchAwayData:(BOOL *)fetchAway {
@@ -227,7 +262,7 @@
 #pragma mark User Status (Setting)
 
 - (void)updateStatus:(AIMBuddyStatus *)newStatus {
-	NSAssert([NSThread currentThread] == session.mainThread, @"Running on incorrect thread");
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
 	BOOL isCorrectType = [newStatus statusType] == AIMBuddyStatusAvailable || [newStatus statusType] == AIMBuddyStatusAway;
 	NSAssert(isCorrectType, @"Cannot use this status type for a status update.");
 	NSAssert([newStatus statusMessage], @"Status message should be empty string instead of nil.");
@@ -253,6 +288,14 @@
 	} else if ([userStatus idleTime] != 0) {
 		[self sendIdleNote:0];
 	}
+}
+
+- (void)updateUserIcon:(NSData *)newIcon {
+	if ([NSThread currentThread] != [session backgroundThread]) {
+		[self performSelector:@selector(updateUserIcon:) onThread:[session backgroundThread] withObject:newIcon waitUntilDone:NO];
+		return;
+	}
+	[bartHandler uploadBArtData:newIcon forType:BART_TYPE_BUDDY_ICON];
 }
 
 - (void)setStatusText:(NSString *)statText {
@@ -328,6 +371,13 @@
 	}
 }
 
+- (void)_delegateInformBArtConnected {
+	NSAssert([NSThread currentThread] == session.mainThread, @"Running on incorrect thread");
+	if ([delegate respondsToSelector:@selector(aimStatusHandlerBArtConnected:)]) {
+		[delegate aimStatusHandlerBArtConnected:self];
+	}
+}
+
 - (void)_fetchNickInfoIcon:(AIMNickWInfo *)nickWIcon {
 	// NSLog(@"Fetch buddy icon: %@", [nickWIcon username]);
 	NSAssert([NSThread currentThread] == session.backgroundThread, @"Running on incorrect thread");
@@ -336,6 +386,7 @@
 
 - (void)dealloc {
 	self.bartHandler = nil;
+	self.feedbagHandler = nil;
 	[userStatus release];
 	[lastInfo release];
 	[super dealloc];

@@ -14,6 +14,16 @@
 #import "AIMBuddyIcon.h"
 #import "AIMBArtDownloadReply.h"
 
+#define BART_STATUS_CODE_SUCCESS 0
+#define BART_STATUS_CODE_INVALID 1
+#define BART_STATUS_CODE_NOCUSTOM 2
+#define BART_STATUS_CODE_TOSMALL 3
+#define BART_STATUS_CODE_TOBIG 4
+#define BART_STATUS_CODE_INVALID_TYPE 5
+#define BART_STATUS_CODE_BANNED 6
+#define BART_STATUS_CODE_NOTFOUND 7
+
+
 @class AIMBArtHandler;
 
 @protocol AIMBArtHandlerDelegate <NSObject>
@@ -23,6 +33,8 @@
 - (void)aimBArtHandlerConnectFailed:(AIMBArtHandler *)handler;
 - (void)aimBArtHandlerDisconnected:(AIMBArtHandler *)handler;
 - (void)aimBArtHandler:(AIMBArtHandler *)handler gotBuddyIcon:(AIMBuddyIcon *)icns forUser:(NSString *)loginID;
+- (void)aimBArtHandler:(AIMBArtHandler *)handler uploadedBArtID:(AIMBArtID *)newBartID;
+- (void)aimBArtHandler:(AIMBArtHandler *)handler uploadFailed:(UInt16)statusCode;
 
 @end
 
@@ -41,5 +53,6 @@
 - (void)closeBArtConnection;
 
 - (BOOL)fetchBArtIcon:(AIMBArtID *)bartID forUser:(NSString *)username;
+- (BOOL)uploadBArtData:(NSData *)data forType:(UInt16)bartType;
 
 @end

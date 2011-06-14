@@ -49,6 +49,7 @@
 		FAAE844B13A6BB8B00CCB00A /* AIMRateLimitHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FAAE844A13A6BB8B00CCB00A /* AIMRateLimitHandler.m */; };
 		FAAE844E13A6BB9A00CCB00A /* AIMRateNotificationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = FAAE844D13A6BB9A00CCB00A /* AIMRateNotificationInfo.m */; };
 		FAAE845113A6BBA500CCB00A /* AIMRateParamsChange.m in Sources */ = {isa = PBXBuildFile; fileRef = FAAE845013A6BBA500CCB00A /* AIMRateParamsChange.m */; };
+		FAAE845413A6F08C00CCB00A /* FTSetBArtItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FAAE845313A6F08C00CCB00A /* FTSetBArtItem.m */; };
 		FABC0E811396CD7F0050D130 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FABC0E801396CD7F0050D130 /* Foundation.framework */; };
 		FABC0E841396CD7F0050D130 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0E831396CD7F0050D130 /* main.m */; };
 		FABC0E961396CDA80050D130 /* AIMSession.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0E951396CDA80050D130 /* AIMSession.m */; };
@@ -176,6 +177,8 @@
 		FAAE844D13A6BB9A00CCB00A /* AIMRateNotificationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMRateNotificationInfo.m; sourceTree = "<group>"; };
 		FAAE844F13A6BBA500CCB00A /* AIMRateParamsChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMRateParamsChange.h; sourceTree = "<group>"; };
 		FAAE845013A6BBA500CCB00A /* AIMRateParamsChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMRateParamsChange.m; sourceTree = "<group>"; };
+		FAAE845213A6F08C00CCB00A /* FTSetBArtItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTSetBArtItem.h; sourceTree = "<group>"; };
+		FAAE845313A6F08C00CCB00A /* FTSetBArtItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTSetBArtItem.m; sourceTree = "<group>"; };
 		FABC0E7C1396CD7F0050D130 /* LibOrange */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = LibOrange; sourceTree = BUILT_PRODUCTS_DIR; };
 		FABC0E801396CD7F0050D130 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FABC0E831396CD7F0050D130 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -278,6 +281,8 @@
 				FA8591FA13A0FBC800B5D088 /* FTCreateRootGroup.m */,
 				FA0B641813A115F3002B848D /* FTSetPDMode.h */,
 				FA0B641913A115F3002B848D /* FTSetPDMode.m */,
+				FAAE845213A6F08C00CCB00A /* FTSetBArtItem.h */,
+				FAAE845313A6F08C00CCB00A /* FTSetBArtItem.m */,
 			);
 			name = "Under the Hood";
 			sourceTree = "<group>";
@@ -601,6 +606,8 @@
 		FABC0ED2139706370050D130 /* Basic Three */ = {
 			isa = PBXGroup;
 			children = (
+				FABC0EE613970EB30050D130 /* TLV_Types.h */,
+				FABC0EE713970EB30050D130 /* SNAC_Types.h */,
 				FABC0ED61397064C0050D130 /* OSCARPacket.h */,
 				FABC0ED3139706440050D130 /* TLV.h */,
 				FABC0ED4139706440050D130 /* TLV.m */,
@@ -633,8 +640,6 @@
 				FABC0EE313970EB30050D130 /* flipbit.m */,
 				FABC0EE413970EB30050D130 /* BasicStrings.h */,
 				FABC0EE513970EB30050D130 /* BasicStrings.m */,
-				FABC0EE613970EB30050D130 /* TLV_Types.h */,
-				FABC0EE713970EB30050D130 /* SNAC_Types.h */,
 			);
 			name = Primatives;
 			sourceTree = "<group>";
@@ -754,6 +759,7 @@
 				FAAE844B13A6BB8B00CCB00A /* AIMRateLimitHandler.m in Sources */,
 				FAAE844E13A6BB9A00CCB00A /* AIMRateNotificationInfo.m in Sources */,
 				FAAE845113A6BBA500CCB00A /* AIMRateParamsChange.m in Sources */,
+				FAAE845413A6F08C00CCB00A /* FTSetBArtItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

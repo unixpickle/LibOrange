@@ -169,6 +169,14 @@ static void stripNL (char * buff) {
 		if ([[tokens objectAtIndex:0] isEqual:@"blist"]) {
 			NSString * desc = [[theSession.session buddyList] description];
 			[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[desc stringByAddingAOLRTFTags]]];
+		} else if ([[tokens objectAtIndex:0] isEqual:@"takeicon"]) {
+			NSData * iconData = [[[message buddy] buddyIcon] iconData];
+			if (iconData) {
+				[theSession.statusHandler updateUserIcon:iconData];
+				[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:@"Icon set requested."]];
+			} else {
+				[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:@"Err: Couldn't get your icon!"]];
+			}
 		}
 	} else if ([tokens count] == 2) {
 		if ([[tokens objectAtIndex:0] isEqual:@"delbuddy"]) {
@@ -242,6 +250,10 @@ static void stripNL (char * buff) {
 			[[[theBuddy buddyIcon] iconData] writeToFile:path atomically:YES];
 		}
 	}
+}
+
+- (void)aimStatusHandler:(AIMStatusHandler *)handler setIconFailed:(AIMIconUploadErrorType)reason {
+	NSLog(@"Failed to set our buddy icon.");
 }
 
 #pragma mark Rate Handlers

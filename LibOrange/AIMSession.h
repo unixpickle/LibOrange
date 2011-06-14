@@ -34,7 +34,7 @@
 	NSObject<AIMSessionDelegate> * sessionDelegate;
 	
 	AIMBlist * buddyList;
-	
+	NSLock * reqIDLock;
 	UInt32 reqID;
 }
 

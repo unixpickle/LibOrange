@@ -22,6 +22,7 @@
 		handlers = [[NSMutableArray alloc] init];
 		connection = [theConnection retain];
 		[connection setDelegate:self];
+		reqIDLock = [[NSLock alloc] init];
 	}
 	return self;
 }
@@ -40,13 +41,16 @@
 }
 
 - (UInt32)generateReqID {
+	[reqIDLock lock];
 	if (!reqID) {
 		reqID = arc4random();
 	}
 	reqID += 1;
 	if (!reqID) reqID = 1;
 	if (reqID >= 2147483648) reqID ^= 2147483648;
-	return reqID;
+	UInt32 reqIDTep = reqID;
+	[reqIDLock unlock];
+	return reqIDTep;
 }
 - (BOOL)writeSnac:(SNAC *)aSnac {
 	NSData * packetData = [aSnac encodePacket];
@@ -86,6 +90,7 @@
 }
 
 - (void)dealloc {
+	[reqIDLock release];
 	self.backgroundThread = nil;
 	self.buddyList = nil;
 	[handlers release];

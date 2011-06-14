@@ -270,6 +270,8 @@
 	
 	// query our online user info.
 	[statusHandler queryUserInfo];
+	statusHandler.feedbagHandler = feedbagHandler;
+	
 	[feedbagHandler setTempBuddyHandler:tempBuddyHandler];
 	[feedbagHandler setFeedbagRights:feedbagRights];
 	[feedbagHandler sendFeedbagRequest];
