@@ -35,7 +35,7 @@
 
 @property (readonly) AIMBuddyStatus * userStatus;
 @property (nonatomic, assign) id<AIMStatusHandlerDelegate> delegate;
-@property (nonatomic, assign) AIMBArtHandler * bartHandler;
+@property (nonatomic, retain) AIMBArtHandler * bartHandler;
 
 - (id)initWithSession:(AIMSession *)theSession initialInfo:(AIMNickWInfo *)initInfo;
 - (void)queryUserInfo;

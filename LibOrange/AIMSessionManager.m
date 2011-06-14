@@ -503,6 +503,7 @@
 	[bartHandler sessionClosed];
 	[bartHandler closeBArtConnection];
 	[rateHandler sessionClosed];
+	self.backgroundThread = nil;
 	[self release];
 }
 
@@ -515,9 +516,7 @@
 	}
 	[feedbagRights release];
 	[initialInfo release];
-	NSAssert(self.backgroundThread == nil, @"Background thread should retain AIMSessionManager but doesn't.");
 	self.mainThread = nil;
-	self.backgroundThread = nil;
 	
 	[feedbagHandler release];
 	[messageHandler release];
@@ -526,6 +525,7 @@
 	[bartHandler release];
 	[rateHandler release];
 	
+	[session setSessionDelegate:nil];
 	[session release];
 	[super dealloc];
 }

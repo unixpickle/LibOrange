@@ -33,6 +33,9 @@
 	[handlers removeObject:theHandler];
 }
 - (void)closeConnection {
+	if (![connection isOpen]) return;
+	FLAPFrame * flapDisconnect = [connection createFlapChannel:4 data:[NSData data]];
+	[connection writeFlap:flapDisconnect];
 	[connection disconnect];
 }
 
@@ -56,12 +59,11 @@
 
 - (void)oscarConnectionClosed:(OSCARConnection *)theConnection {
 	[backgroundThread cancel];
-	backgroundThread = nil;
-	// NSLog(@"Closed!");
+	self.backgroundThread = nil;
 	if ([sessionDelegate respondsToSelector:@selector(aimSessionClosed:)]) {
 		[sessionDelegate performSelector:@selector(aimSessionClosed:) onThread:mainThread withObject:nil waitUntilDone:NO];
 	}
-	[connection release];
+	[connection autorelease];
 	connection = nil;
 }
 
@@ -69,6 +71,9 @@
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	FLAPFrame * packet = [theConnection readFlap];
 	if (packet) {
+		if ([packet channel] == 4) {
+			[connection disconnect];
+		}
 		SNAC * theSnac = [[SNAC alloc] initWithData:[packet frameData]];
 		if (theSnac) {
 			for (id<AIMSessionHandler> handler in handlers) {
@@ -81,6 +86,7 @@
 }
 
 - (void)dealloc {
+	self.backgroundThread = nil;
 	self.buddyList = nil;
 	[handlers release];
 	[connection release];

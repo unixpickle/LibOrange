@@ -109,6 +109,8 @@
 - (void)sessionClosed {
 	[session removeHandler:self];
 	[session autorelease];
+	[bartHandler setDelegate:nil];
+	self.bartHandler = nil;
 }
 
 - (AIMBuddyStatus *)statusFromNickInfo:(AIMNickWInfo *)info fetchAwayData:(BOOL *)fetchAway {
@@ -333,6 +335,7 @@
 }
 
 - (void)dealloc {
+	self.bartHandler = nil;
 	[userStatus release];
 	[lastInfo release];
 	[super dealloc];

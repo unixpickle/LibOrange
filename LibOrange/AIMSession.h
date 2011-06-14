@@ -40,7 +40,7 @@
 
 @property (readonly) OSCARConnection * connection;
 @property (nonatomic, assign) NSThread * mainThread;
-@property (nonatomic, assign) NSThread * backgroundThread;
+@property (nonatomic, retain) NSThread * backgroundThread;
 @property (nonatomic, assign) NSObject<AIMSessionDelegate> * sessionDelegate;
 @property (nonatomic, retain) AIMBlist * buddyList;
 
