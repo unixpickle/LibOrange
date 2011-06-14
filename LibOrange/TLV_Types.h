@@ -38,6 +38,8 @@
 
 #define TLV_NICK_FLAGS 1
 #define TLV_BART_INFO 29
+#define TLV_CAPS 13
+#define TLV_CAPABILITIES 5
 
 #define TLV_RECENT_BUDDY 106
 

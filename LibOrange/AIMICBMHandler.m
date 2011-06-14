@@ -61,6 +61,7 @@
 
 - (void)_delegateInformMessage:(AIMICBMMessageToClient *)icbmMessage {
 	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	if ([icbmMessage channel] != 1) return;
 	if ([delegate respondsToSelector:@selector(aimICBMHandler:gotMessage:)]) {
 		AIMMessage * message = [[AIMMessage alloc] initWithICBMMessage:icbmMessage fromBlist:[session buddyList]];
 		[delegate aimICBMHandler:self gotMessage:message];

@@ -6,14 +6,16 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+// these headers import almost everything else.
 #import "AIMLogin.h"
 #import "AIMSessionManager.h"
 #import "AIMBlist.h"
+
+// all the feedbag transactions.
 #import "FTAddBuddy.h"
 #import "FTRemoveBuddy.h"
 #import "FTAddGroup.h"
 #import "FTRemoveGroup.h"
-
 #import "FTAddDeny.h"
 #import "FTAddPermit.h"
 #import "FTDelDeny.h"

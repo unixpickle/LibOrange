@@ -14,12 +14,21 @@
 @synthesize statusMessage;
 @synthesize statusType;
 @synthesize idleTime;
+@synthesize capabilities;
 
 - (id)initWithMessage:(NSString *)message type:(AIMBuddyStatusType)type timeIdle:(UInt32)timeIdle {
+	if ((self = [self initWithMessage:message type:type timeIdle:timeIdle caps:nil])) {
+		
+	}
+	return self;
+}
+
+- (id)initWithMessage:(NSString *)message type:(AIMBuddyStatusType)type timeIdle:(UInt32)timeIdle caps:(NSArray *)caps {
 	if ((self = [super init])) {
 		statusMessage = [message retain];
 		statusType = type;
 		idleTime = timeIdle;
+		self.capabilities = caps;
 	}
 	return self;
 }
@@ -35,7 +44,11 @@
 }
 
 - (BOOL)isEqualToStatus:(AIMBuddyStatus *)status {
-	if ([status statusType] == [self statusType] && [[status statusMessage] isEqual:[self statusMessage]] && [status idleTime] == [self idleTime]) return YES;
+	if ([status statusType] == [self statusType] && [[status statusMessage] isEqual:[self statusMessage]] && [status idleTime] == [self idleTime]) {
+		if ([AIMCapability compareCapArray:self.capabilities toArray:status.capabilities]) {
+			return YES;
+		} else return NO;
+	}
 	return NO;
 }
 
@@ -48,6 +61,7 @@
 }
 
 - (void)dealloc {
+	self.capabilities = nil;
 	[statusMessage release];
 	[super dealloc];
 }

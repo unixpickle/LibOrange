@@ -11,6 +11,7 @@
 #import "AIMNickWInfo.h"
 #import "AIMNickWInfo+BArt.h"
 #import "AIMNickWInfo+Update.h"
+#import "AIMNickWInfo+Caps.h"
 #import "AIMBArtHandler.h"
 
 #import "AIMFeedbagHandler.h"
@@ -44,6 +45,8 @@ typedef enum {
 	id<AIMStatusHandlerDelegate> delegate;
 	AIMNickWInfo * lastInfo;
 	AIMBArtHandler * bartHandler;
+	/* we need access to the feedbag handler so that we can add/update BArt items 
+	   for the next signin. */
 	AIMFeedbagHandler * feedbagHandler;
 }
 

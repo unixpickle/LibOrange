@@ -19,7 +19,7 @@ LibOrange doesn't sleep for 0.4 seconds every time it sends a SNAC packet.  That
 When Will it be Finished?
 =========================
 
-LibOrange is still a work in progress, and, like all open source software, will never finsihed.  For the most part, LibOrange does everything that I originally intended for it to do.  In the future I made add file transfers, video chatting, and more, but for now I will leave it be.  At this point, I encourage developers to fix any bugs that are discovered, and to add new features.
+LibOrange is still a work in progress, and, like all open source software, will never finsihed.  For the most part, LibOrange does everything that I originally intended for it to do.  In the future I may add file transfers, video chatting, and more.  At this point, I encourage developers to fix any bugs that are discovered, and to add new features.
 
 Where'd You Get the Name "LibOrange"?
 =====================================

@@ -19,6 +19,7 @@
 
 - (void)setStatusText:(NSString *)statText;
 - (void)setUnavailableText:(NSString *)statText;
+- (void)setCapabilities:(NSArray *)caps;
 - (void)sendIdleNote:(UInt32)idleSeconds;
 
 - (void)handleUserInfoUpdate:(AIMNickWInfo *)newInfo;
@@ -175,7 +176,10 @@
 			}
 		}
 	}
-	return [[[AIMBuddyStatus alloc] initWithMessage:statusMessage type:type timeIdle:idleTime] autorelease];
+	
+	NSArray * caps = [info buddyCapabilities];
+	
+	return [[[AIMBuddyStatus alloc] initWithMessage:statusMessage type:type timeIdle:idleTime caps:caps] autorelease];
 }
 
 #pragma mark Arrived & Departed
@@ -199,6 +203,12 @@
 					[self performSelector:@selector(_fetchNickInfoIcon:) onThread:[session backgroundThread] withObject:nickInfo waitUntilDone:NO];
 				}
 			}
+			// non-present CAPS => use previous ones.
+			if (![status capabilities]) {
+				if ([[buddy status] capabilities]) {
+					[status setCapabilities:[[buddy status] capabilities]];
+				}
+			}
 			if (![[buddy status] isEqualToStatus:status]) {
 				if ([delegate respondsToSelector:@selector(aimStatusHandler:buddy:statusChanged:)]) {
 					[delegate aimStatusHandler:self buddy:buddy statusChanged:status];
@@ -214,10 +224,16 @@
 					[self performSelector:@selector(_fetchNickInfoIcon:) onThread:[session backgroundThread] withObject:nickInfo waitUntilDone:NO];
 				}
 			}
-			if ([delegate respondsToSelector:@selector(aimStatusHandler:buddy:statusChanged:)]) {
-				[delegate aimStatusHandler:self buddy:tempBuddy statusChanged:status];
+			// non-present CAPS => use previous ones.
+			if ([[tempBuddy status] capabilities] && ![status capabilities]) {
+				[status setCapabilities:[[tempBuddy status] capabilities]];
 			}
-			[tempBuddy setStatus:status];
+			if (![[tempBuddy status] isEqualToStatus:status]) {
+				if ([delegate respondsToSelector:@selector(aimStatusHandler:buddy:statusChanged:)]) {
+					[delegate aimStatusHandler:self buddy:tempBuddy statusChanged:status];
+				}
+				[tempBuddy setStatus:status];
+			}
 		}
 	}
 }
@@ -288,6 +304,10 @@
 	} else if ([userStatus idleTime] != 0) {
 		[self sendIdleNote:0];
 	}
+	
+	if ([newStatus capabilities]) {
+		[self setCapabilities:[newStatus capabilities]];
+	}
 }
 
 - (void)updateUserIcon:(NSData *)newIcon {
@@ -319,6 +339,18 @@
 	NSAssert([NSThread currentThread] == session.mainThread, @"Running on incorrect thread");
 	NSData * awayData = [statText dataUsingEncoding:NSUTF8StringEncoding];
 	TLV * unavail = [[TLV alloc] initWithType:TLV_UNAVAILABLE_DATA data:awayData];
+	SNAC * locateUpdate = [[SNAC alloc] initWithID:SNAC_ID_NEW(SNAC_LOCATE, LOCATE__SET_INFO) flags:0 requestID:[session generateReqID] data:[unavail encodePacket]];
+	[unavail release];
+	[session performSelector:@selector(writeSnac:) onThread:session.backgroundThread withObject:locateUpdate waitUntilDone:NO];
+	[locateUpdate release];
+}
+- (void)setCapabilities:(NSArray *)caps {
+	NSAssert([NSThread currentThread] == session.mainThread, @"Running on incorrect thread");
+	NSMutableData * capsData = [NSMutableData data];
+	for (AIMCapability * cap in caps) {
+		[capsData appendData:[cap uuid]];
+	}
+	TLV * unavail = [[TLV alloc] initWithType:TLV_CAPABILITIES data:capsData];
 	SNAC * locateUpdate = [[SNAC alloc] initWithID:SNAC_ID_NEW(SNAC_LOCATE, LOCATE__SET_INFO) flags:0 requestID:[session generateReqID] data:[unavail encodePacket]];
 	[unavail release];
 	[session performSelector:@selector(writeSnac:) onThread:session.backgroundThread withObject:locateUpdate waitUntilDone:NO];

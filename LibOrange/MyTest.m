@@ -93,7 +93,9 @@ static void stripNL (char * buff) {
 	session.rateHandler.delegate = self;
 	
 	[session configureBuddyArt];
-	AIMBuddyStatus * newStatus = [[AIMBuddyStatus alloc] initWithMessage:@"Using LibOrange on Mac!" type:AIMBuddyStatusAvailable timeIdle:0];
+	AIMCapability * fileTransfers = [[AIMCapability alloc] initWithType:AIMCapabilityFileTransfer];
+	NSArray * caps = [NSArray arrayWithObject:[fileTransfers autorelease]];
+	AIMBuddyStatus * newStatus = [[AIMBuddyStatus alloc] initWithMessage:@"Using LibOrange on Mac!" type:AIMBuddyStatusAvailable timeIdle:0 caps:caps];
 	[session.statusHandler updateStatus:newStatus];
 	[newStatus release];
 	
@@ -203,6 +205,13 @@ static void stripNL (char * buff) {
 		} else if ([[tokens objectAtIndex:0] isEqual:@"pdmode"]) {
 			NSString * desc = PD_MODE_TOSTR([theSession.feedbagHandler currentPDMode:NULL]);
 			[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[desc stringByAddingAOLRTFTags]]];
+		} else if ([[tokens objectAtIndex:0] isEqual:@"caps"]) {
+			NSString * desc = [[[[message buddy] status] capabilities] description];
+			if (desc) {
+				[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[desc stringByAddingAOLRTFTags]]];
+			} else {
+				[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:@"Err: Capabilities unavailable."]];
+			}
 		}
 	} else if ([tokens count] == 2) {
 		if ([[tokens objectAtIndex:0] isEqual:@"delbuddy"]) {

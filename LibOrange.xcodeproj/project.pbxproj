@@ -11,6 +11,8 @@
 		FA05171113A2B0CD00A951F2 /* CommandTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = FA05171013A2B0CD00A951F2 /* CommandTokenizer.m */; };
 		FA0B641A13A115F3002B848D /* FTSetPDMode.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0B641913A115F3002B848D /* FTSetPDMode.m */; };
 		FA0B642013A11CA4002B848D /* NSString+AOLRTF.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0B641F13A11CA4002B848D /* NSString+AOLRTF.m */; };
+		FA1A3F5F13A7E263009B73DE /* AIMCapability.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1A3F5E13A7E263009B73DE /* AIMCapability.m */; };
+		FA1A3F6313A7E557009B73DE /* AIMNickWInfo+Caps.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1A3F6213A7E557009B73DE /* AIMNickWInfo+Caps.m */; };
 		FA1B67BA139DA456008F1884 /* AIMTempBuddyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1B67B9139DA456008F1884 /* AIMTempBuddyHandler.m */; };
 		FA232A1C1399FA0000852CC1 /* AIMFeedbagHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA232A1B1399FA0000852CC1 /* AIMFeedbagHandler.m */; };
 		FA32379013A12154005D7B69 /* FTAddBuddy.m in Sources */ = {isa = PBXBuildFile; fileRef = FA32378F13A12154005D7B69 /* FTAddBuddy.m */; };
@@ -104,6 +106,10 @@
 		FA0B641913A115F3002B848D /* FTSetPDMode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTSetPDMode.m; sourceTree = "<group>"; };
 		FA0B641E13A11CA4002B848D /* NSString+AOLRTF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+AOLRTF.h"; sourceTree = "<group>"; };
 		FA0B641F13A11CA4002B848D /* NSString+AOLRTF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+AOLRTF.m"; sourceTree = "<group>"; };
+		FA1A3F5D13A7E263009B73DE /* AIMCapability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMCapability.h; sourceTree = "<group>"; };
+		FA1A3F5E13A7E263009B73DE /* AIMCapability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMCapability.m; sourceTree = "<group>"; };
+		FA1A3F6113A7E557009B73DE /* AIMNickWInfo+Caps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AIMNickWInfo+Caps.h"; sourceTree = "<group>"; };
+		FA1A3F6213A7E557009B73DE /* AIMNickWInfo+Caps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AIMNickWInfo+Caps.m"; sourceTree = "<group>"; };
 		FA1B67B8139DA456008F1884 /* AIMTempBuddyHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMTempBuddyHandler.h; sourceTree = "<group>"; };
 		FA1B67B9139DA456008F1884 /* AIMTempBuddyHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMTempBuddyHandler.m; sourceTree = "<group>"; };
 		FA232A1A1399FA0000852CC1 /* AIMFeedbagHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMFeedbagHandler.h; sourceTree = "<group>"; };
@@ -265,6 +271,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FA1A3F6013A7E2CF009B73DE /* Caps */ = {
+			isa = PBXGroup;
+			children = (
+				FA1A3F5D13A7E263009B73DE /* AIMCapability.h */,
+				FA1A3F5E13A7E263009B73DE /* AIMCapability.m */,
+				FA1A3F6113A7E557009B73DE /* AIMNickWInfo+Caps.h */,
+				FA1A3F6213A7E557009B73DE /* AIMNickWInfo+Caps.m */,
+			);
+			name = Caps;
+			sourceTree = "<group>";
+		};
 		FA1B67B7139DA414008F1884 /* Temp Buddies */ = {
 			isa = PBXGroup;
 			children = (
@@ -422,6 +439,7 @@
 		FA616C5813A00D6700780097 /* NickWInfo */ = {
 			isa = PBXGroup;
 			children = (
+				FA1A3F6013A7E2CF009B73DE /* Caps */,
 				FA4CE793139AB55500487172 /* AIMNickWInfo.h */,
 				FA4CE794139AB55500487172 /* AIMNickWInfo.m */,
 				FA616C52139EEF5900780097 /* AIMNickWInfo+BArt.h */,
@@ -794,6 +812,8 @@
 				FAF687E013A7A39100AE6A93 /* FTDelDeny.m in Sources */,
 				FAF687E313A7A44B00AE6A93 /* FTAddPermit.m in Sources */,
 				FAF687E613A7A4A100AE6A93 /* FTDelPermit.m in Sources */,
+				FA1A3F5F13A7E263009B73DE /* AIMCapability.m in Sources */,
+				FA1A3F6313A7E557009B73DE /* AIMNickWInfo+Caps.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
