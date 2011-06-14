@@ -19,7 +19,7 @@ LibOrange doesn't sleep for 0.4 seconds every time it sends a SNAC packet.  That
 When Will it be Finished?
 =========================
 
-LibOrange is currently in development, and should be finished by the end of June (2011).  Now, finished is not to say that I will never work on it again.  "Finished" just means that LibOrange will allow for buddy list manipulation, Buddy Art, status messages, messaging, etc.  File transfers will not be included in the list of features that I try to add, but the summer is long, and I might decide to implement file transfers at some point in the future.
+LibOrange is still a work in progress, and, like all open source software, will never finsihed.  For the most part, LibOrange does everything that I originally intended for it to do.  In the future I made add file transfers, video chatting, and more, but for now I will leave it be.  At this point, I encourage developers to fix any bugs that are discovered, and to add new features.
 
 Where'd You Get the Name "LibOrange"?
 =====================================
@@ -29,9 +29,14 @@ If you are not familiar, LibPurple is a C library for instant messaging.  I deci
 Open Source Development
 =======================
 
-I encourage anybody that wants to fork this project to do so.  It's always good to have multiple people working on something.  I would prefer that you wait until LibOrange has all of the key features that I plan on implementing first, that way our forks don't become too different.
+I encourage anybody that wants to fork this project to do so.  It's always good to have multiple people working on something, and to have multiple viewpoints on a project.  Some stuff that you could work on is:
+
+ - Add typing events
+ - Implement file transfers (I may do this at some point during the summer.)
+ - Make things more stable (e.g fix thread conflicts, add @synchronized, etc.)
+ - Better implement rate limiting.
 
 What the hell is wrong with you?
 ================================
 
-Well, first of all, I have recently adopted an obsession with making IM protocols and rewriting Oscar APIs. I wrote two more before this, each being more readable than the last. But I'm probably going to end up writing another one after this one, probably in RoR.
+Well, first of all, I have recently adopted an obsession with making IM protocols and rewriting OSCAR APIs. I wrote two more before this, each being more readable than the last. But I'm probably going to end up writing another one after this one, probably in RoR.
