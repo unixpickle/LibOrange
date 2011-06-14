@@ -13,5 +13,7 @@
 
 - (AIMFeedbagItem *)findRootGroup;
 - (AIMFeedbagItem *)findPDMode;
+- (AIMFeedbagItem *)denyWithUsername:(NSString *)username;
+- (AIMFeedbagItem *)permitWithUsername:(NSString *)username;
 
 @end

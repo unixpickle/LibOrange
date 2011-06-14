@@ -22,10 +22,20 @@
 	return groups;
 }
 
+- (NSMutableArray *)permitList {
+	return permit;
+}
+
+- (NSMutableArray *)denyList {
+	return deny;
+}
+
 - (id)initWithFeedbag:(AIMFeedbag *)feedbag tempBuddyHandler:(AIMTempBuddyHandler *)tmpBuddy {
 	if ((self = [super init])) {
 		tempBuddyHandler = [tmpBuddy retain];
 		groups = [[NSMutableArray alloc] init];
+		permit = [[NSMutableArray alloc] init];
+		deny = [[NSMutableArray alloc] init];
 		for (AIMFeedbagItem * item in [feedbag items]) {
 			if ([item itemID] == 0 && [item groupID] == 0 && [item classID] == FEEDBAG_GROUP) {
 				// reached the group ID.
@@ -42,6 +52,10 @@
 					AIMBlistGroup * group = [self loadGroup:theGroup inFeedbag:feedbag];
 					if (group) [groups addObject:group];
 				}
+			} else if ([item classID] == FEEDBAG_PERMIT) {
+				[permit addObject:[item itemName]];
+			} else if ([item classID] == FEEDBAG_DENY) {
+				[deny addObject:[item itemName]];
 			}
 		}
 	}
@@ -136,6 +150,8 @@
 - (void)dealloc {
 	[tempBuddyHandler release];
 	[groups release];
+	[permit release];
+	[deny release];
 	[super dealloc];
 }
 

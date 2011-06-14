@@ -92,6 +92,7 @@ void *NewBase64Decode(
 		// Accumulate 4 valid characters (ignore everything else)
 		//
 		unsigned char accumulated[BASE64_UNIT_SIZE];
+		bzero(accumulated, BASE64_UNIT_SIZE); // <<I (Alex Nichol) ADDED THIS TO LIBORANGE
 		size_t accumulateIndex = 0;
 		while (i < length)
 		{

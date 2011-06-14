@@ -19,6 +19,7 @@
 }
 
 - (void)createOperationsWithFeedbag:(AIMFeedbag *)feedbag session:(AIMSession *)session {
+	NSAssert([NSThread currentThread] == [session backgroundThread], @"Running on incorrect thread");
 	AIMFeedbagItem * existingBartItem = nil;
 	NSString * bartType = [NSString stringWithFormat:@"%d", [bid type]];
 	for (AIMFeedbagItem * item in [feedbag items]) {

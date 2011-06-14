@@ -77,6 +77,10 @@
 		FABC0EE813970EB30050D130 /* flipbit.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0EE313970EB30050D130 /* flipbit.m */; };
 		FABC0EE913970EB30050D130 /* BasicStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0EE513970EB30050D130 /* BasicStrings.m */; };
 		FAECD3AA139C1D5D0028BEEE /* AIMICBMMessageToServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FAECD3A9139C1D5D0028BEEE /* AIMICBMMessageToServer.m */; };
+		FAF687DD13A7A1B200AE6A93 /* FTAddDeny.m in Sources */ = {isa = PBXBuildFile; fileRef = FAF687DC13A7A1B200AE6A93 /* FTAddDeny.m */; };
+		FAF687E013A7A39100AE6A93 /* FTDelDeny.m in Sources */ = {isa = PBXBuildFile; fileRef = FAF687DF13A7A39100AE6A93 /* FTDelDeny.m */; };
+		FAF687E313A7A44B00AE6A93 /* FTAddPermit.m in Sources */ = {isa = PBXBuildFile; fileRef = FAF687E213A7A44B00AE6A93 /* FTAddPermit.m */; };
+		FAF687E613A7A4A100AE6A93 /* FTDelPermit.m in Sources */ = {isa = PBXBuildFile; fileRef = FAF687E513A7A4A000AE6A93 /* FTDelPermit.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -238,6 +242,15 @@
 		FABC0EE713970EB30050D130 /* SNAC_Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNAC_Types.h; sourceTree = "<group>"; };
 		FAECD3A8139C1D5D0028BEEE /* AIMICBMMessageToServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMICBMMessageToServer.h; sourceTree = "<group>"; };
 		FAECD3A9139C1D5D0028BEEE /* AIMICBMMessageToServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMICBMMessageToServer.m; sourceTree = "<group>"; };
+		FAF687BD13A7092A00AE6A93 /* LibOrange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibOrange.h; sourceTree = "<group>"; };
+		FAF687DB13A7A1B200AE6A93 /* FTAddDeny.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTAddDeny.h; sourceTree = "<group>"; };
+		FAF687DC13A7A1B200AE6A93 /* FTAddDeny.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTAddDeny.m; sourceTree = "<group>"; };
+		FAF687DE13A7A39000AE6A93 /* FTDelDeny.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTDelDeny.h; sourceTree = "<group>"; };
+		FAF687DF13A7A39100AE6A93 /* FTDelDeny.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTDelDeny.m; sourceTree = "<group>"; };
+		FAF687E113A7A44A00AE6A93 /* FTAddPermit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTAddPermit.h; sourceTree = "<group>"; };
+		FAF687E213A7A44B00AE6A93 /* FTAddPermit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTAddPermit.m; sourceTree = "<group>"; };
+		FAF687E413A7A49F00AE6A93 /* FTDelPermit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTDelPermit.h; sourceTree = "<group>"; };
+		FAF687E513A7A4A000AE6A93 /* FTDelPermit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FTDelPermit.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -446,6 +459,7 @@
 		FA8591F713A0F9DB00B5D088 /* Transactions */ = {
 			isa = PBXGroup;
 			children = (
+				FAF687DA13A7A1A000AE6A93 /* Permit/Deny */,
 				FA32378C13A11E44005D7B69 /* Under the Hood */,
 				FA32378D13A12132005D7B69 /* User Modifications */,
 				FA8591F813A0F9F900B5D088 /* FeedbagTransaction.h */,
@@ -531,6 +545,7 @@
 		FABC0E931396CD9E0050D130 /* AIM */ = {
 			isa = PBXGroup;
 			children = (
+				FAF687BD13A7092A00AE6A93 /* LibOrange.h */,
 				FABC0EC8139705E80050D130 /* OSCAR */,
 				FABC0ED71397082C0050D130 /* Session */,
 				FABC0EA61396D09B0050D130 /* AIMLogin */,
@@ -642,6 +657,21 @@
 				FABC0EE513970EB30050D130 /* BasicStrings.m */,
 			);
 			name = Primatives;
+			sourceTree = "<group>";
+		};
+		FAF687DA13A7A1A000AE6A93 /* Permit/Deny */ = {
+			isa = PBXGroup;
+			children = (
+				FAF687DB13A7A1B200AE6A93 /* FTAddDeny.h */,
+				FAF687DC13A7A1B200AE6A93 /* FTAddDeny.m */,
+				FAF687DE13A7A39000AE6A93 /* FTDelDeny.h */,
+				FAF687DF13A7A39100AE6A93 /* FTDelDeny.m */,
+				FAF687E113A7A44A00AE6A93 /* FTAddPermit.h */,
+				FAF687E213A7A44B00AE6A93 /* FTAddPermit.m */,
+				FAF687E413A7A49F00AE6A93 /* FTDelPermit.h */,
+				FAF687E513A7A4A000AE6A93 /* FTDelPermit.m */,
+			);
+			name = Permit/Deny;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -760,6 +790,10 @@
 				FAAE844E13A6BB9A00CCB00A /* AIMRateNotificationInfo.m in Sources */,
 				FAAE845113A6BBA500CCB00A /* AIMRateParamsChange.m in Sources */,
 				FAAE845413A6F08C00CCB00A /* FTSetBArtItem.m in Sources */,
+				FAF687DD13A7A1B200AE6A93 /* FTAddDeny.m in Sources */,
+				FAF687E013A7A39100AE6A93 /* FTDelDeny.m in Sources */,
+				FAF687E313A7A44B00AE6A93 /* FTAddPermit.m in Sources */,
+				FAF687E613A7A4A100AE6A93 /* FTDelPermit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

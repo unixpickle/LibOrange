@@ -24,5 +24,7 @@
 - (NSString *)addBuddy:(NSString *)username toGroup:(NSString *)groupName;
 - (NSString *)deleteGroup:(NSString *)groupName;
 - (NSString *)addGroup:(NSString *)groupName;
+- (NSString *)denyUser:(NSString *)username;
+- (NSString *)undenyUser:(NSString *)username;
 
 @end

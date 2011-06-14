@@ -14,10 +14,16 @@
 #import "FTAddGroup.h"
 #import "FTRemoveGroup.h"
 
+#import "FTAddDeny.h"
+#import "FTAddPermit.h"
+#import "FTDelDeny.h"
+#import "FTDelPermit.h"
+
 /* LibOrange version info. */
 #ifndef libOrangeInf
 #define libOrangeInf
 #define lib_orange_version_major 0
-#define lib_orange_version_minor 8
-#define lib_orange_version_string "0.8"
+#define lib_orange_version_minor 9
+#define lib_orange_version_build 2
+#define lib_orange_version_string "0.9.2"
 #endif

@@ -19,6 +19,8 @@
 /* Update Handlers */
 - (void)_handleBuddyInserted:(AIMFeedbagItem *)newItem;
 - (void)_handleGroupInserted:(AIMFeedbagItem *)newGroup;
+- (void)_handlePermitDenyInserted:(AIMFeedbagItem *)newItem;
+- (void)_handlePermitDenyRemoved:(AIMFeedbagItem *)oldItem;
 - (void)_handleGroupChanged:(AIMFeedbagItem *)oldItem newItem:(AIMFeedbagItem *)item;
 - (void)_handleRootGroupChanged:(AIMFeedbagItem *)oldItem newItem:(AIMFeedbagItem *)newItem;
 
@@ -103,6 +105,7 @@
 - (void)sessionClosed {
 	[session removeHandler:self];
 	[session autorelease];
+	self.tempBuddyHandler = nil;
 	session = nil;
 }
 
@@ -153,12 +156,17 @@
 			[self _handleBuddyInserted:item];
 		} else if ([item classID] == FEEDBAG_GROUP) {
 			[self _handleGroupInserted:item];
+		} else if ([item classID] == FEEDBAG_PERMIT || [item classID] == FEEDBAG_DENY) {
+			[self _handlePermitDenyInserted:item];
 		}
 	}
 }
 - (void)_handleDelete:(NSArray *)feedbagItems {
 	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
 	for (AIMFeedbagItem * item in feedbagItems) {
+		if ([item classID] == FEEDBAG_PERMIT || [item classID] == FEEDBAG_DENY) {
+			[self _handlePermitDenyRemoved:item];
+		}
 		for (int i = 0; i < [[feedbag items] count]; i++) {
 			AIMFeedbagItem * oldItem = [[feedbag items] objectAtIndex:i];
 			if ([oldItem groupID] == [item groupID] && [oldItem itemID] == [item itemID]) {
@@ -246,6 +254,88 @@
 			}
 			/* Should be running on main thread anyway. */
 			[self performSelector:@selector(_delegateInformAddedG:) onThread:session.mainThread withObject:group waitUntilDone:NO];
+		}
+	}
+}
+
+- (void)_handlePermitDenyInserted:(AIMFeedbagItem *)newItem {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	if ([newItem classID] == FEEDBAG_PERMIT) {
+		BOOL exists = NO;
+		NSMutableArray * permit = (NSMutableArray *)[session.buddyList permitList];
+		NSString * compressed = [[[newItem itemName] stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString];
+		for (int i = 0; i < [permit count]; i++) {
+			NSString * user = [permit objectAtIndex:i];
+			NSString * userCompressed = [[user stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString];
+			if ([userCompressed isEqual:compressed]) {
+				exists = YES;
+				break;
+			}
+		}
+		if (!exists) {
+			[permit addObject:compressed];
+			if ([delegate respondsToSelector:@selector(aimFeedbagHandler:buddyPermitted:)]) {
+				[delegate aimFeedbagHandler:self buddyPermitted:compressed];
+			}
+		}
+	} else if ([newItem classID] == FEEDBAG_DENY) {
+		BOOL exists = NO;
+		NSMutableArray * deny = (NSMutableArray *)[session.buddyList denyList];
+		NSString * compressed = [[[newItem itemName] stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString];
+		for (int i = 0; i < [deny count]; i++) {
+			NSString * user = [deny objectAtIndex:i];
+			NSString * userCompressed = [[user stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString];
+			if ([userCompressed isEqual:compressed]) {
+				exists = YES;
+				break;
+			}
+		}
+		if (!exists) {
+			[deny addObject:compressed];
+			if ([delegate respondsToSelector:@selector(aimFeedbagHandler:buddyDenied:)]) {
+				[delegate aimFeedbagHandler:self buddyDenied:compressed];
+			}
+		}
+	}
+}
+
+- (void)_handlePermitDenyRemoved:(AIMFeedbagItem *)oldItem {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	if ([oldItem classID] == FEEDBAG_PERMIT) {
+		BOOL exists = NO;
+		NSMutableArray * permit = (NSMutableArray *)[session.buddyList permitList];
+		NSString * compressed = [[[oldItem itemName] stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString];
+		for (int i = 0; i < [permit count]; i++) {
+			NSString * user = [permit objectAtIndex:i];
+			NSString * userCompressed = [[user stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString];
+			if ([userCompressed isEqual:compressed]) {
+				[permit removeObjectAtIndex:i];
+				i--;
+				exists = YES;
+			}
+		}
+		if (exists) {
+			if ([delegate respondsToSelector:@selector(aimFeedbagHandler:buddyUnpermitted:)]) {
+				[delegate aimFeedbagHandler:self buddyUnpermitted:compressed];
+			}
+		}
+	} else if ([oldItem classID] == FEEDBAG_DENY) {
+		BOOL exists = NO;
+		NSMutableArray * deny = (NSMutableArray *)[session.buddyList denyList];
+		NSString * compressed = [[[oldItem itemName] stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString];
+		for (int i = 0; i < [deny count]; i++) {
+			NSString * user = [deny objectAtIndex:i];
+			NSString * userCompressed = [[user stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString];
+			if ([userCompressed isEqual:compressed]) {
+				[deny removeObjectAtIndex:i];
+				i--;
+				exists = YES;
+			}
+		}
+		if (exists) {
+			if ([delegate respondsToSelector:@selector(aimFeedbagHandler:buddyUndenied:)]) {
+				[delegate aimFeedbagHandler:self buddyUndenied:compressed];
+			}
 		}
 	}
 }
@@ -458,6 +548,7 @@
 - (void)dealloc {
 	[transactions release];
 	[feedbag release];
+	self.tempBuddyHandler = nil;
 	self.feedbagRights = nil;
 	[super dealloc];
 }

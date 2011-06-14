@@ -29,6 +29,10 @@
 - (void)aimFeedbagHandler:(AIMFeedbagHandler *)sender groupAdded:(AIMBlistGroup *)newGroup;
 - (void)aimFeedbagHandler:(AIMFeedbagHandler *)sender groupDeleted:(AIMBlistGroup *)oldGroup;
 - (void)aimFeedbagHandler:(AIMFeedbagHandler *)sender groupRenamed:(AIMBlistGroup *)theGroup;
+- (void)aimFeedbagHandler:(AIMFeedbagHandler *)sender buddyDenied:(NSString *)username;
+- (void)aimFeedbagHandler:(AIMFeedbagHandler *)sender buddyPermitted:(NSString *)username;
+- (void)aimFeedbagHandler:(AIMFeedbagHandler *)sender buddyUndenied:(NSString *)username;
+- (void)aimFeedbagHandler:(AIMFeedbagHandler *)sender buddyUnpermitted:(NSString *)username;
 - (void)aimFeedbagHandler:(AIMFeedbagHandler *)sender transactionFailed:(id<FeedbagTransaction>)transaction;
 
 @end
@@ -44,7 +48,7 @@
 
 @property (readonly) AIMFeedbag * feedbag;
 @property (readonly) AIMSession * session;
-@property (nonatomic, assign) AIMTempBuddyHandler * tempBuddyHandler;
+@property (nonatomic, retain) AIMTempBuddyHandler * tempBuddyHandler;
 @property (nonatomic, retain) AIMFeedbagRights * feedbagRights;
 @property (nonatomic, assign) id<AIMFeedbagHandlerDelegate> delegate;
 

@@ -12,7 +12,7 @@
 
 @interface FTCreateRootGroup : NSObject <FeedbagTransaction> {
 	NSArray * snacs;
-	NSInteger currentIndex;
+	NSInteger snacIndex;
 }
 
 @end

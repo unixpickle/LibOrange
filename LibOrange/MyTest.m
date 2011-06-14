@@ -8,7 +8,7 @@
 
 #import "MyTest.h"
 
-#define kSignoffTime 60
+#define kSignoffTime 500
 
 static void stripNL (char * buff) {
 	if (strlen(buff) == 0) return;
@@ -149,6 +149,21 @@ static void stripNL (char * buff) {
 	NSLog(@"Blist: %@", theSession.session.buddyList);
 }
 
+- (void)aimFeedbagHandler:(AIMFeedbagHandler *)sender buddyDenied:(NSString *)username {
+	NSLog(@"User blocked: %@", username);
+}
+
+- (void)aimFeedbagHandler:(AIMFeedbagHandler *)sender buddyPermitted:(NSString *)username {
+	NSLog(@"User permitted: %@", username);
+}
+
+- (void)aimFeedbagHandler:(AIMFeedbagHandler *)sender buddyUndenied:(NSString *)username {
+	NSLog(@"User un-blocked: %@", username);
+}
+- (void)aimFeedbagHandler:(AIMFeedbagHandler *)sender buddyUnpermitted:(NSString *)username {
+	NSLog(@"User un-permitted: %@", username);
+}
+
 - (void)aimFeedbagHandler:(AIMFeedbagHandler *)sender transactionFailed:(id<FeedbagTransaction>)transaction {
 	[self checkThreading];
 	NSLog(@"Transaction failed: %@", transaction);
@@ -177,23 +192,44 @@ static void stripNL (char * buff) {
 			} else {
 				[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:@"Err: Couldn't get your icon!"]];
 			}
+		} else if ([[tokens objectAtIndex:0] isEqual:@"bye"]) {
+			[[theSession session] closeConnection];
+		} else if ([[tokens objectAtIndex:0] isEqual:@"deny"]) {
+			NSString * desc = [[[theSession.session buddyList] denyList] description];
+			[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[desc stringByAddingAOLRTFTags]]];
+		} else if ([[tokens objectAtIndex:0] isEqual:@"permit"]) {
+			NSString * desc = [[[theSession.session buddyList] permitList] description];
+			[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[desc stringByAddingAOLRTFTags]]];
+		} else if ([[tokens objectAtIndex:0] isEqual:@"pdmode"]) {
+			NSString * desc = PD_MODE_TOSTR([theSession.feedbagHandler currentPDMode:NULL]);
+			[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[desc stringByAddingAOLRTFTags]]];
 		}
 	} else if ([tokens count] == 2) {
 		if ([[tokens objectAtIndex:0] isEqual:@"delbuddy"]) {
-			NSString * buddy = [tokens objectAtIndex:1];
-			NSString * msg = [self removeBuddy:buddy];
+			NSString * msg = [self removeBuddy:[tokens objectAtIndex:1]];
 			if (msg) {
 				[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[msg stringByAddingAOLRTFTags]]];
 			}
 		} else if ([[tokens objectAtIndex:0] isEqual:@"addgroup"]) {
-			NSString * group = [tokens objectAtIndex:1];
-			NSString * msg = [self addGroup:group];
+			NSString * msg = [self addGroup:[tokens objectAtIndex:1]];
 			if (msg) {
 				[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[msg stringByAddingAOLRTFTags]]];
 			}
 		} else if ([[tokens objectAtIndex:0] isEqual:@"delgroup"]) {
-			NSString * group = [tokens objectAtIndex:1];
-			NSString * msg = [self deleteGroup:group];
+			NSString * msg = [self deleteGroup:[tokens objectAtIndex:1]];
+			if (msg) {
+				[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[msg stringByAddingAOLRTFTags]]];
+			}
+		} else if ([[tokens objectAtIndex:0] isEqual:@"echo"]) {
+			NSString * msg = [tokens objectAtIndex:1];
+			[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[msg stringByAddingAOLRTFTags]]];
+		} else if ([[tokens objectAtIndex:0] isEqual:@"deny"]) {
+			NSString * msg = [self denyUser:[tokens objectAtIndex:1]];
+			if (msg) {
+				[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[msg stringByAddingAOLRTFTags]]];
+			}
+		} else if ([[tokens objectAtIndex:0] isEqual:@"undeny"]) {
+			NSString * msg = [self undenyUser:[tokens objectAtIndex:1]];
 			if (msg) {
 				[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[msg stringByAddingAOLRTFTags]]];
 			}
@@ -308,6 +344,29 @@ static void stripNL (char * buff) {
 	[theSession.feedbagHandler pushTransaction:addGrp];
 	[addGrp release];
 	return @"Add (group) request sent.";
+}
+- (NSString *)denyUser:(NSString *)username {
+	NSString * msg = @"Deny add sent!";
+	if ([theSession.feedbagHandler currentPDMode:NULL] != PD_MODE_DENY_SOME) {
+		FTSetPDMode * pdMode = [[FTSetPDMode alloc] initWithPDMode:PD_MODE_DENY_SOME pdFlags:PD_FLAGS_APPLIES_IM];
+		[theSession.feedbagHandler pushTransaction:pdMode];
+		[pdMode release];
+		msg = @"Set PD_MODE and sent add deny";
+	}
+	FTAddDeny * deny = [[FTAddDeny alloc] initWithUsername:username];
+	[theSession.feedbagHandler pushTransaction:deny];
+	[deny release];
+	return msg;
+}
+- (NSString *)undenyUser:(NSString *)username {
+	NSString * msg = @"Deny delete sent!";
+	if ([theSession.feedbagHandler currentPDMode:NULL] != PD_MODE_DENY_SOME) {
+		msg = @"Warning: Deny delete sent but PD_MODE isn't DENY_SOME";
+	}
+	FTAddDeny * delDeny = [[FTDelDeny alloc] initWithUsername:username];
+	[theSession.feedbagHandler pushTransaction:delDeny];
+	[delDeny release];
+	return msg;
 }
 
 @end

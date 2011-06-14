@@ -26,7 +26,7 @@
 	[rootGroup release];
 	[blankOrder release];
 	[insertSnac release];
-	currentIndex = -1;
+	snacIndex = -1;
 }
 
 - (BOOL)hasCreatedOperations {
@@ -35,13 +35,13 @@
 }
 
 - (SNAC *)nextTransactionSNAC {
-	if (currentIndex + 1 == [snacs count]) return nil;
-	return [snacs objectAtIndex:++currentIndex];
+	if (snacIndex + 1 == [snacs count]) return nil;
+	return [snacs objectAtIndex:++snacIndex];
 }
 
 - (SNAC *)currentTransactionSNAC {
-	if (currentIndex < 0) return nil;
-	return [snacs objectAtIndex:currentIndex];
+	if (snacIndex < 0) return nil;
+	return [snacs objectAtIndex:snacIndex];
 }
 
 - (void)dealloc {
