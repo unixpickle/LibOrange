@@ -52,6 +52,7 @@
 @synthesize statusHandler;
 @synthesize bartHandler;
 @synthesize rateHandler;
+@synthesize rendezvousHandler;
 
 - (id)initWithLoginHostInfo:(AIMLoginHostInfo *)hostInf delegate:(id<AIMSessionManagerDelegate>)_delegate {
 	if ((self = [super init])) {
@@ -264,6 +265,7 @@
 	tempBuddyHandler = [[AIMTempBuddyHandler alloc] initWithSession:session];
 	statusHandler = [[AIMStatusHandler alloc] initWithSession:session initialInfo:initialInfo];
 	rateHandler = [[AIMRateLimitHandler alloc] initWithSession:session];
+	rendezvousHandler = [[AIMRendezvousHandler alloc] initWithSession:session];
 	
 	[initialInfo release];
 	initialInfo = nil;
@@ -505,6 +507,7 @@
 	[bartHandler sessionClosed];
 	[bartHandler closeBArtConnection];
 	[rateHandler sessionClosed];
+	[rendezvousHandler sessionClosed];
 	self.backgroundThread = nil;
 	[self release];
 }
@@ -526,6 +529,7 @@
 	[statusHandler release];
 	[bartHandler release];
 	[rateHandler release];
+	[rendezvousHandler release];
 	
 	[session setSessionDelegate:nil];
 	[session release];

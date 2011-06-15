@@ -13,6 +13,8 @@
 		FA0B642013A11CA4002B848D /* NSString+AOLRTF.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0B641F13A11CA4002B848D /* NSString+AOLRTF.m */; };
 		FA1A3F5F13A7E263009B73DE /* AIMCapability.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1A3F5E13A7E263009B73DE /* AIMCapability.m */; };
 		FA1A3F6313A7E557009B73DE /* AIMNickWInfo+Caps.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1A3F6213A7E557009B73DE /* AIMNickWInfo+Caps.m */; };
+		FA1A3F6713A7FEAF009B73DE /* AIMRendezvousHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1A3F6613A7FEAF009B73DE /* AIMRendezvousHandler.m */; };
+		FA1A3F6A13A7FEB8009B73DE /* AIMFileTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1A3F6913A7FEB8009B73DE /* AIMFileTransfer.m */; };
 		FA1B67BA139DA456008F1884 /* AIMTempBuddyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1B67B9139DA456008F1884 /* AIMTempBuddyHandler.m */; };
 		FA232A1C1399FA0000852CC1 /* AIMFeedbagHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA232A1B1399FA0000852CC1 /* AIMFeedbagHandler.m */; };
 		FA32379013A12154005D7B69 /* FTAddBuddy.m in Sources */ = {isa = PBXBuildFile; fileRef = FA32378F13A12154005D7B69 /* FTAddBuddy.m */; };
@@ -78,6 +80,9 @@
 		FABC0EE013970D430050D130 /* MyTest.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0EDF13970D410050D130 /* MyTest.m */; };
 		FABC0EE813970EB30050D130 /* flipbit.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0EE313970EB30050D130 /* flipbit.m */; };
 		FABC0EE913970EB30050D130 /* BasicStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = FABC0EE513970EB30050D130 /* BasicStrings.m */; };
+		FABE69F213A8240500FFF198 /* AIMReceivingFileTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = FABE69F113A8240500FFF198 /* AIMReceivingFileTransfer.m */; };
+		FABE69F613A824DB00FFF198 /* AIMIMRendezvous.m in Sources */ = {isa = PBXBuildFile; fileRef = FABE69F513A824DB00FFF198 /* AIMIMRendezvous.m */; };
+		FABE69F913A83C1A00FFF198 /* OFTConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = FABE69F813A83C1900FFF198 /* OFTConnection.m */; };
 		FAECD3AA139C1D5D0028BEEE /* AIMICBMMessageToServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FAECD3A9139C1D5D0028BEEE /* AIMICBMMessageToServer.m */; };
 		FAF687DD13A7A1B200AE6A93 /* FTAddDeny.m in Sources */ = {isa = PBXBuildFile; fileRef = FAF687DC13A7A1B200AE6A93 /* FTAddDeny.m */; };
 		FAF687E013A7A39100AE6A93 /* FTDelDeny.m in Sources */ = {isa = PBXBuildFile; fileRef = FAF687DF13A7A39100AE6A93 /* FTDelDeny.m */; };
@@ -110,6 +115,10 @@
 		FA1A3F5E13A7E263009B73DE /* AIMCapability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMCapability.m; sourceTree = "<group>"; };
 		FA1A3F6113A7E557009B73DE /* AIMNickWInfo+Caps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AIMNickWInfo+Caps.h"; sourceTree = "<group>"; };
 		FA1A3F6213A7E557009B73DE /* AIMNickWInfo+Caps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AIMNickWInfo+Caps.m"; sourceTree = "<group>"; };
+		FA1A3F6513A7FEAF009B73DE /* AIMRendezvousHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMRendezvousHandler.h; sourceTree = "<group>"; };
+		FA1A3F6613A7FEAF009B73DE /* AIMRendezvousHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMRendezvousHandler.m; sourceTree = "<group>"; };
+		FA1A3F6813A7FEB8009B73DE /* AIMFileTransfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMFileTransfer.h; sourceTree = "<group>"; };
+		FA1A3F6913A7FEB8009B73DE /* AIMFileTransfer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMFileTransfer.m; sourceTree = "<group>"; };
 		FA1B67B8139DA456008F1884 /* AIMTempBuddyHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMTempBuddyHandler.h; sourceTree = "<group>"; };
 		FA1B67B9139DA456008F1884 /* AIMTempBuddyHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMTempBuddyHandler.m; sourceTree = "<group>"; };
 		FA232A1A1399FA0000852CC1 /* AIMFeedbagHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMFeedbagHandler.h; sourceTree = "<group>"; };
@@ -246,6 +255,12 @@
 		FABC0EE513970EB30050D130 /* BasicStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicStrings.m; sourceTree = "<group>"; };
 		FABC0EE613970EB30050D130 /* TLV_Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLV_Types.h; sourceTree = "<group>"; };
 		FABC0EE713970EB30050D130 /* SNAC_Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNAC_Types.h; sourceTree = "<group>"; };
+		FABE69F013A8240500FFF198 /* AIMReceivingFileTransfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMReceivingFileTransfer.h; sourceTree = "<group>"; };
+		FABE69F113A8240500FFF198 /* AIMReceivingFileTransfer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMReceivingFileTransfer.m; sourceTree = "<group>"; };
+		FABE69F413A824DB00FFF198 /* AIMIMRendezvous.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMIMRendezvous.h; sourceTree = "<group>"; };
+		FABE69F513A824DB00FFF198 /* AIMIMRendezvous.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMIMRendezvous.m; sourceTree = "<group>"; };
+		FABE69F713A83C1800FFF198 /* OFTConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OFTConnection.h; sourceTree = "<group>"; };
+		FABE69F813A83C1900FFF198 /* OFTConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OFTConnection.m; sourceTree = "<group>"; };
 		FAECD3A8139C1D5D0028BEEE /* AIMICBMMessageToServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMICBMMessageToServer.h; sourceTree = "<group>"; };
 		FAECD3A9139C1D5D0028BEEE /* AIMICBMMessageToServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMICBMMessageToServer.m; sourceTree = "<group>"; };
 		FAF687BD13A7092A00AE6A93 /* LibOrange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibOrange.h; sourceTree = "<group>"; };
@@ -282,6 +297,22 @@
 			name = Caps;
 			sourceTree = "<group>";
 		};
+		FA1A3F6413A7FDEB009B73DE /* File Tranfers */ = {
+			isa = PBXGroup;
+			children = (
+				FABE69F313A824C200FFF198 /* ICBM */,
+				FA1A3F6513A7FEAF009B73DE /* AIMRendezvousHandler.h */,
+				FA1A3F6613A7FEAF009B73DE /* AIMRendezvousHandler.m */,
+				FA1A3F6813A7FEB8009B73DE /* AIMFileTransfer.h */,
+				FA1A3F6913A7FEB8009B73DE /* AIMFileTransfer.m */,
+				FABE69F013A8240500FFF198 /* AIMReceivingFileTransfer.h */,
+				FABE69F113A8240500FFF198 /* AIMReceivingFileTransfer.m */,
+				FABE69F713A83C1800FFF198 /* OFTConnection.h */,
+				FABE69F813A83C1900FFF198 /* OFTConnection.m */,
+			);
+			name = "File Tranfers";
+			sourceTree = "<group>";
+		};
 		FA1B67B7139DA414008F1884 /* Temp Buddies */ = {
 			isa = PBXGroup;
 			children = (
@@ -294,6 +325,7 @@
 		FA232A181399F9E100852CC1 /* Handlers */ = {
 			isa = PBXGroup;
 			children = (
+				FA1A3F6413A7FDEB009B73DE /* File Tranfers */,
 				FAAE844813A6BB8000CCB00A /* Rate Limits */,
 				FA616C4E139EEABD00780097 /* Buddy Art */,
 				FA1B67B7139DA414008F1884 /* Temp Buddies */,
@@ -677,6 +709,15 @@
 			name = Primatives;
 			sourceTree = "<group>";
 		};
+		FABE69F313A824C200FFF198 /* ICBM */ = {
+			isa = PBXGroup;
+			children = (
+				FABE69F413A824DB00FFF198 /* AIMIMRendezvous.h */,
+				FABE69F513A824DB00FFF198 /* AIMIMRendezvous.m */,
+			);
+			name = ICBM;
+			sourceTree = "<group>";
+		};
 		FAF687DA13A7A1A000AE6A93 /* Permit/Deny */ = {
 			isa = PBXGroup;
 			children = (
@@ -814,6 +855,11 @@
 				FAF687E613A7A4A100AE6A93 /* FTDelPermit.m in Sources */,
 				FA1A3F5F13A7E263009B73DE /* AIMCapability.m in Sources */,
 				FA1A3F6313A7E557009B73DE /* AIMNickWInfo+Caps.m in Sources */,
+				FA1A3F6713A7FEAF009B73DE /* AIMRendezvousHandler.m in Sources */,
+				FA1A3F6A13A7FEB8009B73DE /* AIMFileTransfer.m in Sources */,
+				FABE69F213A8240500FFF198 /* AIMReceivingFileTransfer.m in Sources */,
+				FABE69F613A824DB00FFF198 /* AIMIMRendezvous.m in Sources */,
+				FABE69F913A83C1A00FFF198 /* OFTConnection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,7 +8,7 @@
 
 #import "MyTest.h"
 
-#define kSignoffTime 500
+#define kSignoffTime 20
 
 static void stripNL (char * buff) {
 	if (strlen(buff) == 0) return;
@@ -91,6 +91,7 @@ static void stripNL (char * buff) {
 	session.messageHandler.delegate = self;
 	session.statusHandler.delegate = self;
 	session.rateHandler.delegate = self;
+	session.rendezvousHandler.delegate = self;
 	
 	[session configureBuddyArt];
 	AIMCapability * fileTransfers = [[AIMCapability alloc] initWithType:AIMCapabilityFileTransfer];
@@ -305,6 +306,17 @@ static void stripNL (char * buff) {
 
 - (void)aimRateLimitHandler:(AIMRateLimitHandler *)handler gotRateAlert:(AIMRateNotificationInfo *)info {
 	// use this to show the user that they should stop sending messages.
+}
+
+#pragma mark File Transfers
+
+- (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferRequested:(AIMReceivingFileTransfer *)ft {
+	NSLog(@"Auto-accepting transfer: %@", ft);
+	[rvHandler acceptFileTransfer:ft];
+}
+
+- (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferCancelled:(AIMReceivingFileTransfer *)ft reason:(UInt16)reason {
+	NSLog(@"File transfer cancelled: %@", ft);
 }
 
 #pragma mark Commands

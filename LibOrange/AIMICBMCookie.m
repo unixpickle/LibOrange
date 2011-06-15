@@ -30,4 +30,9 @@
 	return [[[AIMICBMCookie alloc] initWithCookieData:data] autorelease];
 }
 
+- (BOOL)isEqualToCookie:(AIMICBMCookie *)otherCookie {
+	if ([[self cookieData] isEqual:[otherCookie cookieData]]) return YES;
+	else return NO;
+}
+
 @end

@@ -17,5 +17,6 @@
 - (NSData *)cookieData;
 
 + (AIMICBMCookie *)randomCookie;
+- (BOOL)isEqualToCookie:(AIMICBMCookie *)otherCookie;
 
 @end

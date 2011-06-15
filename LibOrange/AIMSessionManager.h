@@ -19,6 +19,7 @@
 #import "AIMStatusHandler.h"
 #import "AIMBArtHandler.h"
 #import "AIMRateLimitHandler.h"
+#import "AIMRendezvousHandler.h"
 
 #define kMinICBMInterval 200
 
@@ -56,6 +57,7 @@
 	AIMStatusHandler * statusHandler;
 	AIMBArtHandler * bartHandler; // nil by default.
 	AIMRateLimitHandler * rateHandler;
+	AIMRendezvousHandler * rendezvousHandler;
 	
 	id<AIMSessionManagerDelegate> delegate;
 }
@@ -70,6 +72,7 @@
 @property (readonly) AIMStatusHandler * statusHandler;
 @property (readonly) AIMBArtHandler * bartHandler;
 @property (readonly) AIMRateLimitHandler * rateHandler;
+@property (readonly) AIMRendezvousHandler * rendezvousHandler;
 
 + (BOOL)signonClientOnline:(OSCARConnection *)connection;
 
