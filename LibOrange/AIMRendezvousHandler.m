@@ -68,6 +68,12 @@
 
 - (void)cancelFileTransfer:(AIMFileTransfer *)ft {
 	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	if ([ft isTransferring]) {
+		if ([ft isKindOfClass:[AIMReceivingFileTransfer class]]) {
+			[(AIMReceivingFileTransfer *)ft cancelDownload];
+		}
+	}
+	
 	AIMIMRendezvous * cancelRV = [[AIMIMRendezvous alloc] init];
 	cancelRV.type = RV_TYPE_CANCEL;
 	cancelRV.cookie = [ft cookie];
