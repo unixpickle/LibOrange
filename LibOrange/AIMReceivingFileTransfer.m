@@ -14,7 +14,7 @@
 - (void)receiveFileDirectly:(OFTConnection *)theConnection;
 - (OFTConnection *)configureProxy:(NSString *)ipAddress port:(UInt16)port cookie:(NSData *)cookie sn:(NSString *)screenName;
 - (void)_delegateInformCounterProp:(AIMIMRendezvous *)counter;
-- (AIMIMRendezvous *)connectHereCounterProposal:(UInt16)port;
+- (AIMIMRendezvous *)connectHereCounterProposal:(UInt16)port cookie:(NSData *)cookieData;
 + (TLV *)capabilitiesBlock;
 
 @end
@@ -127,20 +127,14 @@
 				// generate counter proposal.
 				UInt16 port = (UInt16)((arc4random() % (65535 - 6000)) + 6000);
 				NSLog(@"Proposal port: %d", port);
-				AIMIMRendezvous * counterProp = [self connectHereCounterProposal:port]; // BS THE PORT
+				AIMIMRendezvous * counterProp = [self connectHereCounterProposal:port cookie:cookieData];
 				OFTServer * server = [[OFTServer alloc] initWithPort:port];
 				[self performSelector:@selector(_delegateInformCounterProp:) onThread:self.mainThread withObject:counterProp waitUntilDone:NO];
 				NSLog(@"Opening port, generating proposal for it.");
-				// Open a port, nonblocking accept for 10 seconds at a time.
-				// When the thread is cancelled, drain the pool and silently return.
-				// When a connection is made, tell the delegate.
-				
-				
 				int fd = [server fileDescriptorForListeningOnPort:30]; // 30 second timeout.
 				[server closeServer];
 				[server release];
 				if (fd < 0) {
-					NSLog(@"Listen failed.");
 					self.backgroundThread = nil;
 					[pool drain];
 					return;
@@ -180,7 +174,7 @@
 	[self tryProposal];
 }
 
-- (AIMIMRendezvous *)connectHereCounterProposal:(UInt16)port {
+- (AIMIMRendezvous *)connectHereCounterProposal:(UInt16)port cookie:(NSData *)cookieData {
 	// get our IP address.
 	UInt32 ipAddress = [ANIPInformation ipAddressGuess];
 	UInt32 ipAddrConf =  ipAddress ^ 0xFFFFFFFF;
@@ -194,8 +188,8 @@
 	TLV * tPortXor = [[TLV alloc] initWithType:TLV_RV_PORT_XOR data:[NSData dataWithBytes:&portConf length:2]];
 	TLV * reqNumber = [[TLV alloc] initWithType:TLV_RV_SEQUENCE_NUM data:[NSData dataWithBytes:&requestNumFlip length:2]];
 	AIMIMRendezvous * rendezvous = [[AIMIMRendezvous alloc] init];
-	rendezvous.cookie = [[[AIMICBMCookie alloc] initWithCookieData:[[self.cookie cookieData] bytes]] autorelease];
-	rendezvous.service = self.lastProposal.service;
+	rendezvous.cookie = [[[AIMICBMCookie alloc] initWithCookieData:[cookieData bytes]] autorelease];
+	rendezvous.service = [[[AIMCapability alloc] initWithType:AIMCapabilityFileTransfer] autorelease];
 	rendezvous.type = RV_TYPE_PROPOSE;
 	rendezvous.params = [NSArray arrayWithObjects:reqNumber, tIpAddr, tIpAddrXor, tClientAddr, tPort, tPortXor, nil];
 	[tIpAddr release];
@@ -216,12 +210,15 @@
 #pragma mark Direct Connection
 
 - (void)receiveFileDirectly:(OFTConnection *)theConnection {
-	// TODO: make this work
+	// TODO: here is where we should interact with the OSCAR File Transfer server.
+	// This method should download the file's data and write it to a local file.
+	// Every buffer downloaded should update the progress.
 	NSLog(@"Receive file directly: %@", theConnection);
 	if ([delegate respondsToSelector:@selector(aimReceivingFileTransferStarted:)]) {
 		[(NSObject *)delegate performSelector:@selector(aimReceivingFileTransferStarted:) onThread:self.mainThread withObject:self waitUntilDone:NO];
 	}
 	sleep(2);
+	NSLog(@"Cancelling transfer.");
 	[theConnection closeConnection];
 }
 

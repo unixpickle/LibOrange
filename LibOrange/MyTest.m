@@ -319,6 +319,14 @@ static void stripNL (char * buff) {
 	NSLog(@"File transfer cancelled: %@", ft);
 }
 
+- (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferFailed:(AIMFileTransfer *)ft {
+	NSLog(@"File transfer failed: %@", ft);
+}
+
+- (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferStarted:(AIMFileTransfer *)ft {
+	NSLog(@"File transfer started: %@", ft);
+}
+
 #pragma mark Commands
 
 - (NSString *)removeBuddy:(NSString *)username {

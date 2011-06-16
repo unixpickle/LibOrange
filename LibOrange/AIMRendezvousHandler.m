@@ -127,7 +127,6 @@
 
 - (void)aimReceivingFileTransferTransferFailed:(AIMReceivingFileTransfer *)ft {
 	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
-	NSLog(@"FT Failed: %@", ft);
 	if ([delegate respondsToSelector:@selector(aimRendezvousHandler:fileTransferFailed:)]) {
 		[delegate aimRendezvousHandler:self fileTransferFailed:ft];
 	}
@@ -137,12 +136,17 @@
 
 - (void)aimReceivingFileTransferPropositionSuccess:(AIMReceivingFileTransfer *)ft {
 	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
-	NSLog(@"FT succeeded: %@", ft);
+}
+
+- (void)aimReceivingFileTransferStarted:(AIMReceivingFileTransfer *)ft {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	if ([delegate respondsToSelector:@selector(aimRendezvousHandler:fileTransferStarted:)]) {
+		[delegate aimRendezvousHandler:self fileTransferStarted:ft];
+	}
 }
 
 - (void)aimReceivingFileTransferPropositionFailed:(AIMReceivingFileTransfer *)ft counterProposal:(AIMIMRendezvous *)newProp {
 	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
-	NSLog(@"Sending counter proposal.");
 	AIMICBMMessageToServer * msg = [[AIMICBMMessageToServer alloc] initWithRVData:[newProp encodePacket] toUser:[ft buddy].username cookie:[ft cookie]];
 	SNAC * sendMsg = [[SNAC alloc] initWithID:SNAC_ID_NEW(SNAC_ICBM, ICBM__CHANNEL_MSG_TOHOST) flags:0 requestID:[session generateReqID] data:[msg encodePacket]];
 	[msg release];
