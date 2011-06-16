@@ -179,9 +179,8 @@
 }
 
 - (void)cancelDownload {
-	if (currentConnection) {
-		[currentConnection closeConnection];
-	}
+	[self.backgroundThread cancel];
+	self.backgroundThread = nil;
 }
 
 - (AIMIMRendezvous *)connectHereCounterProposal:(UInt16)port cookie:(NSData *)cookieData {
@@ -267,6 +266,12 @@
 		return;
 	}
 	
+	if ([[NSThread currentThread] isCancelled]) {
+		[theConnection closeConnection];
+		[self setIsTransferring:NO];
+		return;
+	}
+	
 	if (![[NSFileManager defaultManager] fileExistsAtPath:self.writePath]) {
 		[[NSFileManager defaultManager] createFileAtPath:self.writePath contents:[NSData data] attributes:nil];
 	}
@@ -282,7 +287,17 @@
 	// read only the file data, ignoring the resource fork data.
 	while ([header bytesReceived] < fileSize) {
 		int needs = (fileSize - [header bytesReceived] > 65536 ? 65536 : (fileSize - [header bytesReceived]));
+		if ([[NSThread currentThread] isCancelled]) {
+			[theConnection closeConnection];
+			[self setIsTransferring:NO];
+			return;
+		}
 		int readSize = (int)read([theConnection fileDescriptor], buffer, needs);
+		if ([[NSThread currentThread] isCancelled]) {
+			[theConnection closeConnection];
+			[self setIsTransferring:NO];
+			return;
+		}
 		if (readSize <= 0) {
 			[fh closeFile];
 			[self setIsTransferring:NO];
@@ -302,7 +317,17 @@
 	// read the resource fork that trails the file data, do nothing with it.
 	while ([header bytesReceived] < [header totalSize]) {
 		int needs = ([header totalSize] - [header bytesReceived] > 65536 ? 65536 : ([header totalSize] - [header bytesReceived]));
+		if ([[NSThread currentThread] isCancelled]) {
+			[theConnection closeConnection];
+			[self setIsTransferring:NO];
+			return;
+		}
 		int readSize = (int)read([theConnection fileDescriptor], buffer, needs);
+		if ([[NSThread currentThread] isCancelled]) {
+			[theConnection closeConnection];
+			[self setIsTransferring:NO];
+			return;
+		}
 		if (readSize <= 0) {
 			[fh closeFile];
 			[self setIsTransferring:NO];

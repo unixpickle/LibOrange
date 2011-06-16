@@ -688,7 +688,7 @@
 				<integer>70</integer>
 			</dict>
 		</dict>
-		<string>AIMRendezvousHandler.m</string>
+		<string>AIMReceivingFileTransfer.m</string>
 		<dict>
 			<key>$classes</key>
 			<array>
@@ -801,7 +801,7 @@
 				<integer>87</integer>
 			</dict>
 			<key>NS.string</key>
-			<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMRendezvousHandler.m</string>
+			<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMReceivingFileTransfer.m</string>
 		</dict>
 		<dict>
 			<key>$classes</key>
@@ -880,10 +880,10 @@
 		<string>PrimaryDocumentVisibleCharacterRange</string>
 		<string>HideAllIssues</string>
 		<string>PrimaryDocumentSelectedCharacterRange</string>
-		<real>329946137.32276601</real>
-		<string>{1350, 1804}</string>
+		<real>329946243.03223401</real>
+		<string>{9380, 1664}</string>
 		<false/>
-		<string>{2200, 0}</string>
+		<string>{11041, 0}</string>
 		<dict>
 			<key>$classes</key>
 			<array>
@@ -893,7 +893,7 @@
 			<key>$classname</key>
 			<string>NSDictionary</string>
 		</dict>
-		<string>-cancelFileTransfer:</string>
+		<string>-receiveFileDirectly:cookie:</string>
 		<string>Xcode.IDEKit.EditorDocument.SourceCode</string>
 		<dict>
 			<key>$class</key>
@@ -912,7 +912,7 @@
 				<integer>103</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMRendezvousHandler.m</string>
+		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMReceivingFileTransfer.m</string>
 		<dict>
 			<key>$classes</key>
 			<array>
@@ -4927,7 +4927,7 @@
 		</dict>
 		<string>IDEUtilitiesArea</string>
 		<real>260</real>
-		<string>AIMRendezvousHandler.m</string>
+		<string>AIMReceivingFileTransfer.m</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -25768,9 +25768,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>329946099.899831</real>
-		<string>{14634, 1108}</string>
-		<string>{15663, 0}</string>
+		<real>329946243.03139699</real>
+		<string>{9380, 1664}</string>
+		<string>{11041, 0}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -26295,9 +26295,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>329946137.32206303</real>
-		<string>{1350, 1804}</string>
-		<string>{2200, 0}</string>
+		<real>329946157.150213</real>
+		<string>{1350, 1844}</string>
+		<string>{2224, 14}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -29966,7 +29966,7 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>81</integer>
+					<integer>2147</integer>
 				</dict>
 			</array>
 		</dict>
@@ -30041,7 +30041,7 @@
 		<string>IDEActivityReportStringSegmentStringValue</string>
 		<real>2</real>
 		<string> </string>
-		<string>Analyze</string>
+		<string>Build</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -30220,7 +30220,7 @@
 				<integer>2163</integer>
 			</dict>
 			<key>NS.time</key>
-			<real>329946057.21162999</real>
+			<real>329946239.70261598</real>
 		</dict>
 		<dict>
 			<key>$classes</key>
@@ -30231,7 +30231,7 @@
 			<key>$classname</key>
 			<string>NSDate</string>
 		</dict>
-		<string>Today at 3:40 PM</string>
+		<string>Today at 3:43 PM</string>
 		<integer>106</integer>
 		<dict>
 			<key>$class</key>
@@ -30300,7 +30300,7 @@
 				<integer>2168</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMRendezvousHandler.m</string>
+		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMReceivingFileTransfer.m</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -30318,7 +30318,7 @@
 				<integer>2170</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMReceivingFileTransfer.m</string>
+		<string>file://localhost/Users/alex/Desktop/LibOrange/LibOrange/AIMRendezvousHandler.m</string>
 		<dict>
 			<key>$class</key>
 			<dict>
