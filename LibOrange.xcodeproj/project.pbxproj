@@ -37,6 +37,10 @@
 		FA616C51139EEACA00780097 /* AIMBArtID.m in Sources */ = {isa = PBXBuildFile; fileRef = FA616C50139EEACA00780097 /* AIMBArtID.m */; };
 		FA616C54139EEF5900780097 /* AIMNickWInfo+BArt.m in Sources */ = {isa = PBXBuildFile; fileRef = FA616C53139EEF5900780097 /* AIMNickWInfo+BArt.m */; };
 		FA616C5713A00C8400780097 /* AIMNickWInfo+Update.m in Sources */ = {isa = PBXBuildFile; fileRef = FA616C5613A00C8300780097 /* AIMNickWInfo+Update.m */; };
+		FA65B2FB13AA451E005757FD /* OFTHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = FA65B2FA13AA451E005757FD /* OFTHeader.m */; };
+		FA65B2FE13AA4C58005757FD /* FileDescriptors.m in Sources */ = {isa = PBXBuildFile; fileRef = FA65B2FD13AA4C58005757FD /* FileDescriptors.m */; };
+		FA65B30113AA5310005757FD /* NSMutableData+FlipBit.m in Sources */ = {isa = PBXBuildFile; fileRef = FA65B30013AA5310005757FD /* NSMutableData+FlipBit.m */; };
+		FA65B30413AA8399005757FD /* OFTCheckSum.m in Sources */ = {isa = PBXBuildFile; fileRef = FA65B30213AA8397005757FD /* OFTCheckSum.m */; };
 		FA73ACB813A3ADA200E13FDA /* AIMBuddyIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = FA73ACB713A3ADA200E13FDA /* AIMBuddyIcon.m */; };
 		FA73ACBB13A3BA8500E13FDA /* AIMBArtIDWName.m in Sources */ = {isa = PBXBuildFile; fileRef = FA73ACBA13A3BA8500E13FDA /* AIMBArtIDWName.m */; };
 		FA73ACBF13A3C4CF00E13FDA /* AIMBArtQueryReplyID.m in Sources */ = {isa = PBXBuildFile; fileRef = FA73ACBE13A3C4CF00E13FDA /* AIMBArtQueryReplyID.m */; };
@@ -168,6 +172,14 @@
 		FA616C53139EEF5900780097 /* AIMNickWInfo+BArt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AIMNickWInfo+BArt.m"; sourceTree = "<group>"; };
 		FA616C5513A00C8300780097 /* AIMNickWInfo+Update.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AIMNickWInfo+Update.h"; sourceTree = "<group>"; };
 		FA616C5613A00C8300780097 /* AIMNickWInfo+Update.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AIMNickWInfo+Update.m"; sourceTree = "<group>"; };
+		FA65B2F913AA451E005757FD /* OFTHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OFTHeader.h; sourceTree = "<group>"; };
+		FA65B2FA13AA451E005757FD /* OFTHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OFTHeader.m; sourceTree = "<group>"; };
+		FA65B2FC13AA4C58005757FD /* FileDescriptors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileDescriptors.h; sourceTree = "<group>"; };
+		FA65B2FD13AA4C58005757FD /* FileDescriptors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileDescriptors.m; sourceTree = "<group>"; };
+		FA65B2FF13AA5310005757FD /* NSMutableData+FlipBit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableData+FlipBit.h"; sourceTree = "<group>"; };
+		FA65B30013AA5310005757FD /* NSMutableData+FlipBit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableData+FlipBit.m"; sourceTree = "<group>"; };
+		FA65B30213AA8397005757FD /* OFTCheckSum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OFTCheckSum.m; sourceTree = "<group>"; };
+		FA65B30313AA8398005757FD /* OFTCheckSum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OFTCheckSum.h; sourceTree = "<group>"; };
 		FA73ACB613A3ADA200E13FDA /* AIMBuddyIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMBuddyIcon.h; sourceTree = "<group>"; };
 		FA73ACB713A3ADA200E13FDA /* AIMBuddyIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMBuddyIcon.m; sourceTree = "<group>"; };
 		FA73ACB913A3BA8500E13FDA /* AIMBArtIDWName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMBArtIDWName.h; sourceTree = "<group>"; };
@@ -717,6 +729,8 @@
 			children = (
 				FABC0EE213970EB30050D130 /* flipbit.h */,
 				FABC0EE313970EB30050D130 /* flipbit.m */,
+				FA65B2FF13AA5310005757FD /* NSMutableData+FlipBit.h */,
+				FA65B30013AA5310005757FD /* NSMutableData+FlipBit.m */,
 				FABC0EE413970EB30050D130 /* BasicStrings.h */,
 				FABC0EE513970EB30050D130 /* BasicStrings.m */,
 			);
@@ -747,6 +761,12 @@
 				FABE6A1713A938B600FFF198 /* OFTProxyConnection.m */,
 				FABE6A1913A938BF00FFF198 /* OFTProxyCommand.h */,
 				FABE6A1A13A938C000FFF198 /* OFTProxyCommand.m */,
+				FA65B2F913AA451E005757FD /* OFTHeader.h */,
+				FA65B2FA13AA451E005757FD /* OFTHeader.m */,
+				FA65B2FC13AA4C58005757FD /* FileDescriptors.h */,
+				FA65B2FD13AA4C58005757FD /* FileDescriptors.m */,
+				FA65B30313AA8398005757FD /* OFTCheckSum.h */,
+				FA65B30213AA8397005757FD /* OFTCheckSum.m */,
 			);
 			name = OFT;
 			sourceTree = "<group>";
@@ -898,6 +918,10 @@
 				FABE6A1513A91FE500FFF198 /* ANIPInformation.m in Sources */,
 				FABE6A1813A938B700FFF198 /* OFTProxyConnection.m in Sources */,
 				FABE6A1B13A938C100FFF198 /* OFTProxyCommand.m in Sources */,
+				FA65B2FB13AA451E005757FD /* OFTHeader.m in Sources */,
+				FA65B2FE13AA4C58005757FD /* FileDescriptors.m in Sources */,
+				FA65B30113AA5310005757FD /* NSMutableData+FlipBit.m in Sources */,
+				FA65B30413AA8399005757FD /* OFTCheckSum.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

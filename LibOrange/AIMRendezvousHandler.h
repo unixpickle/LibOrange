@@ -21,6 +21,8 @@
 - (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferCancelled:(AIMReceivingFileTransfer *)ft reason:(UInt16)reason;
 - (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferStarted:(AIMFileTransfer *)ft;
 - (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferFailed:(AIMFileTransfer *)ft;
+- (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferDone:(AIMFileTransfer *)ft;
+- (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferProgressChanged:(AIMFileTransfer *)ft;
 
 @end
 
@@ -35,7 +37,7 @@
 - (id)initWithSession:(AIMSession *)theSession;
 - (AIMFileTransfer *)fileTransferWithCookie:(AIMICBMCookie *)cookie;
 
-- (void)acceptFileTransfer:(AIMReceivingFileTransfer *)ft;
+- (void)acceptFileTransfer:(AIMReceivingFileTransfer *)ft saveToPath:(NSString *)path;
 - (void)cancelFileTransfer:(AIMFileTransfer *)ft;
 
 @end

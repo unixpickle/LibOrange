@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "flipbit.h"
+#import "FileDescriptors.h"
 
 #define COMMAND_TYPE_READY 0x0005
 #define COMMAND_TYPE_INIT_RECV 0x0004

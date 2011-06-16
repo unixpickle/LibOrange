@@ -74,20 +74,26 @@
 	static NSDictionary * dict = nil;
 	if (!dict) {
 		char _fileTransfer[2];
+		char _getFile[2];
 		char _directIM[2];
 		NSMutableDictionary * builder = [NSMutableDictionary dictionary];
 		NSMutableData * defaultDat = [NSMutableData dataWithData:[AIMCapability defaultUUID]];
 		_fileTransfer[0] = 0x13;
 		_fileTransfer[1] = 0x43;
+		_getFile[0] = 0x13;
+		_getFile[1] = 0x48;
 		_directIM[0] = 0x13;
 		_directIM[1] = 0x45;
 		[defaultDat replaceBytesInRange:NSMakeRange(2, 2) withBytes:_fileTransfer];
 		NSData * fileTransfers = [[defaultDat copy] autorelease];
 		[defaultDat replaceBytesInRange:NSMakeRange(2, 2) withBytes:_directIM];
 		NSData * directIM = [[defaultDat copy] autorelease];
+		[defaultDat replaceBytesInRange:NSMakeRange(2, 2) withBytes:_getFile];
+		NSDate * getFile = [[defaultDat copy] autorelease];
 		
 		[builder setObject:fileTransfers forKey:[NSNumber numberWithInt:AIMCapabilityFileTransfer]];
 		[builder setObject:directIM forKey:[NSNumber numberWithInt:AIMCapabilityDirectIM]];
+		[builder setObject:getFile forKey:[NSNumber numberWithInt:AIMCapabilityGetFiles]];
 		
 		dict = [[NSDictionary alloc] initWithDictionary:builder];
 	}

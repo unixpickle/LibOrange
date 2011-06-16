@@ -8,7 +8,7 @@
 
 #import "MyTest.h"
 
-#define kSignoffTime 60
+#define kSignoffTime 500
 
 static void stripNL (char * buff) {
 	if (strlen(buff) == 0) return;
@@ -95,7 +95,8 @@ static void stripNL (char * buff) {
 	
 	[session configureBuddyArt];
 	AIMCapability * fileTransfers = [[AIMCapability alloc] initWithType:AIMCapabilityFileTransfer];
-	NSArray * caps = [NSArray arrayWithObject:[fileTransfers autorelease]];
+	AIMCapability * getFiles = [[AIMCapability alloc] initWithType:AIMCapabilityGetFiles];
+	NSArray * caps = [NSArray arrayWithObjects:[fileTransfers autorelease], [getFiles autorelease], nil];
 	AIMBuddyStatus * newStatus = [[AIMBuddyStatus alloc] initWithMessage:@"Using LibOrange on Mac!" type:AIMBuddyStatusAvailable timeIdle:0 caps:caps];
 	[session.statusHandler updateStatus:newStatus];
 	[newStatus release];
@@ -312,7 +313,9 @@ static void stripNL (char * buff) {
 
 - (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferRequested:(AIMReceivingFileTransfer *)ft {
 	NSLog(@"Auto-accepting transfer: %@", ft);
-	[rvHandler acceptFileTransfer:ft];
+	NSString * path = [NSString stringWithFormat:@"/var/tmp/%@", [ft remoteFileName]];
+	[rvHandler acceptFileTransfer:ft saveToPath:path];
+	NSLog(@"Save to path: %@", path);
 }
 
 - (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferCancelled:(AIMReceivingFileTransfer *)ft reason:(UInt16)reason {
@@ -325,6 +328,14 @@ static void stripNL (char * buff) {
 
 - (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferStarted:(AIMFileTransfer *)ft {
 	NSLog(@"File transfer started: %@", ft);
+}
+
+- (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferProgressChanged:(AIMFileTransfer *)ft {
+	NSLog(@"%@ progress = %f", ft, [ft progress]);
+}
+
+- (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferDone:(AIMFileTransfer *)ft {
+	NSLog(@"File transfer done: %@", ft);
 }
 
 #pragma mark Commands

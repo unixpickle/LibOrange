@@ -10,6 +10,7 @@
 
 typedef enum {
 	AIMCapabilityFileTransfer,
+	AIMCapabilityGetFiles,
 	AIMCapabilityDirectIM,
 	AIMCapabilityOther
 } AIMCapabilityType;

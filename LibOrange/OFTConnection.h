@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "flipbit.h"
+#import "OFTHeader.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h> 
@@ -47,6 +47,9 @@ typedef enum {
  * Creates an OFT connection with an existing file descriptor.
  */
 - (id)initWithFileDescriptor:(int)fd;
+
+- (OFTHeader *)readHeader:(int)timeoutSeconds;
+- (BOOL)writeHeader:(OFTHeader *)theHeader;
 
 - (void)closeConnection;
 

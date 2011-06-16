@@ -58,9 +58,10 @@
 	return nil;
 }
 
-- (void)acceptFileTransfer:(AIMReceivingFileTransfer *)ft {
+- (void)acceptFileTransfer:(AIMReceivingFileTransfer *)ft  saveToPath:(NSString *)path {
 	// send the information.
 	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	ft.writePath = path;
 	[ft setDelegate:self];
 	[ft tryProposal];
 }
@@ -156,11 +157,14 @@
 
 - (void)aimReceivingFileTransferSendAccept:(AIMReceivingFileTransfer *)ft {
 	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	UInt16 maxProtoVersion = flipUInt16(1);
+	TLV * maxProto = [[TLV alloc] initWithType:TLV_RV_MAX_PROTOCOL_VERSION data:[NSData dataWithBytes:&maxProtoVersion length:2]];
 	AIMIMRendezvous * acceptRV = [[AIMIMRendezvous alloc] init];
 	acceptRV.type = RV_TYPE_ACCEPT;
 	acceptRV.cookie = [ft cookie];
 	acceptRV.service = [[[AIMCapability alloc] initWithType:AIMCapabilityFileTransfer] autorelease];
-	acceptRV.params = [NSArray array];
+	acceptRV.params = [NSArray arrayWithObject:maxProto];
+	[maxProto release];
 	AIMICBMMessageToServer * msg = [[AIMICBMMessageToServer alloc] initWithRVData:[acceptRV encodePacket] toUser:[ft buddy].username cookie:[ft cookie]];
 	[acceptRV release];
 	SNAC * sendMsg = [[SNAC alloc] initWithID:SNAC_ID_NEW(SNAC_ICBM, ICBM__CHANNEL_MSG_TOHOST) flags:0 requestID:[session generateReqID] data:[msg encodePacket]];
@@ -168,6 +172,20 @@
 	[session performSelector:@selector(writeSnac:) onThread:session.backgroundThread withObject:sendMsg waitUntilDone:NO];
 	[sendMsg release];
 	[fileTransfers removeObject:ft];
+}
+
+- (void)aimReceivingFileTransferProgressChanged:(AIMReceivingFileTransfer *)ft {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	if ([delegate respondsToSelector:@selector(aimRendezvousHandler:fileTransferProgressChanged:)]) {
+		[delegate aimRendezvousHandler:self fileTransferProgressChanged:ft];
+	}
+}
+
+- (void)aimReceivingFileTransferFinished:(AIMReceivingFileTransfer *)ft {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	if ([delegate respondsToSelector:@selector(aimRendezvousHandler:fileTransferDone:)]) {
+		[delegate aimRendezvousHandler:self fileTransferDone:ft];
+	}
 }
 
 - (void)dealloc {

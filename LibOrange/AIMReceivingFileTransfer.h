@@ -12,6 +12,7 @@
 #import "OFTServer.h"
 #import "ANIPInformation.h"
 #import "OFTProxyConnection.h"
+#import "OFTCheckSum.h"
 
 @class AIMReceivingFileTransfer;
 
@@ -21,8 +22,10 @@
 - (void)aimReceivingFileTransferPropositionFailed:(AIMReceivingFileTransfer *)ft counterProposal:(AIMIMRendezvous *)newProp;
 - (void)aimReceivingFileTransferPropositionSuccess:(AIMReceivingFileTransfer *)ft;
 - (void)aimReceivingFileTransferTransferFailed:(AIMReceivingFileTransfer *)ft;
-- (void)aimReceivingFileTransferStarted:(AIMReceivingFileTransfer *)ft;
 - (void)aimReceivingFileTransferSendAccept:(AIMReceivingFileTransfer *)ft;
+- (void)aimReceivingFileTransferStarted:(AIMReceivingFileTransfer *)ft;
+- (void)aimReceivingFileTransferProgressChanged:(AIMReceivingFileTransfer *)ft;
+- (void)aimReceivingFileTransferFinished:(AIMReceivingFileTransfer *)ft;
 
 @end
 
@@ -30,10 +33,12 @@
     NSString * remoteHostAddr;
 	NSString * remoteFileName;
 	NSString * localUsername;
+	NSString * writePath;
 	NSLock * bgThreadLock;
 	NSLock * mainThreadLock;
 	NSThread * backgroundThread;
 	NSThread * mainThread; // session.backgroundThread
+	OFTConnection * currentConnection;
 	id<AIMReceivingFileTransferDelegate> delegate;
 }
 
@@ -43,8 +48,10 @@
 @property (nonatomic, retain) NSThread * mainThread;
 @property (nonatomic, retain) NSThread * backgroundThread;
 @property (nonatomic, retain) NSString * localUsername;
+@property (nonatomic, retain) NSString * writePath;
 
 - (void)tryProposal; // try stage 1 (DIRECT)
 - (void)newProposal; // stage 3 (PROXY)
+- (void)cancelDownload;
 
 @end

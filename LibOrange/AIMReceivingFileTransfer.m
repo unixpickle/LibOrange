@@ -11,9 +11,14 @@
 @interface AIMReceivingFileTransfer (Private)
 
 - (void)backgroundThread:(NSDictionary *)proposalInfo;
-- (void)receiveFileDirectly:(OFTConnection *)theConnection;
+- (void)receiveFileDirectly:(OFTConnection *)theConnection cookie:(NSData *)cookie;
 - (OFTConnection *)configureProxy:(NSString *)ipAddress port:(UInt16)port cookie:(NSData *)cookie sn:(NSString *)screenName;
+
 - (void)_delegateInformCounterProp:(AIMIMRendezvous *)counter;
+- (void)_delegateInformDownloadComplete;
+- (void)_delegateInformDownloadFailed;
+- (void)_delegateInformProgressChanged;
+
 - (AIMIMRendezvous *)connectHereCounterProposal:(UInt16)port cookie:(NSData *)cookieData;
 + (TLV *)capabilitiesBlock;
 
@@ -25,6 +30,7 @@
 @synthesize remoteFileName;
 @synthesize delegate;
 @synthesize localUsername;
+@synthesize writePath;
 
 - (NSThread *)mainThread {
 	[mainThreadLock lock];
@@ -108,16 +114,14 @@
 	if (useProxy) {
 		OFTConnection * proxyConn = nil;
 		if (!(proxyConn = [self configureProxy:proxyIp port:port cookie:cookieData sn:sn])) {
-			NSLog(@"Proxy connection failed to load.");
-			if ([delegate respondsToSelector:@selector(aimReceivingFileTransferTransferFailed:)]) {
-				[(NSObject *)delegate performSelector:@selector(aimReceivingFileTransferTransferFailed:) onThread:self.mainThread withObject:self waitUntilDone:NO];
-			}
+			// NSLog(@"Proxy connection failed to load.");
+			[self performSelector:@selector(_delegateInformDownloadFailed) onThread:self.mainThread withObject:nil waitUntilDone:NO];
 		} else {
-			NSLog(@"Proxy connected!");
+			// NSLog(@"Proxy connected!");
 			if ([delegate respondsToSelector:@selector(aimReceivingFileTransferSendAccept:)]) {
 				[(NSObject *)delegate performSelector:@selector(aimReceivingFileTransferSendAccept:) onThread:self.mainThread withObject:self waitUntilDone:NO];
 			}
-			[self receiveFileDirectly:proxyConn];
+			[self receiveFileDirectly:proxyConn cookie:cookieData];
 		}
 	} else {
 		OFTConnection * connection = [[OFTConnection alloc] initWithHost:ipAddr port:port];
@@ -126,11 +130,11 @@
 			if (!connection) {
 				// generate counter proposal.
 				UInt16 port = (UInt16)((arc4random() % (65535 - 6000)) + 6000);
-				NSLog(@"Proposal port: %d", port);
+				// NSLog(@"Proposal port: %d", port);
 				AIMIMRendezvous * counterProp = [self connectHereCounterProposal:port cookie:cookieData];
 				OFTServer * server = [[OFTServer alloc] initWithPort:port];
 				[self performSelector:@selector(_delegateInformCounterProp:) onThread:self.mainThread withObject:counterProp waitUntilDone:NO];
-				NSLog(@"Opening port, generating proposal for it.");
+				// NSLog(@"Opening port, generating proposal for it.");
 				int fd = [server fileDescriptorForListeningOnPort:30]; // 30 second timeout.
 				[server closeServer];
 				[server release];
@@ -141,7 +145,7 @@
 				} else {
 					NSLog(@"Got connect to ourselves.");
 					OFTConnection * connection = [[OFTConnection alloc] initWithFileDescriptor:fd];
-					[self receiveFileDirectly:connection];
+					[self receiveFileDirectly:connection cookie:cookieData];
 					[connection release];
 				}
 			} else {
@@ -149,16 +153,16 @@
 				if ([delegate respondsToSelector:@selector(aimReceivingFileTransferSendAccept:)]) {
 					[(NSObject *)delegate performSelector:@selector(aimReceivingFileTransferSendAccept:) onThread:self.mainThread withObject:self waitUntilDone:NO];
 				}
-				[self receiveFileDirectly:connection];
+				[self receiveFileDirectly:connection cookie:cookieData];
 				[connection release];
 			}
 		} else {
 			// get the file.
-			NSLog(@"Connect success (external IP)... start downloading the file.");
+			// NSLog(@"Connect success (external IP)... start downloading the file.");
 			if ([delegate respondsToSelector:@selector(aimReceivingFileTransferSendAccept:)]) {
 				[(NSObject *)delegate performSelector:@selector(aimReceivingFileTransferSendAccept:) onThread:self.mainThread withObject:self waitUntilDone:NO];
 			}
-			[self receiveFileDirectly:connection];
+			[self receiveFileDirectly:connection cookie:cookieData];
 			[connection release];
 		}
 	}
@@ -172,6 +176,12 @@
 	[self.backgroundThread cancel];
 	self.backgroundThread = nil;
 	[self tryProposal];
+}
+
+- (void)cancelDownload {
+	if (currentConnection) {
+		[currentConnection closeConnection];
+	}
 }
 
 - (AIMIMRendezvous *)connectHereCounterProposal:(UInt16)port cookie:(NSData *)cookieData {
@@ -201,24 +211,122 @@
 	return [rendezvous autorelease];
 }
 
+#pragma mark Informing
+
 - (void)_delegateInformCounterProp:(AIMIMRendezvous *)counter {
+	NSAssert([NSThread currentThread] == self.mainThread, @"Running on incorrect thread");
 	if ([delegate respondsToSelector:@selector(aimReceivingFileTransferPropositionFailed:counterProposal:)]) {
 		[delegate aimReceivingFileTransferPropositionFailed:self counterProposal:counter];
 	}
 }
 
+- (void)_delegateInformDownloadComplete {
+	NSAssert([NSThread currentThread] == self.mainThread, @"Running on incorrect thread");
+	if ([delegate respondsToSelector:@selector(aimReceivingFileTransferFinished:)]) {
+		[delegate aimReceivingFileTransferFinished:self];
+	}
+}
+
+- (void)_delegateInformDownloadFailed {
+	NSAssert([NSThread currentThread] == self.mainThread, @"Running on incorrect thread");
+	if ([delegate respondsToSelector:@selector(aimReceivingFileTransferTransferFailed:)]) {
+		[delegate aimReceivingFileTransferTransferFailed:self];
+	}
+}
+
+- (void)_delegateInformProgressChanged {
+	NSAssert([NSThread currentThread] == self.mainThread, @"Running on incorrect thread");
+	if ([delegate respondsToSelector:@selector(aimReceivingFileTransferProgressChanged:)]) {
+		[delegate aimReceivingFileTransferProgressChanged:self];
+	}
+}
+
 #pragma mark Direct Connection
 
-- (void)receiveFileDirectly:(OFTConnection *)theConnection {
-	// TODO: here is where we should interact with the OSCAR File Transfer server.
-	// This method should download the file's data and write it to a local file.
-	// Every buffer downloaded should update the progress.
-	NSLog(@"Receive file directly: %@", theConnection);
+- (void)receiveFileDirectly:(OFTConnection *)theConnection cookie:(NSData *)_cookie {
+	[self setIsTransferring:YES];
 	if ([delegate respondsToSelector:@selector(aimReceivingFileTransferStarted:)]) {
 		[(NSObject *)delegate performSelector:@selector(aimReceivingFileTransferStarted:) onThread:self.mainThread withObject:self waitUntilDone:NO];
 	}
-	sleep(2);
-	NSLog(@"Cancelling transfer.");
+	OFTHeader * header = [theConnection readHeader:30];
+	if ([header type] != OFT_TYPE_PROMPT) {
+		// NSLog(@"Invalid header type: %d", [header type]);
+		[self setIsTransferring:NO];
+		[theConnection closeConnection];
+		[self performSelector:@selector(_delegateInformDownloadFailed) onThread:self.mainThread withObject:nil waitUntilDone:NO];
+		return;
+	}
+	// send acknowlege
+	header.type = OFT_TYPE_ACKNOWLEDGE;
+	header.cookie = _cookie;
+	if (![theConnection writeHeader:header]) {
+		// NSLog(@"header write failed.");
+		[self setIsTransferring:NO];
+		[theConnection closeConnection];
+		[self performSelector:@selector(_delegateInformDownloadFailed) onThread:self.mainThread withObject:nil waitUntilDone:NO];
+		return;
+	}
+	
+	if (![[NSFileManager defaultManager] fileExistsAtPath:self.writePath]) {
+		[[NSFileManager defaultManager] createFileAtPath:self.writePath contents:[NSData data] attributes:nil];
+	}
+	NSFileHandle * fh = [NSFileHandle fileHandleForWritingAtPath:self.writePath];
+	if (!fh) {
+		[self setIsTransferring:NO];
+		[theConnection closeConnection];
+		[self performSelector:@selector(_delegateInformDownloadFailed) onThread:self.mainThread withObject:nil waitUntilDone:NO];
+		return;
+	}
+	char buffer[65536];
+	UInt32 fileSize = [header totalSize] - [header resourceForkSize];
+	// read only the file data, ignoring the resource fork data.
+	while ([header bytesReceived] < fileSize) {
+		int needs = (fileSize - [header bytesReceived] > 65536 ? 65536 : (fileSize - [header bytesReceived]));
+		int readSize = (int)read([theConnection fileDescriptor], buffer, needs);
+		if (readSize <= 0) {
+			[fh closeFile];
+			[self setIsTransferring:NO];
+			[theConnection closeConnection];
+			[self performSelector:@selector(_delegateInformDownloadFailed) onThread:self.mainThread withObject:nil waitUntilDone:NO];
+			return;
+		}
+		NSData * theData = [[NSData alloc] initWithBytes:buffer length:readSize];
+		[fh writeData:theData];
+		[theData release];
+		// rolling checksum
+		header.receivedChecksum = peer_oft_checksum_chunk(buffer, readSize, [header receivedChecksum], [header bytesReceived] % 2);
+		[header setBytesReceived:([header bytesReceived] + readSize)];
+		[self setProgress:((float)[header bytesReceived] / (float)fileSize)];
+		[self performSelector:@selector(_delegateInformProgressChanged) onThread:self.mainThread withObject:nil waitUntilDone:NO];
+	}
+	// read the resource fork that trails the file data, do nothing with it.
+	while ([header bytesReceived] < [header totalSize]) {
+		int needs = ([header totalSize] - [header bytesReceived] > 65536 ? 65536 : ([header totalSize] - [header bytesReceived]));
+		int readSize = (int)read([theConnection fileDescriptor], buffer, needs);
+		if (readSize <= 0) {
+			[fh closeFile];
+			[self setIsTransferring:NO];
+			[theConnection closeConnection];
+			[self performSelector:@selector(_delegateInformDownloadFailed) onThread:self.mainThread withObject:nil waitUntilDone:NO];
+			return;
+		}
+		// rolling checksum
+		header.receivedChecksum = peer_oft_checksum_chunk(buffer, readSize, [header receivedChecksum], [header bytesReceived] % 2);
+		[header setBytesReceived:([header bytesReceived] + readSize)];
+	}
+	[fh closeFile];
+	
+	header.type = OFT_TYPE_DONE;
+	if (![theConnection writeHeader:header]) {
+		[self setIsTransferring:NO];
+		[theConnection closeConnection];
+		[self performSelector:@selector(_delegateInformDownloadFailed) onThread:self.mainThread withObject:nil waitUntilDone:NO];
+		return;
+	}
+	
+	[self performSelector:@selector(_delegateInformDownloadComplete) onThread:self.mainThread withObject:nil waitUntilDone:NO];
+	
+	[self setIsTransferring:NO];
 	[theConnection closeConnection];
 }
 
@@ -248,7 +356,6 @@
 	}
 	OFTProxyCommand * conf = [proxy readCommand];
 	if (!conf || [conf commandType] != COMMAND_TYPE_READY) {
-		NSLog(@"error info: %@", [conf commandData]);
 		[proxy release];
 		[realConnection release];
 		return nil;
@@ -273,6 +380,7 @@
 	self.backgroundThread = nil;
 	self.delegate = nil;
 	self.localUsername = nil;
+	self.writePath = nil;
 	[mainThreadLock release];
 	[bgThreadLock release];
 	[super dealloc];

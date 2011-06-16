@@ -6,20 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "OFTConnection.h"
-
-int setNonblocking(int fd) {
-    int flags;
-    /* If they have O_NONBLOCK, use the Posix way to do it */
-#if defined(O_NONBLOCK)
-    /* Fixme: O_NONBLOCK is defined but broken on SunOS 4.1.x and AIX 3.2.5. */
-    if (-1 == (flags = fcntl(fd, F_GETFL, 0)))
-        flags = 0;
-    return fcntl(fd, F_SETFL, flags | O_NONBLOCK);
-#else
-	abort();
-#endif
-}    
+#import "OFTConnection.h"   
 
 @interface OFTConnection (Private)
 
@@ -134,6 +121,28 @@ int setNonblocking(int fd) {
 		fileDescriptor = fd;
 	}
 	return self;
+}
+
+- (OFTHeader *)readHeader:(int)timeoutSeconds {
+	fd_set readFds;
+	struct timeval tv;
+	FD_ZERO(&readFds);
+	FD_SET(self.fileDescriptor, &readFds);
+	tv.tv_sec = timeoutSeconds;
+	tv.tv_usec = 0;
+	if (select(fileDescriptor + 1, &readFds, NULL, NULL, &tv) < 0) {
+		return nil;
+	}
+	if (FD_ISSET(self.fileDescriptor, &readFds)) {
+		OFTHeader * header = [[OFTHeader alloc] initByReadingFD:fileDescriptor];
+		return [header autorelease];
+	} else {
+		return nil;
+	}
+}
+
+- (BOOL)writeHeader:(OFTHeader *)theHeader {
+	return [theHeader writeFileFD:fileDescriptor];
 }
 
 - (void)closeConnection {

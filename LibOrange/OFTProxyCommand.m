@@ -8,16 +8,6 @@
 
 #import "OFTProxyCommand.h"
 
-BOOL fdRead (int fd, char * buffer, int len) {
-	int hasRead = 0;
-	while (hasRead < len) {
-		int justGot = (int)read(fd, &buffer[hasRead], len - hasRead);
-		if (justGot <= 0) return NO;
-		hasRead += justGot;
-	}
-	return YES;
-}
-
 @implementation OFTProxyCommand
 
 @synthesize length;

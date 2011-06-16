@@ -18,12 +18,17 @@
 	AIMBlistBuddy * buddy;
 	BOOL wasCancelled;
 	AIMIMRendezvous * lastProposal;
+	BOOL isTransferring;
+	float progress;
+	NSLock * stateLock;
 }
 
 @property (readonly) AIMICBMCookie * cookie;
 @property (nonatomic, retain) AIMBlistBuddy * buddy;
 @property (readwrite) BOOL wasCancelled;
 @property (nonatomic, retain) AIMIMRendezvous * lastProposal;
+@property (readwrite) BOOL isTransferring;
+@property (readwrite) float progress;
 
 - (id)initWithCookie:(AIMICBMCookie *)theCookie;
 
