@@ -83,6 +83,11 @@
 		FABE69F213A8240500FFF198 /* AIMReceivingFileTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = FABE69F113A8240500FFF198 /* AIMReceivingFileTransfer.m */; };
 		FABE69F613A824DB00FFF198 /* AIMIMRendezvous.m in Sources */ = {isa = PBXBuildFile; fileRef = FABE69F513A824DB00FFF198 /* AIMIMRendezvous.m */; };
 		FABE69F913A83C1A00FFF198 /* OFTConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = FABE69F813A83C1900FFF198 /* OFTConnection.m */; };
+		FABE69FC13A8F13800FFF198 /* RVServiceData.m in Sources */ = {isa = PBXBuildFile; fileRef = FABE69FB13A8F13800FFF198 /* RVServiceData.m */; };
+		FABE6A0413A91CE900FFF198 /* OFTServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FABE6A0313A91CE900FFF198 /* OFTServer.m */; };
+		FABE6A1513A91FE500FFF198 /* ANIPInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = FABE6A1413A91FE500FFF198 /* ANIPInformation.m */; };
+		FABE6A1813A938B700FFF198 /* OFTProxyConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = FABE6A1713A938B600FFF198 /* OFTProxyConnection.m */; };
+		FABE6A1B13A938C100FFF198 /* OFTProxyCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = FABE6A1A13A938C000FFF198 /* OFTProxyCommand.m */; };
 		FAECD3AA139C1D5D0028BEEE /* AIMICBMMessageToServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FAECD3A9139C1D5D0028BEEE /* AIMICBMMessageToServer.m */; };
 		FAF687DD13A7A1B200AE6A93 /* FTAddDeny.m in Sources */ = {isa = PBXBuildFile; fileRef = FAF687DC13A7A1B200AE6A93 /* FTAddDeny.m */; };
 		FAF687E013A7A39100AE6A93 /* FTDelDeny.m in Sources */ = {isa = PBXBuildFile; fileRef = FAF687DF13A7A39100AE6A93 /* FTDelDeny.m */; };
@@ -261,6 +266,16 @@
 		FABE69F513A824DB00FFF198 /* AIMIMRendezvous.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMIMRendezvous.m; sourceTree = "<group>"; };
 		FABE69F713A83C1800FFF198 /* OFTConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OFTConnection.h; sourceTree = "<group>"; };
 		FABE69F813A83C1900FFF198 /* OFTConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OFTConnection.m; sourceTree = "<group>"; };
+		FABE69FA13A8F13800FFF198 /* RVServiceData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RVServiceData.h; sourceTree = "<group>"; };
+		FABE69FB13A8F13800FFF198 /* RVServiceData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RVServiceData.m; sourceTree = "<group>"; };
+		FABE6A0213A91CE900FFF198 /* OFTServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OFTServer.h; sourceTree = "<group>"; };
+		FABE6A0313A91CE900FFF198 /* OFTServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OFTServer.m; sourceTree = "<group>"; };
+		FABE6A1313A91FE500FFF198 /* ANIPInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ANIPInformation.h; sourceTree = "<group>"; };
+		FABE6A1413A91FE500FFF198 /* ANIPInformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ANIPInformation.m; sourceTree = "<group>"; };
+		FABE6A1613A938B500FFF198 /* OFTProxyConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OFTProxyConnection.h; sourceTree = "<group>"; };
+		FABE6A1713A938B600FFF198 /* OFTProxyConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OFTProxyConnection.m; sourceTree = "<group>"; };
+		FABE6A1913A938BF00FFF198 /* OFTProxyCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OFTProxyCommand.h; sourceTree = "<group>"; };
+		FABE6A1A13A938C000FFF198 /* OFTProxyCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OFTProxyCommand.m; sourceTree = "<group>"; };
 		FAECD3A8139C1D5D0028BEEE /* AIMICBMMessageToServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMICBMMessageToServer.h; sourceTree = "<group>"; };
 		FAECD3A9139C1D5D0028BEEE /* AIMICBMMessageToServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMICBMMessageToServer.m; sourceTree = "<group>"; };
 		FAF687BD13A7092A00AE6A93 /* LibOrange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibOrange.h; sourceTree = "<group>"; };
@@ -300,6 +315,7 @@
 		FA1A3F6413A7FDEB009B73DE /* File Tranfers */ = {
 			isa = PBXGroup;
 			children = (
+				FABE6A0113A91CDC00FFF198 /* OFT */,
 				FABE69F313A824C200FFF198 /* ICBM */,
 				FA1A3F6513A7FEAF009B73DE /* AIMRendezvousHandler.h */,
 				FA1A3F6613A7FEAF009B73DE /* AIMRendezvousHandler.m */,
@@ -307,8 +323,6 @@
 				FA1A3F6913A7FEB8009B73DE /* AIMFileTransfer.m */,
 				FABE69F013A8240500FFF198 /* AIMReceivingFileTransfer.h */,
 				FABE69F113A8240500FFF198 /* AIMReceivingFileTransfer.m */,
-				FABE69F713A83C1800FFF198 /* OFTConnection.h */,
-				FABE69F813A83C1900FFF198 /* OFTConnection.m */,
 			);
 			name = "File Tranfers";
 			sourceTree = "<group>";
@@ -714,8 +728,27 @@
 			children = (
 				FABE69F413A824DB00FFF198 /* AIMIMRendezvous.h */,
 				FABE69F513A824DB00FFF198 /* AIMIMRendezvous.m */,
+				FABE69FA13A8F13800FFF198 /* RVServiceData.h */,
+				FABE69FB13A8F13800FFF198 /* RVServiceData.m */,
 			);
 			name = ICBM;
+			sourceTree = "<group>";
+		};
+		FABE6A0113A91CDC00FFF198 /* OFT */ = {
+			isa = PBXGroup;
+			children = (
+				FABE6A1313A91FE500FFF198 /* ANIPInformation.h */,
+				FABE6A1413A91FE500FFF198 /* ANIPInformation.m */,
+				FABE69F713A83C1800FFF198 /* OFTConnection.h */,
+				FABE69F813A83C1900FFF198 /* OFTConnection.m */,
+				FABE6A0213A91CE900FFF198 /* OFTServer.h */,
+				FABE6A0313A91CE900FFF198 /* OFTServer.m */,
+				FABE6A1613A938B500FFF198 /* OFTProxyConnection.h */,
+				FABE6A1713A938B600FFF198 /* OFTProxyConnection.m */,
+				FABE6A1913A938BF00FFF198 /* OFTProxyCommand.h */,
+				FABE6A1A13A938C000FFF198 /* OFTProxyCommand.m */,
+			);
+			name = OFT;
 			sourceTree = "<group>";
 		};
 		FAF687DA13A7A1A000AE6A93 /* Permit/Deny */ = {
@@ -860,6 +893,11 @@
 				FABE69F213A8240500FFF198 /* AIMReceivingFileTransfer.m in Sources */,
 				FABE69F613A824DB00FFF198 /* AIMIMRendezvous.m in Sources */,
 				FABE69F913A83C1A00FFF198 /* OFTConnection.m in Sources */,
+				FABE69FC13A8F13800FFF198 /* RVServiceData.m in Sources */,
+				FABE6A0413A91CE900FFF198 /* OFTServer.m in Sources */,
+				FABE6A1513A91FE500FFF198 /* ANIPInformation.m in Sources */,
+				FABE6A1813A938B700FFF198 /* OFTProxyConnection.m in Sources */,
+				FABE6A1B13A938C100FFF198 /* OFTProxyCommand.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

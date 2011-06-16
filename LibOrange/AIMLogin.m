@@ -230,6 +230,7 @@
 - (void)aimSessionManagerSignedOn:(AIMSessionManager *)sender {
 	[self retain];
 	[sender setDelegate:nil];
+	[[sender session] setUsername:lusername];
 	if ([delegate respondsToSelector:@selector(aimLogin:openedSession:)]) {
 		[delegate aimLogin:self openedSession:sender];
 	}

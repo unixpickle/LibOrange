@@ -30,6 +30,8 @@ typedef enum {
 	NSLock * fileDescriptorLock;
 }
 
+@property (readwrite) int fileDescriptor;
+
 /**
  * @return Returns the current state of the connection.
  */
@@ -45,5 +47,7 @@ typedef enum {
  * Creates an OFT connection with an existing file descriptor.
  */
 - (id)initWithFileDescriptor:(int)fd;
+
+- (void)closeConnection;
 
 @end

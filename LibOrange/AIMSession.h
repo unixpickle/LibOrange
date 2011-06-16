@@ -32,6 +32,7 @@
 	NSThread * backgroundThread;
 	NSMutableArray * handlers;
 	NSObject<AIMSessionDelegate> * sessionDelegate;
+	NSString * username;
 	
 	AIMBlist * buddyList;
 	NSLock * reqIDLock;
@@ -41,6 +42,7 @@
 @property (readonly) OSCARConnection * connection;
 @property (nonatomic, assign) NSThread * mainThread;
 @property (nonatomic, retain) NSThread * backgroundThread;
+@property (nonatomic, retain) NSString * username;
 @property (nonatomic, assign) NSObject<AIMSessionDelegate> * sessionDelegate;
 @property (nonatomic, retain) AIMBlist * buddyList;
 

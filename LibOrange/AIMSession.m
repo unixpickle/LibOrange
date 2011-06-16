@@ -14,6 +14,7 @@
 @synthesize connection;
 @synthesize mainThread;
 @synthesize backgroundThread;
+@synthesize username;
 @synthesize sessionDelegate;
 @synthesize buddyList;
 
@@ -90,6 +91,7 @@
 }
 
 - (void)dealloc {
+	self.username = nil;
 	[reqIDLock release];
 	self.backgroundThread = nil;
 	self.buddyList = nil;

@@ -91,6 +91,24 @@ NSString * IPv4AddrToString (UInt32 ipAddr) {
 	}
 	return nil;
 }
+- (NSString *)internalAddress {
+	for (TLV * tag in [self params]) {
+		if ([tag type] == TLV_RV_PROPOSER_IP_ADDR && [[tag tlvData] length] == 4) {
+			UInt32 ipAddrRaw = *(const UInt32 *)[[tag tlvData] bytes];
+			return IPv4AddrToString(ipAddrRaw);
+		}
+	}
+	return nil;
+}
+- (NSString *)proxyAddress {
+	for (TLV * tag in [self params]) {
+		if ([tag type] == TLV_RV_IP_ADDR && [[tag tlvData] length] == 4) {
+			UInt32 ipAddrRaw = *(const UInt32 *)[[tag tlvData] bytes];
+			return IPv4AddrToString(ipAddrRaw);
+		}
+	}
+	return nil;
+}
 - (UInt16)remotePort {
 	for (TLV * tag in [self params]) {
 		if ([tag type] == TLV_RV_PORT && [[tag tlvData] length] == 2) {
@@ -114,6 +132,23 @@ NSString * IPv4AddrToString (UInt32 ipAddr) {
 		}
 	}
 	return 4;
+}
+- (BOOL)isProxyFlagSet {
+	for (TLV * tag in [self params]) {
+		if ([tag type] == TLV_RV_REQUEST_USE_ARS) {
+			return YES;
+		}
+	}
+	return NO;
+}
+- (RVServiceData *)serviceData {
+	for (TLV * tag in [self params]) {
+		if ([tag type] == TLV_RV_SERVICE_DATA) {
+			RVServiceData * sd = [[RVServiceData alloc] initWithData:[tag tlvData]];
+			return [sd autorelease];
+		}
+	}
+	return nil;
 }
 
 #pragma mark NSCoding

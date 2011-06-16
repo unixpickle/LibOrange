@@ -217,7 +217,7 @@
 	} else if ([comps count] != 1) {
 		return NO;
 	}
-	currentConnection = [[OSCARConnection alloc] initWithHost:host port:port];
+	currentConnection = [(OSCARConnection *)[OSCARConnection alloc] initWithHost:host port:port];
 	return [currentConnection connectToHost:nil];
 }
 

@@ -11,6 +11,7 @@
 #import "AIMCapability.h"
 #import "TLV.h"
 #import "AIMICBMMessageToClient.h"
+#import "RVServiceData.h"
 
 #define CANCEL_REASON_UNKNOWN 0
 #define CANCEL_REASON_USER_CANCEL 1
@@ -37,8 +38,12 @@
 - (id)initWithICBMMessage:(AIMICBMMessageToClient *)msg;
 
 - (NSString *)remoteAddress;
+- (NSString *)internalAddress;
+- (NSString *)proxyAddress;
 - (UInt16)remotePort;
 - (UInt16)sequenceNumber;
 - (UInt16)cancelReason;
+- (BOOL)isProxyFlagSet;
+- (RVServiceData *)serviceData;
 
 @end

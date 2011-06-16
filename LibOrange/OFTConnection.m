@@ -21,6 +21,12 @@ int setNonblocking(int fd) {
 #endif
 }    
 
+@interface OFTConnection (Private)
+
+- (void)setState:(OFTConnectionState)newState;
+
+@end
+
 @implementation OFTConnection
 
 - (OFTConnectionState)state {
@@ -28,6 +34,28 @@ int setNonblocking(int fd) {
 	OFTConnectionState stateCopy = state;
 	[stateLock unlock];
 	return stateCopy;
+}
+
+- (void)setState:(OFTConnectionState)newState {
+	[stateLock lock];
+	state = newState;
+	[stateLock unlock];
+}
+
+- (int)fileDescriptor {
+	[fileDescriptorLock lock];
+	int fd = fileDescriptor;
+	[fileDescriptorLock unlock];
+	return fd;
+}
+
+- (void)setFileDescriptor:(int)newFileDescriptor {
+	[fileDescriptorLock lock];
+	if (newFileDescriptor < 0 && fileDescriptor >= 0) {
+		close(fileDescriptor);
+	}
+	fileDescriptor = newFileDescriptor;
+	[fileDescriptorLock unlock];
 }
 
 /**
@@ -61,18 +89,15 @@ int setNonblocking(int fd) {
 		serv_addr.sin_port = htons(port);
 		
 		// set non-blocking.
+		fcntl(fileDescriptor, F_SETFL, O_NONBLOCK);
 		
-		
-		if (connect(fileDescriptor, (const struct sockaddr *)&serv_addr, sizeof(struct sockaddr_in)) < 0) {
-			[self dealloc];
-			return nil;
-		}
+		connect(fileDescriptor, (const struct sockaddr *)&serv_addr, sizeof(struct sockaddr_in));
 		
 		fd_set fdset;
 		struct timeval tv;
 		FD_ZERO(&fdset);
 		FD_SET(fileDescriptor, &fdset);
-		tv.tv_sec = 10;			/* 10 second timeout */
+		tv.tv_sec = 3;			/* 10 second timeout */
 		tv.tv_usec = 0;
 		
 		if (select(fileDescriptor + 1, NULL, &fdset, NULL, &tv) == 1) {
@@ -80,10 +105,20 @@ int setNonblocking(int fd) {
 			socklen_t len = sizeof so_error;
 			getsockopt(fileDescriptor, SOL_SOCKET, SO_ERROR, &so_error, &len);
 			if (so_error != 0) {
+				close(fileDescriptor);
 				[super dealloc];
 				return nil;
 			}
+		} else {
+			close(fileDescriptor);
+			[super dealloc];
+			return nil;
 		}
+		
+		// set blocking.
+		fcntl(fileDescriptor, F_SETFL, 0);
+		
+		state = OFTConnectionStateOpen;
 	}
 	return self;
 }
@@ -99,6 +134,13 @@ int setNonblocking(int fd) {
 		fileDescriptor = fd;
 	}
 	return self;
+}
+
+- (void)closeConnection {
+	if (self.state == OFTConnectionStateOpen) {
+		self.state = OFTConnectionStateClosed;
+		self.fileDescriptor = -1; // closes the socket.
+	}
 }
 
 @end

@@ -218,7 +218,7 @@
 #pragma mark Server Login
 
 - (OSCARConnection *)beginOscarConnection:(AIMLoginHostInfo *)hostInf {
-	OSCARConnection * connection = [[OSCARConnection alloc] initWithHost:[hostInf hostName] port:[hostInf port]];
+	OSCARConnection * connection = [(OSCARConnection *)[OSCARConnection alloc] initWithHost:[hostInf hostName] port:[hostInf port]];
 	if (!connection) {
 		return nil;
 	}

@@ -25,6 +25,7 @@
 @property (nonatomic, retain) NSArray * icbmTlvs;
 
 - (id)initWithMessage:(NSString *)msg toUser:(NSString *)user isAutoreply:(BOOL)isAutorep;
+- (id)initWithRVData:(NSData *)rvData toUser:(NSString *)user cookie:(AIMICBMCookie *)theCookie;
 - (NSData *)encodePacket;
 
 @end
