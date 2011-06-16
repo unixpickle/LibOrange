@@ -63,8 +63,7 @@
 	FD_ZERO(&readFds);
 	FD_SET(fd, &readFds);
 	int waited = 0;
-	int ret;
-	while ((ret = select(fd + 1, &readFds, NULL, NULL, &timeoutV)) >= 0) {
+	while ((select(fd + 1, &readFds, NULL, NULL, &timeoutV)) >= 0) {
 		if ([[NSThread currentThread] isCancelled]) return -1;
 		waited += to;
 		if (FD_ISSET(fd, &readFds)) {

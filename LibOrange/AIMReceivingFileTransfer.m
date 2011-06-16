@@ -268,6 +268,7 @@
 
 - (void)dealloc {
 	self.remoteHostAddr = nil;
+	self.remoteFileName = nil;
 	self.mainThread = nil;
 	self.backgroundThread = nil;
 	self.delegate = nil;

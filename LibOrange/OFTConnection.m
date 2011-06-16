@@ -106,12 +106,12 @@ int setNonblocking(int fd) {
 			getsockopt(fileDescriptor, SOL_SOCKET, SO_ERROR, &so_error, &len);
 			if (so_error != 0) {
 				close(fileDescriptor);
-				[super dealloc];
+				[self dealloc];
 				return nil;
 			}
 		} else {
 			close(fileDescriptor);
-			[super dealloc];
+			[self dealloc];
 			return nil;
 		}
 		
@@ -141,6 +141,12 @@ int setNonblocking(int fd) {
 		self.state = OFTConnectionStateClosed;
 		self.fileDescriptor = -1; // closes the socket.
 	}
+}
+
+- (void)dealloc {
+	[stateLock release];
+	[fileDescriptorLock release];
+	[super dealloc];
 }
 
 @end
