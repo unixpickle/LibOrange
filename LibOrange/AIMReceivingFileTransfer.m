@@ -283,6 +283,7 @@
 		return;
 	}
 	char buffer[65536];
+	header.receivedChecksum = 0xFFFF0000;
 	UInt32 fileSize = [header totalSize] - [header resourceForkSize];
 	// read only the file data, ignoring the resource fork data.
 	while ([header bytesReceived] < fileSize) {
@@ -290,17 +291,20 @@
 		if ([[NSThread currentThread] isCancelled]) {
 			[theConnection closeConnection];
 			[self setIsTransferring:NO];
+			[fh closeFile];
 			return;
 		}
 		int readSize = (int)read([theConnection fileDescriptor], buffer, needs);
 		if ([[NSThread currentThread] isCancelled]) {
 			[theConnection closeConnection];
 			[self setIsTransferring:NO];
+			[fh closeFile];
 			return;
 		}
 		if (readSize <= 0) {
 			[fh closeFile];
 			[self setIsTransferring:NO];
+			[fh closeFile];
 			[theConnection closeConnection];
 			[self performSelector:@selector(_delegateInformDownloadFailed) onThread:self.mainThread withObject:nil waitUntilDone:NO];
 			return;
@@ -309,23 +313,26 @@
 		[fh writeData:theData];
 		[theData release];
 		// rolling checksum
-		header.receivedChecksum = peer_oft_checksum_chunk(buffer, readSize, [header receivedChecksum], [header bytesReceived] % 2);
+		header.receivedChecksum = peer_oft_checksum_chunk((const unsigned char *)buffer, readSize, [header receivedChecksum], [header bytesReceived] & 1);
 		[header setBytesReceived:([header bytesReceived] + readSize)];
 		[self setProgress:((float)[header bytesReceived] / (float)fileSize)];
 		[self performSelector:@selector(_delegateInformProgressChanged) onThread:self.mainThread withObject:nil waitUntilDone:NO];
 	}
 	// read the resource fork that trails the file data, do nothing with it.
+	header.recvResourceForkCheckSum = 0xFFFF0000;
 	while ([header bytesReceived] < [header totalSize]) {
 		int needs = ([header totalSize] - [header bytesReceived] > 65536 ? 65536 : ([header totalSize] - [header bytesReceived]));
 		if ([[NSThread currentThread] isCancelled]) {
 			[theConnection closeConnection];
 			[self setIsTransferring:NO];
+			[fh closeFile];
 			return;
 		}
 		int readSize = (int)read([theConnection fileDescriptor], buffer, needs);
 		if ([[NSThread currentThread] isCancelled]) {
 			[theConnection closeConnection];
 			[self setIsTransferring:NO];
+			[fh closeFile];
 			return;
 		}
 		if (readSize <= 0) {
@@ -336,7 +343,7 @@
 			return;
 		}
 		// rolling checksum
-		header.receivedChecksum = peer_oft_checksum_chunk(buffer, readSize, [header receivedChecksum], [header bytesReceived] % 2);
+		header.recvResourceForkCheckSum = peer_oft_checksum_chunk((const unsigned char *)buffer, readSize, [header recvResourceForkCheckSum], [header bytesReceived] % 2);
 		[header setBytesReceived:([header bytesReceived] + readSize)];
 	}
 	[fh closeFile];

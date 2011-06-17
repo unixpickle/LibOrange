@@ -30,4 +30,4 @@
  * @param prevchecksum Previous checksum.
  * @param odd Whether an odd number of bytes have been processed before this call
  */
-UInt32 peer_oft_checksum_chunk(const char * buffer, int bufferlen, UInt32 prevchecksum, int odd);
+UInt32 peer_oft_checksum_chunk(const unsigned char * buffer, int bufferlen, UInt32 prevchecksum, int odd);

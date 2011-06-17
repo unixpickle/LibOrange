@@ -331,7 +331,9 @@ static void stripNL (char * buff) {
 }
 
 - (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferProgressChanged:(AIMFileTransfer *)ft {
-	NSLog(@"%@ progress = %f", ft, [ft progress]);
+	// cancel it a bit of the way through to test that cancelling works.
+	// if ([ft progress] > 0.1) [rvHandler cancelFileTransfer:ft];
+	// NSLog(@"%@ progress = %f", ft, [ft progress]);
 }
 
 - (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferDone:(AIMFileTransfer *)ft {

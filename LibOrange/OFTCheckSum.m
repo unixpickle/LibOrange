@@ -8,10 +8,10 @@
 
 #include "OFTCheckSum.h"
 
-UInt32 peer_oft_checksum_chunk(const char * buffer, int bufferlen, UInt32 prevchecksum, int odd) {
+UInt32 peer_oft_checksum_chunk(const unsigned char * buffer, int bufferlen, UInt32 prevchecksum, int odd) {
 	UInt32 checksum, oldchecksum;
 	int i = 0;
-	unsigned short val;
+	UInt16 val;
 	
 	checksum = (prevchecksum >> 16) & 0xffff;
 	if (odd)

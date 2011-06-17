@@ -138,7 +138,7 @@
 		[delegate aimRendezvousHandler:self fileTransferFailed:ft];
 	}
 	[self cancelFileTransfer:ft];
-	[fileTransfers removeObject:ft];
+	// [fileTransfers removeObject:ft];
 }
 
 - (void)aimReceivingFileTransferPropositionSuccess:(AIMReceivingFileTransfer *)ft {
