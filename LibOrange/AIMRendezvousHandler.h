@@ -11,6 +11,8 @@
 #import "AIMReceivingFileTransfer.h"
 #import "AIMIMRendezvous.h"
 #import "AIMICBMMessageToServer.h"
+#import "AIMSendingFileTransfer.h"
+#import "AIMICBMClientErr.h"
 
 @class AIMRendezvousHandler;
 
@@ -18,7 +20,7 @@
 
 @optional
 - (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferRequested:(AIMReceivingFileTransfer *)ft;
-- (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferCancelled:(AIMReceivingFileTransfer *)ft reason:(UInt16)reason;
+- (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferCancelled:(AIMFileTransfer *)ft reason:(UInt16)reason;
 - (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferStarted:(AIMFileTransfer *)ft;
 - (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferFailed:(AIMFileTransfer *)ft;
 - (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferDone:(AIMFileTransfer *)ft;
@@ -39,5 +41,6 @@
 
 - (void)acceptFileTransfer:(AIMReceivingFileTransfer *)ft saveToPath:(NSString *)path;
 - (void)cancelFileTransfer:(AIMFileTransfer *)ft;
+- (AIMSendingFileTransfer *)sendFile:(NSString *)path toUser:(AIMBlistBuddy *)buddy;
 
 @end

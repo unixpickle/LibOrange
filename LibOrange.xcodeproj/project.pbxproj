@@ -41,6 +41,8 @@
 		FA65B2FE13AA4C58005757FD /* FileDescriptors.m in Sources */ = {isa = PBXBuildFile; fileRef = FA65B2FD13AA4C58005757FD /* FileDescriptors.m */; };
 		FA65B30113AA5310005757FD /* NSMutableData+FlipBit.m in Sources */ = {isa = PBXBuildFile; fileRef = FA65B30013AA5310005757FD /* NSMutableData+FlipBit.m */; };
 		FA65B30413AA8399005757FD /* OFTCheckSum.m in Sources */ = {isa = PBXBuildFile; fileRef = FA65B30213AA8397005757FD /* OFTCheckSum.m */; };
+		FA65B32613ABAAE9005757FD /* AIMSendingFileTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = FA65B32513ABAAE7005757FD /* AIMSendingFileTransfer.m */; };
+		FA65B32913ABC308005757FD /* AIMICBMClientErr.m in Sources */ = {isa = PBXBuildFile; fileRef = FA65B32813ABC308005757FD /* AIMICBMClientErr.m */; };
 		FA73ACB813A3ADA200E13FDA /* AIMBuddyIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = FA73ACB713A3ADA200E13FDA /* AIMBuddyIcon.m */; };
 		FA73ACBB13A3BA8500E13FDA /* AIMBArtIDWName.m in Sources */ = {isa = PBXBuildFile; fileRef = FA73ACBA13A3BA8500E13FDA /* AIMBArtIDWName.m */; };
 		FA73ACBF13A3C4CF00E13FDA /* AIMBArtQueryReplyID.m in Sources */ = {isa = PBXBuildFile; fileRef = FA73ACBE13A3C4CF00E13FDA /* AIMBArtQueryReplyID.m */; };
@@ -180,6 +182,10 @@
 		FA65B30013AA5310005757FD /* NSMutableData+FlipBit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableData+FlipBit.m"; sourceTree = "<group>"; };
 		FA65B30213AA8397005757FD /* OFTCheckSum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OFTCheckSum.m; sourceTree = "<group>"; };
 		FA65B30313AA8398005757FD /* OFTCheckSum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OFTCheckSum.h; sourceTree = "<group>"; };
+		FA65B32413ABAAE6005757FD /* AIMSendingFileTransfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMSendingFileTransfer.h; sourceTree = "<group>"; };
+		FA65B32513ABAAE7005757FD /* AIMSendingFileTransfer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMSendingFileTransfer.m; sourceTree = "<group>"; };
+		FA65B32713ABC308005757FD /* AIMICBMClientErr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMICBMClientErr.h; sourceTree = "<group>"; };
+		FA65B32813ABC308005757FD /* AIMICBMClientErr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMICBMClientErr.m; sourceTree = "<group>"; };
 		FA73ACB613A3ADA200E13FDA /* AIMBuddyIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMBuddyIcon.h; sourceTree = "<group>"; };
 		FA73ACB713A3ADA200E13FDA /* AIMBuddyIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMBuddyIcon.m; sourceTree = "<group>"; };
 		FA73ACB913A3BA8500E13FDA /* AIMBArtIDWName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMBArtIDWName.h; sourceTree = "<group>"; };
@@ -335,6 +341,8 @@
 				FA1A3F6913A7FEB8009B73DE /* AIMFileTransfer.m */,
 				FABE69F013A8240500FFF198 /* AIMReceivingFileTransfer.h */,
 				FABE69F113A8240500FFF198 /* AIMReceivingFileTransfer.m */,
+				FA65B32413ABAAE6005757FD /* AIMSendingFileTransfer.h */,
+				FA65B32513ABAAE7005757FD /* AIMSendingFileTransfer.m */,
 			);
 			name = "File Tranfers";
 			sourceTree = "<group>";
@@ -744,6 +752,8 @@
 				FABE69F513A824DB00FFF198 /* AIMIMRendezvous.m */,
 				FABE69FA13A8F13800FFF198 /* RVServiceData.h */,
 				FABE69FB13A8F13800FFF198 /* RVServiceData.m */,
+				FA65B32713ABC308005757FD /* AIMICBMClientErr.h */,
+				FA65B32813ABC308005757FD /* AIMICBMClientErr.m */,
 			);
 			name = ICBM;
 			sourceTree = "<group>";
@@ -922,6 +932,8 @@
 				FA65B2FE13AA4C58005757FD /* FileDescriptors.m in Sources */,
 				FA65B30113AA5310005757FD /* NSMutableData+FlipBit.m in Sources */,
 				FA65B30413AA8399005757FD /* OFTCheckSum.m in Sources */,
+				FA65B32613ABAAE9005757FD /* AIMSendingFileTransfer.m in Sources */,
+				FA65B32913ABC308005757FD /* AIMICBMClientErr.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

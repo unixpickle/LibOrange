@@ -43,7 +43,6 @@
 			// good string
 			NSArray * parts = [address componentsSeparatedByString:@"."];
 			if ([parts count] == 4) {
-				NSLog(@"Our IP: %@", address);
 				// here we will copy the four-byte IP address into a UInt32.
 				UInt32 addrRaw = 0;
 				unsigned char * writable = (unsigned char *)&addrRaw;

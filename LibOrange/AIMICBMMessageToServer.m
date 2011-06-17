@@ -74,6 +74,19 @@
 	}
 	return self;
 }
+- (id)initWithRVDataInitProp:(NSData *)rvData toUser:(NSString *)user cookie:(AIMICBMCookie *)theCookie {
+	if ((self = [super init])) {
+		self.cookie = theCookie;
+		self.channel = 2;
+		self.loginID = user;
+		TLV * data = [[TLV alloc] initWithType:TLV_RV_DATA data:rvData];
+		TLV * hostAck = [[TLV alloc] initWithType:TLV_ICBM__TAGS_REQUEST_HOST_ACK data:[NSData data]];
+		self.icbmTlvs = [NSArray arrayWithObjects:data, hostAck, nil];
+		[hostAck release];
+		[data release];
+	}
+	return self;
+}
 - (NSData *)encodePacket {
 	UInt16 channelFlip = flipUInt16(channel);
 	NSMutableData * encoded = [[NSMutableData alloc] init];

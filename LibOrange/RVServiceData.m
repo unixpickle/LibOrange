@@ -51,12 +51,12 @@
 - (NSData *)encodePacket {
 	UInt16 mffFlip = flipUInt16(multipleFilesFlag);
 	UInt16 tfcFlip = flipUInt16(totalFileCount);
-	UInt16 tbFlip = flipUInt16(totalBytes);
+	UInt32 tbFlip = flipUInt32(totalBytes);
 	UInt8 nullB = 0;
 	NSMutableData * encoded = [[NSMutableData alloc] init];
 	[encoded appendBytes:&mffFlip length:2];
 	[encoded appendBytes:&tfcFlip length:2];
-	[encoded appendBytes:&tbFlip length:2];
+	[encoded appendBytes:&tbFlip length:4];
 	[encoded appendData:[fileName dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES]];
 	[encoded appendBytes:&nullB length:1];
 	

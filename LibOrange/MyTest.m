@@ -234,6 +234,23 @@ static void stripNL (char * buff) {
 		} else if ([[tokens objectAtIndex:0] isEqual:@"echo"]) {
 			NSString * msg = [tokens objectAtIndex:1];
 			[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[msg stringByAddingAOLRTFTags]]];
+		} else if ([[tokens objectAtIndex:0] isEqual:@"getfile"]) {
+			NSString * path = [tokens objectAtIndex:1];
+			BOOL canTransfer = NO;
+			for (AIMCapability * cap in message.buddy.status.capabilities) {
+				if ([cap capabilityType] == AIMCapabilityFileTransfer) {
+					canTransfer = YES;
+				}
+			}
+			if (canTransfer) {
+				if (![theSession.rendezvousHandler sendFile:path toUser:message.buddy]) {
+					[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[@"Err: sendfile failed." stringByAddingAOLRTFTags]]];
+				} else {
+					[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[@"Sendfile started." stringByAddingAOLRTFTags]]];
+				}
+			} else {
+				[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[@"Err: you can't receive files." stringByAddingAOLRTFTags]]];
+			}
 		} else if ([[tokens objectAtIndex:0] isEqual:@"deny"]) {
 			NSString * msg = [self denyUser:[tokens objectAtIndex:1]];
 			if (msg) {
@@ -318,7 +335,7 @@ static void stripNL (char * buff) {
 	NSLog(@"Save to path: %@", path);
 }
 
-- (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferCancelled:(AIMReceivingFileTransfer *)ft reason:(UInt16)reason {
+- (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferCancelled:(AIMFileTransfer *)ft reason:(UInt16)reason {
 	NSLog(@"File transfer cancelled: %@", ft);
 }
 

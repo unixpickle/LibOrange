@@ -10,8 +10,10 @@
 
 @interface AIMRendezvousHandler (Private)
 
+- (void)_handleClientError:(AIMICBMMessageToServer *)message;
 - (void)_handleRendezvousMessage:(AIMICBMMessageToClient *)message;
 - (void)_handleReceiving:(AIMReceivingFileTransfer *)ft rvMessage:(AIMIMRendezvous *)msg;
+- (void)_handleSending:(AIMSendingFileTransfer *)ft rvMessage:(AIMIMRendezvous *)msg;
 
 @end
 
@@ -36,6 +38,12 @@
 			[self performSelector:@selector(_handleRendezvousMessage:) onThread:session.mainThread withObject:message waitUntilDone:NO];
 		}
 		[message release];
+	} else if (SNAC_ID_IS_EQUAL(SNAC_ID_NEW(SNAC_ICBM, ICBM__CLIENT_ERR), [aSnac snac_id])) {
+		AIMICBMClientErr * err = [[AIMICBMClientErr alloc] initWithSNAC:aSnac];
+		if ([err channel] == 2) {
+			[self performSelector:@selector(_handleClientError:) onThread:session.mainThread withObject:err waitUntilDone:NO];
+		}
+		[err release];
 	}
 }
 
@@ -68,11 +76,6 @@
 
 - (void)cancelFileTransfer:(AIMFileTransfer *)ft {
 	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
-	if ([ft isTransferring]) {
-		if ([ft isKindOfClass:[AIMReceivingFileTransfer class]]) {
-			[(AIMReceivingFileTransfer *)ft cancelDownload];
-		}
-	}
 	
 	AIMIMRendezvous * cancelRV = [[AIMIMRendezvous alloc] init];
 	cancelRV.type = RV_TYPE_CANCEL;
@@ -88,7 +91,59 @@
 	[msg release];
 	[session performSelector:@selector(writeSnac:) onThread:session.backgroundThread withObject:sendMsg waitUntilDone:NO];
 	[sendMsg release];
+	
+	if ([ft isTransferring]) {
+		if ([ft isKindOfClass:[AIMReceivingFileTransfer class]]) {
+			[(AIMReceivingFileTransfer *)ft cancelDownload];
+		}
+	}
+	
 	[fileTransfers removeObject:ft];
+}
+
+- (AIMSendingFileTransfer *)sendFile:(NSString *)path toUser:(AIMBlistBuddy *)buddy {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	AIMSendingFileTransfer * sending = [[AIMSendingFileTransfer alloc] initWithCookie:[AIMICBMCookie randomCookie]];
+	sending.buddy = buddy;
+	sending.localFile = path;
+	sending.lastProposal = [sending initialProposal];
+	if (!sending.lastProposal) {
+		[sending release];
+		return nil;
+	}
+	
+	[sending listenForConnect];
+	
+	// create ICBM message.
+	AIMICBMMessageToServer * msg = [[AIMICBMMessageToServer alloc] initWithRVDataInitProp:[sending.lastProposal encodePacket] toUser:buddy.username cookie:sending.cookie];
+	SNAC * snac = [[SNAC alloc] initWithID:SNAC_ID_NEW(SNAC_ICBM, ICBM__CHANNEL_MSG_TOHOST) flags:0 requestID:[session generateReqID] data:[msg encodePacket]];
+	[session performSelector:@selector(writeSnac:) onThread:session.backgroundThread withObject:snac waitUntilDone:NO];
+	[msg release];
+	[snac release];
+	
+	[fileTransfers addObject:sending];
+	return [sending autorelease];
+}
+
+#pragma mark OSCAR Handlers
+
+- (void)_handleClientError:(AIMICBMMessageToServer *)message {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	AIMFileTransfer * ft = [self fileTransferWithCookie:[message cookie]];
+	if (!ft) return;
+	if ([ft isKindOfClass:[AIMReceivingFileTransfer class]]) {
+		[ft setWasCancelled:YES];
+		if ([delegate respondsToSelector:@selector(aimRendezvousHandler:fileTransferCancelled:reason:)]) {
+			[delegate aimRendezvousHandler:self fileTransferCancelled:ft reason:CANCEL_REASON_UNKNOWN];
+		}
+		[fileTransfers removeObject:ft];
+	} else if ([ft isKindOfClass:[AIMSendingFileTransfer class]]) {
+		[ft setWasCancelled:YES];
+		if ([delegate respondsToSelector:@selector(aimRendezvousHandler:fileTransferCancelled:reason:)]) {
+			[delegate aimRendezvousHandler:self fileTransferCancelled:ft reason:CANCEL_REASON_UNKNOWN];
+		}
+		[fileTransfers removeObject:ft];
+	}
 }
 
 - (void)_handleRendezvousMessage:(AIMICBMMessageToClient *)message {
@@ -105,6 +160,8 @@
 	AIMIMRendezvous * rvMessage = [[AIMIMRendezvous alloc] initWithICBMMessage:message];
 	if ([ft isKindOfClass:[AIMReceivingFileTransfer class]]) {
 		[self _handleReceiving:(AIMReceivingFileTransfer *)ft rvMessage:rvMessage];
+	} else if ([ft isKindOfClass:[AIMSendingFileTransfer class]]) {
+		[self _handleSending:(AIMSendingFileTransfer *)ft rvMessage:rvMessage];
 	}
 	[rvMessage release];
 }
@@ -127,6 +184,20 @@
 	} else if ([msg type] == RV_TYPE_PROPOSE && [msg sequenceNumber] == 3) {
 		[ft setLastProposal:msg];
 		[ft newProposal];
+	}
+}
+
+- (void)_handleSending:(AIMSendingFileTransfer *)ft rvMessage:(AIMIMRendezvous *)msg {
+	NSAssert([NSThread currentThread] == [session mainThread], @"Running on incorrect thread");
+	if ([msg type] == RV_TYPE_CANCEL) {
+		[ft setWasCancelled:YES];
+		if ([delegate respondsToSelector:@selector(aimRendezvousHandler:fileTransferCancelled:reason:)]) {
+			[delegate aimRendezvousHandler:self fileTransferCancelled:ft reason:[msg cancelReason]];
+		}
+		[fileTransfers removeObject:ft];
+	} else if ([msg type] == RV_TYPE_PROPOSE) {
+		[ft setLastProposal:msg];
+		[ft gotCounterProposal];
 	}
 }
 

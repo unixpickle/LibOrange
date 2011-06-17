@@ -8,6 +8,11 @@
 
 #import "AIMReceivingFileTransfer.h"
 
+#define GOODBYE_TRANSFER(x,y,z) [x closeConnection];\
+[self setIsTransferring:NO];\
+[y closeFile];\
+if (z) [self performSelector:@selector(_delegateInformDownloadFailed) onThread:self.mainThread withObject:nil waitUntilDone:NO];
+
 @interface AIMReceivingFileTransfer (Private)
 
 - (void)backgroundThread:(NSDictionary *)proposalInfo;
@@ -249,26 +254,23 @@
 	}
 	OFTHeader * header = [theConnection readHeader:30];
 	if ([header type] != OFT_TYPE_PROMPT) {
-		// NSLog(@"Invalid header type: %d", [header type]);
-		[self setIsTransferring:NO];
-		[theConnection closeConnection];
-		[self performSelector:@selector(_delegateInformDownloadFailed) onThread:self.mainThread withObject:nil waitUntilDone:NO];
+		GOODBYE_TRANSFER(theConnection, (id)nil, YES);
+		return;
+	}
+	if (header.filesLeft > 1 || header.encrypt != 0 || header.compress != 0 || header.totalFiles > 1) {
+		GOODBYE_TRANSFER(theConnection, (id)nil, YES);
 		return;
 	}
 	// send acknowlege
 	header.type = OFT_TYPE_ACKNOWLEDGE;
 	header.cookie = _cookie;
 	if (![theConnection writeHeader:header]) {
-		// NSLog(@"header write failed.");
-		[self setIsTransferring:NO];
-		[theConnection closeConnection];
-		[self performSelector:@selector(_delegateInformDownloadFailed) onThread:self.mainThread withObject:nil waitUntilDone:NO];
+		GOODBYE_TRANSFER(theConnection, (id)nil, YES);
 		return;
 	}
 	
 	if ([[NSThread currentThread] isCancelled]) {
-		[theConnection closeConnection];
-		[self setIsTransferring:NO];
+		GOODBYE_TRANSFER(theConnection, (id)nil, NO);
 		return;
 	}
 	
@@ -277,9 +279,7 @@
 	}
 	NSFileHandle * fh = [NSFileHandle fileHandleForWritingAtPath:self.writePath];
 	if (!fh) {
-		[self setIsTransferring:NO];
-		[theConnection closeConnection];
-		[self performSelector:@selector(_delegateInformDownloadFailed) onThread:self.mainThread withObject:nil waitUntilDone:NO];
+		GOODBYE_TRANSFER(theConnection, fh, YES);
 		return;
 	}
 	char buffer[65536];
@@ -289,24 +289,16 @@
 	while ([header bytesReceived] < fileSize) {
 		int needs = (fileSize - [header bytesReceived] > 65536 ? 65536 : (fileSize - [header bytesReceived]));
 		if ([[NSThread currentThread] isCancelled]) {
-			[theConnection closeConnection];
-			[self setIsTransferring:NO];
-			[fh closeFile];
+			GOODBYE_TRANSFER(theConnection, fh, NO);
 			return;
 		}
 		int readSize = (int)read([theConnection fileDescriptor], buffer, needs);
 		if ([[NSThread currentThread] isCancelled]) {
-			[theConnection closeConnection];
-			[self setIsTransferring:NO];
-			[fh closeFile];
+			GOODBYE_TRANSFER(theConnection, fh, NO);
 			return;
 		}
 		if (readSize <= 0) {
-			[fh closeFile];
-			[self setIsTransferring:NO];
-			[fh closeFile];
-			[theConnection closeConnection];
-			[self performSelector:@selector(_delegateInformDownloadFailed) onThread:self.mainThread withObject:nil waitUntilDone:NO];
+			GOODBYE_TRANSFER(theConnection, fh, YES);
 			return;
 		}
 		NSData * theData = [[NSData alloc] initWithBytes:buffer length:readSize];
@@ -323,23 +315,16 @@
 	while ([header bytesReceived] < [header totalSize]) {
 		int needs = ([header totalSize] - [header bytesReceived] > 65536 ? 65536 : ([header totalSize] - [header bytesReceived]));
 		if ([[NSThread currentThread] isCancelled]) {
-			[theConnection closeConnection];
-			[self setIsTransferring:NO];
-			[fh closeFile];
+			GOODBYE_TRANSFER(theConnection, fh, NO);
 			return;
 		}
 		int readSize = (int)read([theConnection fileDescriptor], buffer, needs);
 		if ([[NSThread currentThread] isCancelled]) {
-			[theConnection closeConnection];
-			[self setIsTransferring:NO];
-			[fh closeFile];
+			GOODBYE_TRANSFER(theConnection, fh, NO);
 			return;
 		}
 		if (readSize <= 0) {
-			[fh closeFile];
-			[self setIsTransferring:NO];
-			[theConnection closeConnection];
-			[self performSelector:@selector(_delegateInformDownloadFailed) onThread:self.mainThread withObject:nil waitUntilDone:NO];
+			GOODBYE_TRANSFER(theConnection, fh, YES);
 			return;
 		}
 		// rolling checksum
@@ -347,12 +332,11 @@
 		[header setBytesReceived:([header bytesReceived] + readSize)];
 	}
 	[fh closeFile];
+	fh = nil;
 	
 	header.type = OFT_TYPE_DONE;
 	if (![theConnection writeHeader:header]) {
-		[self setIsTransferring:NO];
-		[theConnection closeConnection];
-		[self performSelector:@selector(_delegateInformDownloadFailed) onThread:self.mainThread withObject:nil waitUntilDone:NO];
+		GOODBYE_TRANSFER(theConnection, fh, YES);
 		return;
 	}
 	
