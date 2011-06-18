@@ -22,11 +22,15 @@
 
 + (NSArray *)ipAddresses {
 	struct ifaddrs * ifAddrStruct = NULL;
+	struct ifaddrs * ifAddrStructOrig = NULL;
 	void * tmpAddrPtr = NULL;
-	getifaddrs(&ifAddrStruct);
+	if (getifaddrs(&ifAddrStructOrig) < 0) {
+		return nil;
+	}
+	ifAddrStruct = ifAddrStructOrig;
 	char addressBuffer[80];
 	NSMutableArray * retV = [[NSMutableArray alloc] init];
-	while (ifAddrStruct!=NULL) {
+	while (ifAddrStruct != NULL) {
 		if (ifAddrStruct->ifa_addr->sa_family == AF_INET && strcmp(ifAddrStruct->ifa_name, "lo0") != 0 && strcmp(ifAddrStruct->ifa_name, "lo") != 0) { 
 			tmpAddrPtr = &((struct sockaddr_in *)ifAddrStruct->ifa_addr)->sin_addr;
 			const char * addr = (const char *)inet_ntop(AF_INET, tmpAddrPtr, addressBuffer, sizeof(struct ifaddrs));
@@ -34,6 +38,7 @@
 		}
 		ifAddrStruct = ifAddrStruct->ifa_next;
 	}
+	freeifaddrs(ifAddrStructOrig);
 	return [retV autorelease];
 }
 + (UInt32)ipAddressGuess {

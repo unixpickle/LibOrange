@@ -47,3 +47,5 @@
 - (RVServiceData *)serviceData;
 
 @end
+
+NSString * IPv4AddrToString (UInt32 ipAddr);

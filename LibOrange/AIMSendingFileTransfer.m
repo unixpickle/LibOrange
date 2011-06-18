@@ -144,6 +144,7 @@
 		[self handleConnection:connection cookie:cookieData file:file];
 		[connection release];
 	}
+	self.backgroundThread = nil;
 	[pool drain];
 }
 - (void)connectInBackground:(NSDictionary *)info {
@@ -158,7 +159,6 @@
 	
 	if (isProxy) {
 		NSLog(@"TODO: connect to proxy.");
-		NSLog(@"Configure a proxy.");
 	} else {
 		// NSLog(@"Connect directly to peer.");
 		OFTConnection * connection = nil;
@@ -169,6 +169,7 @@
 			}
 		}
 		if (!connection) {
+			// NSLog(@"Couldn't connect to peer.  Using proxy instead.");
 			connection = [[self connectToProxyWithCookie:cookieData] retain];
 		} else {
 			// we connected to them, so send accept.
@@ -181,7 +182,7 @@
 			[self performSelector:@selector(_delegateInformTransferFailed) onThread:self.mainThread withObject:nil waitUntilDone:NO];
 		}
 	}
-	
+	self.backgroundThread = nil;
 	[pool drain];
 }
 - (OFTConnection *)connectToProxyWithCookie:(NSData *)theCookie {
@@ -201,6 +202,7 @@
 	[setupData appendData:theCookie];
 	[setupData appendData:[[AIMCapability filetransferCapabilitiesBlock] encodePacket]];
 	OFTProxyCommand * command = [[OFTProxyCommand alloc] initWithCommandType:COMMAND_TYPE_INIT_SEND flags:0 cmdData:setupData];
+	[setupData release];
 	if (![proxy writeCommand:command]) {
 		// NSLog(@"Failed to init send.");
 		[self performSelector:@selector(_delegateInformTransferFailed) onThread:self.mainThread withObject:nil waitUntilDone:NO];
@@ -386,6 +388,7 @@
 	acceptRV.params = [NSArray arrayWithObject:maxProto];
 	[delegate aimSendingFileTransfer:self sendAccept:acceptRV];
 	[acceptRV release];
+	[maxProto release];
 }
 
 #pragma mark Synchronized Setters/Getters

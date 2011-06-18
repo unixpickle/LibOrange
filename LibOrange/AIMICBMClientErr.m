@@ -29,6 +29,7 @@
 		channel = flipUInt16(*(const UInt16 *)(&bytes[8]));
 		UInt8 nickLen = *(const UInt8 *)(&bytes[10]);
 		if (nickLen + 12 > length) {
+			[cookie release];
 			[super dealloc];
 			return nil;
 		}
