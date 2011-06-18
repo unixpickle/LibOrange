@@ -341,6 +341,10 @@ static void stripNL (char * buff) {
 
 - (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferCancelled:(AIMFileTransfer *)ft reason:(UInt16)reason {
 	NSLog(@"File transfer cancelled: %@", ft);
+	if ([ft isKindOfClass:[AIMSendingFileTransfer class]]) {
+		AIMSendingFileTransfer * send = (AIMSendingFileTransfer *)ft;
+		[[NSFileManager defaultManager] removeItemAtPath:[send localFile] error:nil];
+	}
 }
 
 - (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferFailed:(AIMFileTransfer *)ft {

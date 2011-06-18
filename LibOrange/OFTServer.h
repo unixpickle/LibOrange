@@ -16,6 +16,10 @@
 #include <fcntl.h>
 #include <errno.h>
 
+// set this to prevent socket listening.
+// this should pretty much always be 0.
+#define kDONT_SERVE 0
+
 @interface OFTServer : NSObject {
     int port;
 	int fd;

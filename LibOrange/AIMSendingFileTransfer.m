@@ -161,9 +161,12 @@
 		NSLog(@"Configure a proxy.");
 	} else {
 		// NSLog(@"Connect directly to peer.");
-		OFTConnection * connection = [[OFTConnection alloc] initWithHost:proposedAddress port:port];
-		if (!connection) {
-			connection = [[OFTConnection alloc] initWithHost:verifiedAddress port:port];
+		OFTConnection * connection = nil;
+		if (!kDONT_SERVE) {
+			connection = [[OFTConnection alloc] initWithHost:proposedAddress port:port];
+			if (!connection) {
+				connection = [[OFTConnection alloc] initWithHost:verifiedAddress port:port];
+			}
 		}
 		if (!connection) {
 			connection = [[self connectToProxyWithCookie:cookieData] retain];

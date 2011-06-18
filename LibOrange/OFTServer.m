@@ -38,23 +38,42 @@
 			NSLog(@"%@: WARNING: setsockopt failed.", NSStringFromClass([self class]));
 		}
 		
-		if (bind(fd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
-			[super dealloc];
-			return nil;
+		if (!kDONT_SERVE) {
+		
+			if (bind(fd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
+				[super dealloc];
+				return nil;
+			}
+			
+			listen(fd, 5);
+			
+			/* Switch SO_LONGER and SO_KEEPALIVE to off. */
+			struct linger l;
+			l.l_onoff = 1;
+			l.l_linger = 0;
+			setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE|SO_LINGER, (char *)&l, sizeof(l));
+			
 		}
-		
-		listen(fd, 5);
-		
-		/* Switch SO_LONGER and SO_KEEPALIVE to off. */
-		struct linger l;
-		l.l_onoff = 1;
-		l.l_linger = 0;
-		setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE|SO_LINGER, (char *)&l, sizeof(l));
 	}
 	return self;
 }
 
 - (int)fileDescriptorForListeningOnPort:(int)timeout {
+	if (kDONT_SERVE) {
+		if (timeout > 0) {
+			for (int i = 0; i < timeout; i++) {
+				sleep(1);
+				if ([[NSThread currentThread] isCancelled]) return -1;
+			}
+			return -1;
+		} else {
+			while (true) {
+				sleep(1);
+				if ([[NSThread currentThread] isCancelled]) return -1;
+			}
+			return -1;
+		}
+	}
 	struct timeval timeoutV;
 	int to = timeout > 5 ? 5 : timeout;
 	if (timeout < 1) to = 5;

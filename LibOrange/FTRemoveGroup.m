@@ -24,6 +24,7 @@
 	if (!rootGroup || !groupItem) {
 		snacs = [[NSArray alloc] init];
 		snacIndex = -1;
+		return;
 	}
 	AIMFeedbagItem * newRoot = [rootGroup itemByRemovingOrderItem:[groupItem groupID]];
 	// find items in the specified group.
