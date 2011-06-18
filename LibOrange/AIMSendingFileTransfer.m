@@ -176,6 +176,7 @@
 		}
 		if (!connection) {
 			// NSLog(@"Couldn't connect to peer.  Using proxy instead.");
+			if (kDONT_SERVE) [NSThread sleepForTimeInterval:2]; // make it look like we tried.
 			connection = [[self connectToProxyWithCookie:cookieData] retain];
 		} else {
 			// we connected to them, so send accept.
