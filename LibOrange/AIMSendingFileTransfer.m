@@ -15,6 +15,7 @@
 - (OFTConnection *)connectToProxyWithCookie:(NSData *)theCookie;
 - (void)handleConnection:(OFTConnection *)connection cookie:(NSData *)cookie file:(NSString *)path;
 - (AIMIMRendezvous *)configureProxyProp:(UInt32)proxyHost port:(UInt16)port cookie:(NSData *)cookie;
+- (OFTConnection *)connectRecvProxy:(NSString *)ipAddress port:(UInt16)port cookie:(NSData *)cookie sn:(NSString *)screenName;
 
 // delegate informing
 - (void)_delegateInformCounterProp:(AIMIMRendezvous *)counter;
@@ -158,7 +159,12 @@
 	BOOL isProxy = [[info objectForKey:@"proxy"] boolValue];
 	
 	if (isProxy) {
-		NSLog(@"TODO: connect to proxy.");
+		OFTConnection * connection = [self connectRecvProxy:proposedAddress port:port cookie:cookieData sn:self.theUsername];
+		if (!connection) {
+			[self performSelector:@selector(_delegateInformTransferFailed) onThread:self.mainThread withObject:nil waitUntilDone:NO];
+		} else {
+			[self handleConnection:connection cookie:cookieData file:file];
+		}
 	} else {
 		// NSLog(@"Connect directly to peer.");
 		OFTConnection * connection = nil;
@@ -349,6 +355,41 @@
 	[proxyFlag release];
 	
 	return [rv autorelease];
+}
+
+- (OFTConnection *)connectRecvProxy:(NSString *)ipAddress port:(UInt16)port cookie:(NSData *)_cookie sn:(NSString *)screenName {
+	UInt16 actualPort = 5190;
+	OFTConnection * realConnection = [[OFTConnection alloc] initWithHost:ipAddress port:actualPort];
+	if (!realConnection) return nil;
+	OFTProxyConnection * proxy = [[OFTProxyConnection alloc] initWithFileDescriptor:[realConnection fileDescriptor]];
+	
+	// configure the proxy.
+	NSMutableData * initRecv = [[NSMutableData alloc] init];
+	UInt8 snLen = (UInt8)[screenName length];
+	UInt16 portFlip = flipUInt16(port);
+	TLV * caps = [AIMCapability filetransferCapabilitiesBlock];
+	[initRecv appendBytes:&snLen length:1];
+	[initRecv appendData:[screenName dataUsingEncoding:NSASCIIStringEncoding]];
+	[initRecv appendBytes:&portFlip length:2];
+	[initRecv appendData:_cookie];
+	[initRecv appendData:[caps encodePacket]];
+	
+	OFTProxyCommand * cmd = [[[OFTProxyCommand alloc] initWithCommandType:COMMAND_TYPE_INIT_RECV flags:0 cmdData:initRecv] autorelease];
+	[initRecv release];
+	if (![proxy writeCommand:cmd]) {
+		[proxy release];
+		[realConnection release];
+		return nil;
+	}
+	OFTProxyCommand * conf = [proxy readCommand];
+	if (!conf || [conf commandType] != COMMAND_TYPE_READY) {
+		[proxy release];
+		[realConnection release];
+		return nil;
+	}
+	
+	[proxy release];
+	return [realConnection autorelease];
 }
 
 #pragma mark Delegate

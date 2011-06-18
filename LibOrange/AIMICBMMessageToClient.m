@@ -60,7 +60,7 @@
 	[encoded appendBytes:&channelFlip length:2];
 	[encoded appendData:[nickInfo encodePacket]];
 	NSData * tlvBlock = [TLV encodeTLVBlock:icbmTlvs];
-	NSData * tlvArray = [NSData dataWithBytes:&([tlvBlock bytes])[2] length:([tlvBlock length] - 2)];
+	NSData * tlvArray = [NSData dataWithBytes:&((const char *)[tlvBlock bytes])[2] length:([tlvBlock length] - 2)];
 	[encoded appendData:tlvArray];
 	
 	NSData * immutable = [NSData dataWithData:encoded];
@@ -92,13 +92,13 @@
 	UInt16 encoding = flipUInt16(*(const UInt16 *)([imText bytes]));
 	NSString * messageText = nil;
 	if (encoding == 0) {
-		const char * start = &([imText bytes])[4];
+		const char * start = &((const char *)[imText bytes])[4];
 		messageText = [[NSString alloc] initWithBytes:start length:([imText length] - 4) encoding:NSASCIIStringEncoding];
 	} else if (encoding == 2) {
-		const char * start = &([imText bytes])[4];
+		const char * start = &((const char *)[imText bytes])[4];
 		messageText = [[NSString alloc] initWithBytes:start length:([imText length] - 4) encoding:NSUnicodeStringEncoding];
 	} else if (encoding == 3) {
-		const char * start = &([imText bytes])[4];
+		const char * start = &((const char *)[imText bytes])[4];
 		messageText = [[NSString alloc] initWithBytes:start length:([imText length] - 4) encoding:NSWindowsCP1252StringEncoding];
 	}
 	return [messageText autorelease];
