@@ -25,7 +25,6 @@ if (z) [self performSelector:@selector(_delegateInformDownloadFailed) onThread:s
 - (void)_delegateInformProgressChanged;
 
 - (AIMIMRendezvous *)connectHereCounterProposal:(UInt16)port cookie:(NSData *)cookieData;
-+ (TLV *)capabilitiesBlock;
 
 @end
 
@@ -356,7 +355,7 @@ if (z) [self performSelector:@selector(_delegateInformDownloadFailed) onThread:s
 	NSMutableData * initRecv = [[NSMutableData alloc] init];
 	UInt8 snLen = (UInt8)[screenName length];
 	UInt16 portFlip = flipUInt16(port);
-	TLV * caps = [AIMReceivingFileTransfer capabilitiesBlock];
+	TLV * caps = [AIMCapability filetransferCapabilitiesBlock];
 	[initRecv appendBytes:&snLen length:1];
 	[initRecv appendData:[screenName dataUsingEncoding:NSASCIIStringEncoding]];
 	[initRecv appendBytes:&portFlip length:2];
@@ -379,14 +378,6 @@ if (z) [self performSelector:@selector(_delegateInformDownloadFailed) onThread:s
 	
 	[proxy release];
 	return [realConnection autorelease];
-}
-															  
-+ (TLV *)capabilitiesBlock {
-	char caps[16];
-	memcpy(caps, "\x09\x46\x13\x43\x4C\x7F\x11\xD1\x82\x22\x44\x45\x53\x54", 14);
-	caps[14] = 0;
-	caps[15] = 0;
-	return [[[TLV alloc] initWithType:1 data:[NSData dataWithBytes:caps length:16]] autorelease];
 }
 
 - (void)dealloc {

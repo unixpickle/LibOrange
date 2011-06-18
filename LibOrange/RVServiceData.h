@@ -14,13 +14,13 @@
 @interface RVServiceData : NSObject <OSCARPacket> {
 	UInt16 multipleFilesFlag;
 	UInt16 totalFileCount;
-	UInt16 totalBytes;
+	UInt32 totalBytes;
 	NSString * fileName;
 }
 
 @property (readwrite) UInt16 multipleFilesFlag;
 @property (readwrite) UInt16 totalFileCount;
-@property (readwrite) UInt16 totalBytes;
+@property (readwrite) UInt32 totalBytes;
 @property (nonatomic, retain) NSString * fileName; 
 
 @end

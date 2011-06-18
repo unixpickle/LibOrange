@@ -234,8 +234,8 @@ static void stripNL (char * buff) {
 		} else if ([[tokens objectAtIndex:0] isEqual:@"echo"]) {
 			NSString * msg = [tokens objectAtIndex:1];
 			[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[msg stringByAddingAOLRTFTags]]];
-		} else if ([[tokens objectAtIndex:0] isEqual:@"getfile"]) {
-			NSString * path = [tokens objectAtIndex:1];
+		} else if ([[tokens objectAtIndex:0] isEqual:@"sendfile"]) {
+			NSString * messagestr = [tokens objectAtIndex:1];
 			BOOL canTransfer = NO;
 			for (AIMCapability * cap in message.buddy.status.capabilities) {
 				if ([cap capabilityType] == AIMCapabilityFileTransfer) {
@@ -243,7 +243,10 @@ static void stripNL (char * buff) {
 				}
 			}
 			if (canTransfer) {
-				if (![theSession.rendezvousHandler sendFile:path toUser:message.buddy]) {
+				NSString * tempPath = [NSTemporaryDirectory() stringByAppendingFormat:@"/%d%d.txt", arc4random(), time(NULL)];
+				[messagestr writeToFile:tempPath atomically:NO encoding:NSUTF8StringEncoding error:nil];
+				if (![theSession.rendezvousHandler sendFile:tempPath toUser:message.buddy]) {
+					[[NSFileManager defaultManager] removeItemAtPath:tempPath error:nil];
 					[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[@"Err: sendfile failed." stringByAddingAOLRTFTags]]];
 				} else {
 					[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[@"Sendfile started." stringByAddingAOLRTFTags]]];
@@ -324,6 +327,7 @@ static void stripNL (char * buff) {
 
 - (void)aimRateLimitHandler:(AIMRateLimitHandler *)handler gotRateAlert:(AIMRateNotificationInfo *)info {
 	// use this to show the user that they should stop sending messages.
+	NSLog(@"Rate alert");
 }
 
 #pragma mark File Transfers
@@ -341,6 +345,10 @@ static void stripNL (char * buff) {
 
 - (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferFailed:(AIMFileTransfer *)ft {
 	NSLog(@"File transfer failed: %@", ft);
+	if ([ft isKindOfClass:[AIMSendingFileTransfer class]]) {
+		AIMSendingFileTransfer * send = (AIMSendingFileTransfer *)ft;
+		[[NSFileManager defaultManager] removeItemAtPath:[send localFile] error:nil];
+	}
 }
 
 - (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferStarted:(AIMFileTransfer *)ft {
@@ -355,6 +363,10 @@ static void stripNL (char * buff) {
 
 - (void)aimRendezvousHandler:(AIMRendezvousHandler *)rvHandler fileTransferDone:(AIMFileTransfer *)ft {
 	NSLog(@"File transfer done: %@", ft);
+	if ([ft isKindOfClass:[AIMSendingFileTransfer class]]) {
+		AIMSendingFileTransfer * send = (AIMSendingFileTransfer *)ft;
+		[[NSFileManager defaultManager] removeItemAtPath:[send localFile] error:nil];
+	}
 }
 
 #pragma mark Commands

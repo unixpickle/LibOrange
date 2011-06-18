@@ -57,6 +57,7 @@
 - (int)fileDescriptorForListeningOnPort:(int)timeout {
 	struct timeval timeoutV;
 	int to = timeout > 5 ? 5 : timeout;
+	if (timeout < 1) to = 5;
 	timeoutV.tv_sec = to;
 	timeoutV.tv_usec = 0;
 	fd_set readFds;
@@ -72,7 +73,7 @@
 		} else {
 			FD_SET(fd, &readFds);
 		}
-		if (waited > timeout) return -1;
+		if (waited > timeout && timeout > 1) return -1;
 		timeoutV.tv_sec = to;
 		timeoutV.tv_usec = 0;
 	}

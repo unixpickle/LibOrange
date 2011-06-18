@@ -18,11 +18,12 @@
 
 @protocol AIMReceivingFileTransferDelegate <NSObject>
 
-@optional
 - (void)aimReceivingFileTransferPropositionFailed:(AIMReceivingFileTransfer *)ft counterProposal:(AIMIMRendezvous *)newProp;
 - (void)aimReceivingFileTransferPropositionSuccess:(AIMReceivingFileTransfer *)ft;
 - (void)aimReceivingFileTransferTransferFailed:(AIMReceivingFileTransfer *)ft;
 - (void)aimReceivingFileTransferSendAccept:(AIMReceivingFileTransfer *)ft;
+
+@optional
 - (void)aimReceivingFileTransferStarted:(AIMReceivingFileTransfer *)ft;
 - (void)aimReceivingFileTransferProgressChanged:(AIMReceivingFileTransfer *)ft;
 - (void)aimReceivingFileTransferFinished:(AIMReceivingFileTransfer *)ft;

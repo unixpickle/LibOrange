@@ -131,4 +131,12 @@
 	return YES;
 }
 
++ (TLV *)filetransferCapabilitiesBlock {
+	char caps[16];
+	memcpy(caps, "\x09\x46\x13\x43\x4C\x7F\x11\xD1\x82\x22\x44\x45\x53\x54", 14);
+	caps[14] = 0;
+	caps[15] = 0;
+	return [[[TLV alloc] initWithType:1 data:[NSData dataWithBytes:caps length:16]] autorelease];
+}
+
 @end

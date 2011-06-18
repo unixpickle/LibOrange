@@ -11,7 +11,7 @@
 #import "NSMutableData+FlipBit.h"
 
 // some default values
-#define kProtoVer 0x3254464F
+#define kProtoVer 0x4F465432
 #define kIDString @"Cool FileXfer"
 #define kNameOffset 0x1c
 #define kSizeOffset 0x11

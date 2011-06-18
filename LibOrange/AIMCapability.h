@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TLV.h"
 
 typedef enum {
 	AIMCapabilityFileTransfer,
@@ -27,5 +28,6 @@ typedef enum {
 - (AIMCapabilityType)capabilityType;
 + (NSDictionary *)uuidsForCapTypes;
 + (BOOL)compareCapArray:(NSArray *)arr1 toArray:(NSArray *)arr2;
++ (TLV *)filetransferCapabilitiesBlock;
 
 @end

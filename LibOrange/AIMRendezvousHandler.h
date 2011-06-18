@@ -28,7 +28,7 @@
 
 @end
 
-@interface AIMRendezvousHandler : NSObject <AIMSessionHandler, AIMReceivingFileTransferDelegate> {
+@interface AIMRendezvousHandler : NSObject <AIMSessionHandler, AIMReceivingFileTransferDelegate, AIMSendingFileTransferDelegate> {
     NSMutableArray * fileTransfers;
 	AIMSession * session;
 	id<AIMRendezvousHandlerDelegate> delegate;

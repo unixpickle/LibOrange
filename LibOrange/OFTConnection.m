@@ -145,6 +145,20 @@
 	return [theHeader writeFileFD:fileDescriptor];
 }
 
+- (BOOL)writeData:(NSData *)data {
+	int written = 0;
+	const char * bytes = [data bytes];
+	int toWrite = (int)[data length];
+	while (written < toWrite) {
+		int wrote = (int)write(fileDescriptor, &bytes[written], toWrite - written);
+		if (wrote <= 0) {
+			return NO;
+		}
+		written += wrote;
+	}
+	return YES;
+}
+
 - (void)closeConnection {
 	if (self.state == OFTConnectionStateOpen) {
 		self.state = OFTConnectionStateClosed;

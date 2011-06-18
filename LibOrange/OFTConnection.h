@@ -50,6 +50,7 @@ typedef enum {
 
 - (OFTHeader *)readHeader:(int)timeoutSeconds;
 - (BOOL)writeHeader:(OFTHeader *)theHeader;
+- (BOOL)writeData:(NSData *)rawData;
 
 - (void)closeConnection;
 
