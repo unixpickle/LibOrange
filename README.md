@@ -19,7 +19,7 @@ LibOrange doesn't sleep for 0.4 seconds every time it sends a SNAC packet.  That
 When Will it be Finished?
 =========================
 
-LibOrange is still a work in progress, and, like all open source software, will never finsihed.  For the most part, LibOrange does everything that I originally intended for it to do. I encourage developers to fix any bugs that are discovered, and to add new features.
+LibOrange is still a work in progress, and, like all open source software, will never be finished.  For the most part, LibOrange does everything that I originally intended for it to do. I encourage developers to fix any bugs that are discovered, and to add new features.
 
 Where'd You Get the Name "LibOrange"?
 =====================================
