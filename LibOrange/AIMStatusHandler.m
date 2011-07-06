@@ -136,7 +136,10 @@
 		AIMNickWInfo * updateInf = [[AIMNickWInfo alloc] initWithData:[aSnac innerContents]];
 		if (updateInf) 
 			[self performSelector:@selector(handleUserInfoUpdate:) onThread:session.mainThread withObject:updateInf waitUntilDone:NO];
-		else NSLog(@"Unfatal ERROR: Got invalid NickWInfo from OSERVICE");
+		else {
+			NSLog(@"Unfatal ERROR: Got invalid NickWInfo from OSERVICE");
+			NSLog(@"Nick info dump: %@", [aSnac innerContents]);
+		}
 		[updateInf release];
 	}
 }
