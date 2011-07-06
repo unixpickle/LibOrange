@@ -26,11 +26,15 @@
 
 - (id)initWithPointer:(const char *)ptr length:(int *)_length {
 	if ((self = [super init])) {
-		if (*_length < 2) return nil;
+		if (*_length < 2) {
+			[super dealloc];
+			return nil;
+		}
 		int mlength = *_length;
 		NSData * nickWInfo = [NSData dataWithBytes:ptr length:mlength];
 		UInt8 length = *(const UInt8 *)[nickWInfo bytes];
 		if (length + 1 >= [nickWInfo length]) {
+			NSLog(@"NickWInfo Error: Length is too low for nick.");
 			[super dealloc];
 			return nil;
 		}
@@ -39,7 +43,8 @@
 												  length:length
 												encoding:NSUTF8StringEncoding] autorelease];
 		
-		if (length + 1 + 2 >= [nickWInfo length]) {
+		if (length + 1 + 2 > [nickWInfo length]) {
+			NSLog(@"NickWInfo Error: Length is too low for nick AND evil.");
 			self.username = nil;
 			[super dealloc];
 			return nil;
