@@ -16,6 +16,7 @@
 #import "FTSetPDMode.h"
 #import "AIMFeedbagStatus.h"
 #import "FTAddGroup.h"
+#import "Debug.h"
 
 
 @class AIMFeedbagHandler;

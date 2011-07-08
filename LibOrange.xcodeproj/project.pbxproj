@@ -43,6 +43,7 @@
 		FA65B30413AA8399005757FD /* OFTCheckSum.m in Sources */ = {isa = PBXBuildFile; fileRef = FA65B30213AA8397005757FD /* OFTCheckSum.m */; };
 		FA65B32613ABAAE9005757FD /* AIMSendingFileTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = FA65B32513ABAAE7005757FD /* AIMSendingFileTransfer.m */; };
 		FA65B32913ABC308005757FD /* AIMICBMClientErr.m in Sources */ = {isa = PBXBuildFile; fileRef = FA65B32813ABC308005757FD /* AIMICBMClientErr.m */; };
+		FA69344413C75627002AEF34 /* Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = FA69344313C75627002AEF34 /* Debug.m */; };
 		FA73ACB813A3ADA200E13FDA /* AIMBuddyIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = FA73ACB713A3ADA200E13FDA /* AIMBuddyIcon.m */; };
 		FA73ACBB13A3BA8500E13FDA /* AIMBArtIDWName.m in Sources */ = {isa = PBXBuildFile; fileRef = FA73ACBA13A3BA8500E13FDA /* AIMBArtIDWName.m */; };
 		FA73ACBF13A3C4CF00E13FDA /* AIMBArtQueryReplyID.m in Sources */ = {isa = PBXBuildFile; fileRef = FA73ACBE13A3C4CF00E13FDA /* AIMBArtQueryReplyID.m */; };
@@ -186,6 +187,8 @@
 		FA65B32513ABAAE7005757FD /* AIMSendingFileTransfer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMSendingFileTransfer.m; sourceTree = "<group>"; };
 		FA65B32713ABC308005757FD /* AIMICBMClientErr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMICBMClientErr.h; sourceTree = "<group>"; };
 		FA65B32813ABC308005757FD /* AIMICBMClientErr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMICBMClientErr.m; sourceTree = "<group>"; };
+		FA69344213C75627002AEF34 /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
+		FA69344313C75627002AEF34 /* Debug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Debug.m; sourceTree = "<group>"; };
 		FA73ACB613A3ADA200E13FDA /* AIMBuddyIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMBuddyIcon.h; sourceTree = "<group>"; };
 		FA73ACB713A3ADA200E13FDA /* AIMBuddyIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIMBuddyIcon.m; sourceTree = "<group>"; };
 		FA73ACB913A3BA8500E13FDA /* AIMBArtIDWName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIMBArtIDWName.h; sourceTree = "<group>"; };
@@ -630,6 +633,8 @@
 			isa = PBXGroup;
 			children = (
 				FAF687BD13A7092A00AE6A93 /* LibOrange.h */,
+				FA69344213C75627002AEF34 /* Debug.h */,
+				FA69344313C75627002AEF34 /* Debug.m */,
 				FABC0EC8139705E80050D130 /* OSCAR */,
 				FABC0ED71397082C0050D130 /* Session */,
 				FABC0EA61396D09B0050D130 /* AIMLogin */,
@@ -934,6 +939,7 @@
 				FA65B30413AA8399005757FD /* OFTCheckSum.m in Sources */,
 				FA65B32613ABAAE9005757FD /* AIMSendingFileTransfer.m in Sources */,
 				FA65B32913ABC308005757FD /* AIMICBMClientErr.m in Sources */,
+				FA69344413C75627002AEF34 /* Debug.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

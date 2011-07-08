@@ -10,6 +10,7 @@
 #import "OSCARConnection.h"
 #import "SNAC.h"
 #import "AIMBlist.h"
+#import "Debug.h"
 
 @class AIMSession;
 

@@ -111,6 +111,7 @@
 
 - (void)_handleFeedbagResponse:(SNAC *)aSnac {
 	NSAssert([NSThread currentThread] == [session backgroundThread], @"Running on incorrect thread");
+	[Debug log:[NSString stringWithFormat:@"-_handleFeedbagResponse: AIMFeedbagHandler"]];
 	if (!feedbag) {
 		feedbag = [[AIMFeedbag alloc] initWithSnac:aSnac];
 	} else {

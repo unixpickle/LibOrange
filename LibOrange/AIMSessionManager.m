@@ -75,6 +75,7 @@
 }
 
 + (BOOL)signonClientOnline:(OSCARConnection *)connection {
+	[Debug log:@"+signonClientOnline: AIMSessionManager"];
 	// Create a mutable data for our flags.
 	NSMutableData * groupVersions = [NSMutableData data];
 	
@@ -298,6 +299,7 @@
 	}
 }
 - (BOOL)sendCookie:(NSData *)cookieData {
+	[Debug log:@"-sendCookie: AIMSessionManager"];
 	UInt32 version = flipUInt32(1);
 	UInt8 multiconFlag = 1;
 	
@@ -334,6 +336,7 @@
 #pragma mark Signon
 
 - (BOOL)signonInitializeRateLimits {
+	[Debug log:@"-signonInitializeRateLimits: AIMSessionManager"];
 	SNAC * rateQuery = [[[SNAC alloc] initWithID:SNAC_ID_NEW(SNAC_OSERVICE, OSERVICE__RATE_PARAMS_QUERY)
 										  flags:0
 									  requestID:[self generateSNACRequestID] data:nil] autorelease];
@@ -372,6 +375,7 @@
 }
 - (BOOL)signonInitialQueries {
 	// buddy rights query
+	[Debug log:@"-signonInitialQueries: AIMSessionManager"];
 	UInt16 qFlags = flipUInt16(15);
 	NSData * flags = [NSData dataWithBytes:&qFlags length:2];
 	TLV * buddyQueryInf = [[TLV alloc] initWithType:TLV_BUDDY__RIGHTS_QUERY_TAGS_FLAGS data:flags];
@@ -441,6 +445,7 @@
 			[snac release];
 		}
 	}
+	[Debug log:@"-signonAwaitQueriesResponses: got responses."];
 	return YES;
 }
 - (BOOL)signonRequestServices {

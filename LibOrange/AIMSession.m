@@ -36,6 +36,7 @@
 }
 - (void)closeConnection {
 	if (![connection isOpen]) return;
+	[Debug log:@"Sending disconnect"];
 	FLAPFrame * flapDisconnect = [connection createFlapChannel:4 data:[NSData data]];
 	[connection writeFlap:flapDisconnect];
 	[connection disconnect];
@@ -48,9 +49,10 @@
 	}
 	reqID += 1;
 	if (!reqID) reqID = 1;
-	if (reqID >= 2147483648) reqID ^= 2147483648;
+	if (reqID >= 2147483648) reqID = 2;
 	UInt32 reqIDTep = reqID;
 	[reqIDLock unlock];
+	[Debug log:[NSString stringWithFormat:@"-generateReqID: %d", reqIDTep]];
 	return reqIDTep;
 }
 - (BOOL)writeSnac:(SNAC *)aSnac {
@@ -63,6 +65,7 @@
 #pragma mark OSCAR Connection
 
 - (void)oscarConnectionClosed:(OSCARConnection *)theConnection {
+	[Debug log:@"-oscarConnectionClosed:"];
 	[backgroundThread cancel];
 	self.backgroundThread = nil;
 	if ([sessionDelegate respondsToSelector:@selector(aimSessionClosed:)]) {
@@ -76,14 +79,20 @@
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	FLAPFrame * packet = [theConnection readFlap];
 	if (packet) {
+		[Debug log:[NSString stringWithFormat:@"Got packet of channel: %d", [packet channel]]];
 		if ([packet channel] == 4) {
+			[Debug log:@"Got disconnect packet"];
 			[connection disconnect];
+			return;
 		}
 		SNAC * theSnac = [[SNAC alloc] initWithData:[packet frameData]];
 		if (theSnac) {
+			[Debug log:[NSString stringWithFormat:@"Got SNAC packet {%d,%d}", theSnac.snac_id.foodgroup, theSnac.snac_id.type]];
 			for (id<AIMSessionHandler> handler in handlers) {
 				[handler handleIncomingSnac:theSnac];
 			}
+		} else {
+			[Debug log:[NSString stringWithFormat:@"Failed to load SNAC from FLAP: %@", [packet encodePacket]]];
 		}
 		[theSnac release];
 	}
@@ -91,6 +100,7 @@
 }
 
 - (void)dealloc {
+	[Debug log:@"-dealloc: AIMSession"];
 	self.username = nil;
 	[reqIDLock release];
 	self.backgroundThread = nil;

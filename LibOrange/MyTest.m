@@ -20,6 +20,8 @@ static void stripNL (char * buff) {
 @implementation MyTest
 
 - (void)beginTest {
+	// uncomment to see a LOT of console output
+	// [Debug setDebuggingEnabled:YES];
 	printf("LibOrange (v: %s): -beginTest\n", lib_orange_version_string);
 	mainThread = [NSThread currentThread];
 	char buffer[512];
