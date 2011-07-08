@@ -25,7 +25,7 @@
 #ifndef libOrangeInf
 #define libOrangeInf
 #define lib_orange_version_major 0
-#define lib_orange_version_minor 9
-#define lib_orange_version_build 5
-#define lib_orange_version_string "0.9.5"
+#define lib_orange_version_minor 1
+#define lib_orange_version_build 0
+#define lib_orange_version_string "0.1.0"
 #endif
