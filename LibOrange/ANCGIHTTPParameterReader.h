@@ -6,7 +6,12 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#ifdef TARGET_OS_IPHONE
+    #import <UIKit/UIKit.h>
+#else
+    #import <Cocoa/Cocoa.h>
+#endif
+
 #import "ANStringEscaper.h"
 
 @interface ANCGIHTTPParameterReader : NSObject {
