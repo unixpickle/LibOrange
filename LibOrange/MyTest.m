@@ -440,7 +440,7 @@ static void stripNL (char * buff) {
 	if ([theSession.feedbagHandler currentPDMode:NULL] != PD_MODE_DENY_SOME) {
 		msg = @"Warning: Deny delete sent but PD_MODE isn't DENY_SOME";
 	}
-	FTAddDeny * delDeny = [[FTDelDeny alloc] initWithUsername:username];
+	FTDelDeny * delDeny = [[FTDelDeny alloc] initWithUsername:username];
 	[theSession.feedbagHandler pushTransaction:delDeny];
 	[delDeny release];
 	return msg;
