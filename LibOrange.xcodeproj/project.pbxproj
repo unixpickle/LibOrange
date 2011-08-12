@@ -826,6 +826,9 @@
 /* Begin PBXProject section */
 		FABC0E731396CD7E0050D130 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = FABC0E761396CD7F0050D130 /* Build configuration list for PBXProject "LibOrange" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
