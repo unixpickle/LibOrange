@@ -128,6 +128,10 @@ static void stripNL (char * buff) {
 	NSLog(@"%@ got the buddy list.", feedbagHandler);
 	NSLog(@"Blist: %@", [theSession.session buddyList]);
 	
+	// The following is an example of how to use LibOrange to spam somebody.
+	
+	/*
+	
 	NSString * buddyName = @"emmiey2k";
 	AIMBlistBuddy * buddy = [[theSession.session buddyList] buddyWithUsername:buddyName];
 	
@@ -139,6 +143,8 @@ static void stripNL (char * buff) {
 		NSLog(@"sent: back");
 		[[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:5]];
 	}
+	 
+	*/
 }
 
 - (void)aimFeedbagHandler:(AIMFeedbagHandler *)sender buddyAdded:(AIMBlistBuddy *)newBuddy {
