@@ -183,7 +183,7 @@ static void stripNL (char * buff) {
 	NSString * msgTxt = [message plainTextMessage];
 	
 	NSString * autoresp = [message isAutoresponse] ? @" (Auto-Response)" : @"";
-	NSLog(@"(%@) %@%@: %@", [NSDate date], [[message buddy] username], autoresp, msgTxt);
+	NSLog(@"(%@) %@%@: %@", [NSDate date], [[message buddy] username], autoresp, [message message]);
 		
 	NSArray * tokens = [CommandTokenizer tokensOfCommand:msgTxt];
 	if ([tokens count] == 1) {
@@ -235,7 +235,7 @@ static void stripNL (char * buff) {
 			}
 		} else if ([[tokens objectAtIndex:0] isEqual:@"echo"]) {
 			NSString * msg = [tokens objectAtIndex:1];
-			[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[msg stringByAddingAOLRTFTags]]];
+			[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:msg]];
 		} else if ([[tokens objectAtIndex:0] isEqual:@"sendfile"]) {
 			NSString * messagestr = [tokens objectAtIndex:1];
 			BOOL canTransfer = NO;
@@ -245,7 +245,7 @@ static void stripNL (char * buff) {
 				}
 			}
 			if (canTransfer) {
-				NSString * tempPath = [NSTemporaryDirectory() stringByAppendingFormat:@"/%d%d.txt", arc4random(), time(NULL)];
+				NSString * tempPath = [NSTemporaryDirectory() stringByAppendingFormat:@"/%d%lu.txt", arc4random(), time(NULL)];
 				[messagestr writeToFile:tempPath atomically:NO encoding:NSUTF8StringEncoding error:nil];
 				if (![theSession.rendezvousHandler sendFile:tempPath toUser:message.buddy]) {
 					[[NSFileManager defaultManager] removeItemAtPath:tempPath error:nil];
@@ -276,7 +276,10 @@ static void stripNL (char * buff) {
 				[sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:[msg stringByAddingAOLRTFTags]]];
 			}
 		}
-	}
+	} else if ([msgTxt hasPrefix:@"echo "]) {
+        NSString * part = [msgTxt substringFromIndex:5];
+        [sender sendMessage:[AIMMessage messageWithBuddy:[message buddy] message:part]];
+    }
 }
 
 - (void)aimICBMHandler:(AIMICBMHandler *)sender gotMissedCall:(AIMMissedCall *)missedCall {

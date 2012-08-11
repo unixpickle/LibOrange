@@ -94,7 +94,7 @@
 #pragma mark Private
 
 - (void)configurePost:(NSData *)postData onRequest:(NSMutableURLRequest *)request {
-	NSString * postLen = [NSString stringWithFormat:@"%d", [postData length]];
+	NSString * postLen = [NSString stringWithFormat:@"%lu", [postData length]];
 	[request setHTTPMethod:@"POST"];
 	[request setHTTPBody:postData];
 	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
