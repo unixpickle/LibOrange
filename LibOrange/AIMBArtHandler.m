@@ -71,6 +71,7 @@
 	[bossSession removeHandler:self];
 	[bossSession autorelease];
 	bossSession = nil;
+    [self closeBArtConnection];
 }
 
 - (BOOL)fetchBArtIcon:(AIMBArtID *)bartID forUser:(NSString *)username {
