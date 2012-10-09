@@ -127,6 +127,7 @@
 
 - (void)_delegateInformDisconnected {
     [Debug log:@"-delegateInformDisconnected from BArt Handler"];
+    if (!bossSession) return;
 	NSAssert([NSThread currentThread] == [bossSession mainThread], @"Running on incorrect thread");
 	if ([delegate respondsToSelector:@selector(aimBArtHandlerDisconnected:)]) {
 		[delegate aimBArtHandlerDisconnected:self];
